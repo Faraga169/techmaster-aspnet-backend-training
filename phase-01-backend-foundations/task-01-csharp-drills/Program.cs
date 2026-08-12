@@ -35,13 +35,17 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Login
-            Console.WriteLine("Enter Your UserName :");
-            string Username = Console.ReadLine() ?? "";
-            Console.WriteLine("Enter Your Password: ");
-           string Password = Console.ReadLine() ?? "";
-            Drill_03___Simple_Login_Validator.LoginValidator(Username, Password);
+            // Console.WriteLine("Enter Your UserName :");
+            // string Username = Console.ReadLine() ?? "";
+            // Console.WriteLine("Enter Your Password: ");
+            //string Password = Console.ReadLine() ?? "";
+            // Drill_03___Simple_Login_Validator.LoginValidator(Username, Password);
             #endregion
 
+
+            #region EvenOdd
+            Drill_04___EvenOdd_Analyzer.EvenOddAnalyzer();
+            #endregion
         }
     }
 }

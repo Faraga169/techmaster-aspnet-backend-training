@@ -12,6 +12,7 @@
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/running-sum-of-1d-array/">
+    <File Path="problem-solving/running-sum-of-1d-array/README.md" />
     <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">

@@ -1,1 +1,16 @@
-<Solution />
+<Solution>
+  <Folder Name="/phase-01-backend-foundations/">
+    <File Path="README.md" />
+    <Project Path="phase-01-backend-foundations/task-01-csharp-drills/task-01-csharp-drills.csproj" />
+    <Project Path="phase-01-backend-foundations/task-02-bank-account-system/task-02-bank-account-system.csproj" />
+    <Project Path="phase-01-backend-foundations/task-03-employee-management/task-03-employee-management.csproj" />
+    <Project Path="phase-01-backend-foundations/task-04-product-catalog-linq/task-04-product-catalog-linq.csproj" />
+  </Folder>
+  <Folder Name="/phase-01-backend-foundations/task-00-setup/" />
+  <Folder Name="/phase-01-backend-foundations/task-05-debug-refactor-pack/" />
+  <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
+  <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+</Solution>

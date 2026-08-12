@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/phase-01-backend-foundations/">
-    <File Path="README.md" />
     <Project Path="phase-01-backend-foundations/task-01-csharp-drills/task-01-csharp-drills.csproj" />
     <Project Path="phase-01-backend-foundations/task-02-bank-account-system/task-02-bank-account-system.csproj" />
     <Project Path="phase-01-backend-foundations/task-03-employee-management/task-03-employee-management.csproj" />
@@ -17,5 +16,6 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
+    <File Path="README.md" />
   </Folder>
 </Solution>

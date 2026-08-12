@@ -10,6 +10,10 @@
   <Folder Name="/phase-01-backend-foundations/task-05-debug-refactor-pack/" />
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
+  <Folder Name="/problem-solving/" />
+  <Folder Name="/problem-solving/running-sum-of-1d-array/">
+    <Project Path="Solution/Solution.csproj" Id="69235f4c-0ac9-4603-a876-8fe13e4561e3" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
   </Folder>

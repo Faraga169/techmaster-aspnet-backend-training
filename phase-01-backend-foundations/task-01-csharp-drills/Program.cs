@@ -44,8 +44,58 @@ namespace task_01_csharp_drills
 
 
             #region EvenOdd
-            Drill_04___EvenOdd_Analyzer.EvenOddAnalyzer();
+            //Drill_04___EvenOdd_Analyzer.EvenOddAnalyzer();
             #endregion
+
+            #region Max and Min Finder
+            //List<int> numbers = new List<int>();
+
+            //Console.Write("How many numbers will you enter? ");
+
+            //int count;
+
+            //while (!int.TryParse(Console.ReadLine(), out count) || count <= 0)
+            //{
+            //    Console.Write("Please enter a positive number: ");
+            //}
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    Console.Write($"Enter number {i + 1}: ");
+
+            //    int number;
+
+            //    while (!int.TryParse(Console.ReadLine(), out number))
+            //    {
+            //        Console.Write("Invalid input. Enter an integer: ");
+            //    }
+
+            //    numbers.Add(number);
+            //}
+
+            //Drill_05___Maximum_and_Minimum_Finder.MaxandMinFinder(numbers);
+
+            #endregion
+
+            #region Word Counter
+            //Console.WriteLine("Enter your word: ");
+            //string word = Console.ReadLine() ?? "";
+            //Drill_06___Word_Counter.WordCounter(word);
+            #endregion
+
+            #region Name Formatter
+            //Console.WriteLine("Enter your word: ");
+            //string word = Console.ReadLine() ?? "";
+            //Drill_07___Name_Formatter.NameFormatter(word);
+            #endregion
+
+            #region Password Strength
+            Console.WriteLine("Enter your Password: ");
+            string word = Console.ReadLine() ?? "";
+            Console.WriteLine(Drill_08___Password_Strength_Checker.PasswordStrengthChecker(word));
+               
+            #endregion
+
         }
     }
 }

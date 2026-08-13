@@ -90,12 +90,42 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Password Strength
-            Console.WriteLine("Enter your Password: ");
-            string word = Console.ReadLine() ?? "";
-            Console.WriteLine(Drill_08___Password_Strength_Checker.PasswordStrengthChecker(word));
-               
+            //Console.WriteLine("Enter your Password: ");
+            //string word = Console.ReadLine() ?? "";
+            //Console.WriteLine(Drill_08___Password_Strength_Checker.PasswordStrengthChecker(word));
+
             #endregion
 
+            #region Shopping Cart
+            //  Drill_09___Shopping_Cart_Total.CalculateShoppingCart();
+            #endregion
+
+            #region ATM Menu
+            // Drill_10___Simple_ATM_Menu.ATMMenu();
+            #endregion
+
+            #region Duplicate Number Detector
+            //int[] numbers1 = { 1, 2, 3, 4, 5 };
+            //int[] numbers2 = { 1, 2, 2, 3, 1 };
+            //int[] numbers3 = { 5, 5, 5, 5 };
+            //int[] numbers4 = { };
+            //int[] numbers5 = { -5, -5, 5, 5 };
+
+            //Drill_11___Duplicate_Number_Detector.DuplicateNumberDetector(numbers1);
+            //Drill_11___Duplicate_Number_Detector.DuplicateNumberDetector(numbers2);
+            //Drill_11___Duplicate_Number_Detector.DuplicateNumberDetector(numbers3);
+            //Drill_11___Duplicate_Number_Detector.DuplicateNumberDetector(numbers4);
+            //Drill_11___Duplicate_Number_Detector.DuplicateNumberDetector(numbers5);
+            #endregion
+
+            #region Email Validator
+           
+            //    Console.WriteLine("Enter a  Email :");
+            //   string Email = Console.ReadLine() ?? "";
+            //Drill_12___Email_Validator.EmailValidator(Email);
+
+          
+            #endregion
         }
     }
 }

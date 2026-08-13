@@ -1,4 +1,5 @@
-﻿using task_01_csharp_drills.Drills;
+﻿using System.Drawing;
+using task_01_csharp_drills.Drills;
 
 namespace task_01_csharp_drills
 {
@@ -119,12 +120,63 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Email Validator
-           
+
             //    Console.WriteLine("Enter a  Email :");
             //   string Email = Console.ReadLine() ?? "";
             //Drill_12___Email_Validator.EmailValidator(Email);
 
-          
+
+            #endregion
+
+            #region Palindrom
+            //Console.WriteLine("Enter a  word :");
+            //string word = Console.ReadLine() ?? "";
+            //Drill_13___Palindrome_Checker.PalindromChecker(word);
+            #endregion
+
+            #region Simple Expense Tracker
+            //List<Expense> expenses = new List<Expense>();
+            //Drill_14___Simple_Expense_Tracker.ExpenseTracker(expenses);
+            #endregion
+
+            #region Array Rotation
+            //int size;
+            //do
+            //{
+            //    Console.WriteLine("Enter your size: ");
+            //    flag = int.TryParse(Console.ReadLine(), out size);
+            //} while (!flag || size <= 0);
+            //int[] array=new int[size];
+            //Drill_15___Array_Rotation.ArrayRotation(array);
+            #endregion
+
+            #region Frequency Counter
+            //List<int> numbers = new List<int>();
+
+            //int count;
+
+            //do
+            //{
+            //    Console.Write("Enter the number of elements: ");
+            //    flag = int.TryParse(Console.ReadLine(), out count);
+
+            //} while (!flag || count <= 0);
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    int number;
+
+            //    do
+            //    {
+            //        Console.Write($"Enter number {i + 1}: ");
+            //        flag = int.TryParse(Console.ReadLine(), out number);
+
+            //    } while (!flag);
+
+            //    numbers.Add(number);
+            //}
+
+            //Drill_16___Frequency_Counter.FrequencyCounter(numbers);
             #endregion
         }
     }

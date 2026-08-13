@@ -10,14 +10,14 @@ namespace task_01_csharp_drills
             bool flag;
             double result;
             #region Teperature Convertor
-
-            //flag = double.TryParse(Console.ReadLine(), out result);
-            //while (!flag)
-            //{
-            //    Console.WriteLine("Invalid Temperature value, please Enter a valid value: ");
-            //    flag = double.TryParse(Console.ReadLine(), out result);
-            //}
-            //Console.WriteLine($"{result}\u00B0C = {Drill01_TemperatureConverter.ConvertCelsiustoFahrenheit(result):F2}\u00B0F");
+            Console.WriteLine("Enter a Temperature value: ");
+            flag = double.TryParse(Console.ReadLine(), out result);
+            while (!flag||result<0)
+            {
+                Console.WriteLine("Invalid Temperature value, please Enter a valid value: ");
+                flag = double.TryParse(Console.ReadLine(), out result);
+            }
+            Console.WriteLine($"{result}\u00B0C = {Drill01_TemperatureConverter.ConvertCelsiustoFahrenheit(result):F2}\u00B0F");
             #endregion
 
             #region Grade Calaculator
@@ -277,7 +277,7 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Array Rotation
-            Drill_20___Method_Refactoring_Challenge.ArrayRotation();
+           // Drill_20___Method_Refactoring_Challenge.ArrayRotation();
             #endregion
             #endregion
 

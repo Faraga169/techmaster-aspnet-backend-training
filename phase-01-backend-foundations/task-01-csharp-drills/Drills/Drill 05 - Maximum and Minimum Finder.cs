@@ -13,23 +13,26 @@ namespace task_01_csharp_drills.Drills
             double max = int.MinValue;
             double min = int.MaxValue;
 
-            // Loop through all numbers in the list
-            foreach (int i in numbers)
-            {
-                // If the current number is greater than max,
-                // update max with the current number.
-                if (i > max)
+            if (numbers is not null && numbers.Count>0) {
+                // Loop through all numbers in the list
+                foreach (int i in numbers)
                 {
-                    max = i;
-                }
+                    // If the current number is greater than max,
+                    // update max with the current number.
+                    if (i > max)
+                    {
+                        max = i;
+                    }
 
-                // If the current number is smaller than min,
-                // update min with the current number.
-                if (i < min)
-                {
-                    min = i;
+                    // If the current number is smaller than min,
+                    // update min with the current number.
+                    if (i < min)
+                    {
+                        min = i;
+                    }
                 }
             }
+           
 
             // Display the maximum and minimum values.
             Console.WriteLine($"Max: {max} | Min: {min}");

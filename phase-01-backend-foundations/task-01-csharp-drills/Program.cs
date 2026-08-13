@@ -178,6 +178,109 @@ namespace task_01_csharp_drills
 
             //Drill_16___Frequency_Counter.FrequencyCounter(numbers);
             #endregion
+
+            #region Simple Search Engine
+            //List<string> names = new List<string>();
+
+            //int count;
+            //do
+            //{
+            //    Console.Write("Enter number of names: ");
+            //    flag = int.TryParse(Console.ReadLine(), out count);
+
+            //} while (!flag || count <= 0);
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    string name;
+
+            //    do
+            //    {
+            //        Console.Write($"Enter name {i + 1}: ");
+            //        name = Console.ReadLine() ?? "";
+
+            //    } while (string.IsNullOrWhiteSpace(name));
+
+            //    names.Add(name);
+            //}
+            //Drill_17___Simple_Search_Engine.SearchEngine(names);
+            #endregion
+
+            #region Number Statistics
+            List<int> numbers = new List<int>();
+
+            //int count;
+
+            //do
+            //{
+            //    Console.Write("Enter number of elements: ");
+            //    flag = int.TryParse(Console.ReadLine(), out count);
+
+            //} while (!flag || count <= 0);
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    int number;
+
+            //    do
+            //    {
+            //        Console.Write($"Enter number {i + 1}: ");
+            //        flag = int.TryParse(Console.ReadLine(), out number);
+
+            //    } while (!flag);
+
+            //    numbers.Add(number);
+            //}
+
+            //Drill_18___Number_Statistics.NumberStatistics(numbers);
+            #endregion
+
+            #region Simple Ticket Price Calculator
+            //int age;
+            //string flagStudent;
+
+            //do
+            //{
+            //    Console.Write("Enter your age: ");
+            //} while (!int.TryParse(Console.ReadLine(), out age) || age < 0);
+
+            //do
+            //{
+            //    Console.Write("Are you a Student? (Yes/No): ");
+            //    flagStudent = Console.ReadLine() ?? "";
+
+            //} while (string.IsNullOrWhiteSpace(flagStudent));
+
+            //Drill_19___Simple_Ticket_Price_Calculator.TicketPriceCalculator(age, flagStudent);
+            #endregion
+
+            #region Method Refactoring
+            #region ATM Menu
+            //Drill_20___Method_Refactoring_Challenge.ATMMenu(); 
+            #endregion
+
+            #region Grade Calculator
+
+            //flag = double.TryParse(Console.ReadLine(), out result);
+            //while (!flag)
+            //{
+            //    Console.WriteLine("Invalid Grade value, please Enter a valid value: ");
+            //    flag = double.TryParse(Console.ReadLine(), out result);
+            //}
+
+            //while (result > 100 || result < 0)
+            //{
+            //    Console.WriteLine("Score must be between 0 and 100 ");
+            //    flag = double.TryParse(Console.ReadLine(), out result);
+            //}
+            //Drill_02___Grade_Calculator.GradeCalculator(result); 
+            #endregion
+
+            #region Array Rotation
+            Drill_20___Method_Refactoring_Challenge.ArrayRotation();
+            #endregion
+            #endregion
+
         }
     }
 }

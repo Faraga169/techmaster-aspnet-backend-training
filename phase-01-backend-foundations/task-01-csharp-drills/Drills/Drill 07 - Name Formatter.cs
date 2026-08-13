@@ -22,8 +22,7 @@ namespace task_01_csharp_drills.Drills
             // Remove spaces from the beginning and end,
             // then split the name into separate parts.
             // RemoveEmptyEntries prevents empty elements caused by extra spaces.
-            string[] words = word.Trim()
-                .Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = word.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             // Process each part of the name separately.
             for (int i = 0; i < words.Length; i++)

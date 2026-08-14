@@ -29,29 +29,37 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
 
         public List<Transaction> Transactions { get; private set; }
 
-        public void Deposit(decimal amount) {
+        public bool Deposit(decimal amount) {
 
             if (amount <= 0)
-                return;
+                return false;
 
 
-            Balance += amount;
+            UpdateBalance(TransactionType.Deposit, amount);
+            return true;
           
         }
 
-        public void WithDraw(decimal amount) {
+        public bool WithDraw(decimal amount) {
 
             if (amount <= 0)
-                return;
+                return false;
 
 
             if (amount > Balance)
-                return;
+                return false;
 
-            Balance -= amount;
-
+            UpdateBalance(TransactionType.withDraw, amount);
+            return true;
         }
 
+        public void UpdateBalance(TransactionType transactionType, decimal amount) {
+
+            if (transactionType == TransactionType.Deposit)
+                Balance += amount;
+            else
+                Balance -= amount;
+        }
         public void AddTransaction(Transaction transaction) {
 
             Transactions.Add(transaction);

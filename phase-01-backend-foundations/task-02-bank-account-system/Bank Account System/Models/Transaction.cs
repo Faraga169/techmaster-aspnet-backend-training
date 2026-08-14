@@ -15,9 +15,9 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
         //Description
         //BalanceAfterTransaction
 
-        public Transaction(string transactionId,string fromAccountNumber, string toAccountNumber, TransactionType transactionType,decimal amount,string description)
+        public Transaction(string fromAccountNumber, string toAccountNumber, TransactionType transactionType,decimal amount,string description)
         {
-            TransactionId= transactionId;
+            TransactionId= new Guid().ToString();
             FromAccountNumber= fromAccountNumber;
             ToAccountNumber= toAccountNumber;
             Amount= amount;
@@ -41,5 +41,11 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
         public string? Description { get; private set; }
 
         public decimal BalanceAfterTransaction { get; private set; }
+
+
+        public void SetBalanceAfterTransaction(decimal balance)
+        {
+            BalanceAfterTransaction = balance;
+        }
     }
 }

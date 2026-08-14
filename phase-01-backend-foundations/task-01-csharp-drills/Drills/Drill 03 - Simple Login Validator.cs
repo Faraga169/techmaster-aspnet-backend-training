@@ -6,36 +6,52 @@ namespace task_01_csharp_drills.Drills
 {
     public static class Drill_03___Simple_Login_Validator
     {
-        public static void LoginValidator(string Username,string Password) {
+        public static void LoginValidator() {
 
             const string UserNameAnswer = "Ahmed";
             const string PasswordAnswer = "Ahmed169";
 
             int i = 0;
 
-            while (i < 2) {
-                if (String.Equals(Username, UserNameAnswer, StringComparison.OrdinalIgnoreCase) && String.Equals(PasswordAnswer, Password))
+            while (i < 3) {
+                string username;
+                string password;
+                do
+                {
+                    Console.Write("Enter Your UserName: ");
+                    username = Console.ReadLine() ?? "";
+                }
+                while (string.IsNullOrWhiteSpace(username));
+
+                do
+                {
+                    Console.Write("Enter Your Password: ");
+                    password = Console.ReadLine() ?? "";
+                }
+                while (string.IsNullOrWhiteSpace(password));
+
+                if (String.Equals(username, UserNameAnswer, StringComparison.OrdinalIgnoreCase) && String.Equals(PasswordAnswer, password))
                 {
                     Console.WriteLine("Login successful.");
-                    break;
+                    return;
                 }
-
-                Console.WriteLine("Invalid UserName or Password");
-                Console.WriteLine("Enter Your UserName :");
-                Username = Console.ReadLine() ?? "";
-                Console.WriteLine("Enter Your Password: ");
-                Password = Console.ReadLine() ?? "";
-
+               
                 i++;
+
+                if (i <3)
+                {
+                    Console.WriteLine("Invalid UserName or Password");
+                    
+                }
             }
 
-            if (i == 2) {
-                Console.WriteLine("Account locked. Too many failed attempts.");
-            }
-           
 
-             
-            
+            Console.WriteLine("Account locked. Too many failed attempts.");
+
+
+
+
+
 
         }
     }

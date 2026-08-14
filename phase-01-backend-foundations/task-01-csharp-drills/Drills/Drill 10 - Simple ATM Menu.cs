@@ -58,7 +58,8 @@ namespace task_01_csharp_drills.Drills
                     case 4:
                         flag = true;
                         Console.WriteLine("Goodbye!");
-                        break;
+                        return;
+                       
 
                     default:
                         Console.WriteLine("Invalid option. Please choose from 1 to 4.");

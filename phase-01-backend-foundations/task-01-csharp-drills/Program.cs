@@ -10,17 +10,18 @@ namespace task_01_csharp_drills
             bool flag;
             double result;
             #region Teperature Convertor
-            Console.WriteLine("Enter a Temperature value: ");
-            flag = double.TryParse(Console.ReadLine(), out result);
-            while (!flag||result<0)
-            {
-                Console.WriteLine("Invalid Temperature value, please Enter a valid value: ");
-                flag = double.TryParse(Console.ReadLine(), out result);
-            }
-            Console.WriteLine($"{result}\u00B0C = {Drill01_TemperatureConverter.ConvertCelsiustoFahrenheit(result):F2}\u00B0F");
+            //Console.WriteLine("Enter a Temperature value: ");
+            //flag = double.TryParse(Console.ReadLine(), out result);
+            //while (!flag)
+            //{
+            //    Console.WriteLine("Invalid Temperature value, please Enter a valid value: ");
+            //    flag = double.TryParse(Console.ReadLine(), out result);
+            //}
+            //Console.WriteLine($"{result}\u00B0C = {Drill01_TemperatureConverter.ConvertCelsiustoFahrenheit(result):F2}\u00B0F");
             #endregion
 
             #region Grade Calaculator
+            //Console.WriteLine("Enter Your Grade: ");
             //flag = double.TryParse(Console.ReadLine(), out result);
             //while (!flag)
             //{
@@ -28,7 +29,8 @@ namespace task_01_csharp_drills
             //    flag = double.TryParse(Console.ReadLine(), out result);
             //}
 
-            //while (result > 100 || result < 0) {
+            //while (result > 100 || result < 0)
+            //{
             //    Console.WriteLine("Score must be between 0 and 100 ");
             //    flag = double.TryParse(Console.ReadLine(), out result);
             //}
@@ -36,11 +38,8 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Login
-            // Console.WriteLine("Enter Your UserName :");
-            // string Username = Console.ReadLine() ?? "";
-            // Console.WriteLine("Enter Your Password: ");
-            //string Password = Console.ReadLine() ?? "";
-            // Drill_03___Simple_Login_Validator.LoginValidator(Username, Password);
+
+            // Drill_03___Simple_Login_Validator.LoginValidator();
             #endregion
 
 
@@ -102,7 +101,7 @@ namespace task_01_csharp_drills
             #endregion
 
             #region ATM Menu
-            // Drill_10___Simple_ATM_Menu.ATMMenu();
+            //Drill_10___Simple_ATM_Menu.ATMMenu();
             #endregion
 
             #region Duplicate Number Detector
@@ -151,32 +150,32 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Frequency Counter
-            //List<int> numbers = new List<int>();
+            List<int> numbers = new List<int>();
 
-            //int count;
+            int count;
 
-            //do
-            //{
-            //    Console.Write("Enter the number of elements: ");
-            //    flag = int.TryParse(Console.ReadLine(), out count);
+            do
+            {
+                Console.Write("Enter the number of elements: ");
+                flag = int.TryParse(Console.ReadLine(), out count);
 
-            //} while (!flag || count <= 0);
+            } while (!flag || count <= 0);
 
-            //for (int i = 0; i < count; i++)
-            //{
-            //    int number;
+            for (int i = 0; i < count; i++)
+            {
+                int number;
 
-            //    do
-            //    {
-            //        Console.Write($"Enter number {i + 1}: ");
-            //        flag = int.TryParse(Console.ReadLine(), out number);
+                do
+                {
+                    Console.Write($"Enter number {i + 1}: ");
+                    flag = int.TryParse(Console.ReadLine(), out number);
 
-            //    } while (!flag);
+                } while (!flag);
 
-            //    numbers.Add(number);
-            //}
+                numbers.Add(number);
+            }
 
-            //Drill_16___Frequency_Counter.FrequencyCounter(numbers);
+            Drill_16___Frequency_Counter.FrequencyCounter(numbers);
             #endregion
 
             #region Simple Search Engine
@@ -207,7 +206,7 @@ namespace task_01_csharp_drills
             #endregion
 
             #region Number Statistics
-            List<int> numbers = new List<int>();
+           // List<int> numbers = new List<int>();
 
             //int count;
 

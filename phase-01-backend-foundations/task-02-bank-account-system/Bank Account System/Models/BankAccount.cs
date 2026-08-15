@@ -35,7 +35,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
                 return false;
 
 
-            UpdateBalance(TransactionType.Deposit, amount);
+            UpdateBalance(TransactionType.Deposit,amount);
             return true;
           
         }
@@ -53,7 +53,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
             return true;
         }
 
-        public void UpdateBalance(TransactionType transactionType, decimal amount) {
+        public void UpdateBalance(TransactionType transactionType,  decimal amount) {
 
             if (transactionType == TransactionType.Deposit)
                 Balance += amount;

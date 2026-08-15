@@ -9,11 +9,11 @@ using Transaction = task_02_bank_account_system.Bank_Account_System.Models.Trans
 
 namespace task_02_bank_account_system.Bank_Account_System.Services
 {
-    public class BankService
+    public static class BankService
     {
-        public List<Customer> Customers { get; private set; } = new List<Customer>();
-        public List<BankAccount> BankAccounts { get; private set; } = new List<BankAccount>();
-        public  void AccountCreation(Customer customer,string accountNumber,AccountType accountType) {
+        public static List<Customer> Customers { get; private set; } = new List<Customer>();
+        public static List<BankAccount> BankAccounts { get; private set; } = new List<BankAccount>();
+        public static void AccountCreation(Customer customer,string accountNumber,AccountType accountType) {
             if(customer is null)
                 throw new ArgumentNullException(nameof(customer));
 
@@ -32,7 +32,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
 
         }
 
-        public void Transfer(Transaction transaction)
+        public static void Transfer(Transaction transaction)
         {
             var fromAccount = BankAccounts.Find(a => a.AccountNumber == transaction.FromAccountNumber);
 
@@ -49,7 +49,6 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
 
                 if (toAccount.Deposit(transaction.Amount))
                 {
-                    toAccount.UpdateBalance(TransactionType.Deposit, transaction.Amount);
                     transaction.SetBalanceAfterTransaction(toAccount.Balance);
                     toAccount.AddTransaction(transaction);
                 }
@@ -65,7 +64,6 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
 
                 if (fromAccount.WithDraw(transaction.Amount))
                 {
-                    fromAccount.UpdateBalance(TransactionType.withDraw, transaction.Amount);
                     transaction.SetBalanceAfterTransaction(fromAccount.Balance);
                     fromAccount.AddTransaction(transaction);
                 }
@@ -92,8 +90,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
                 if (!depositResult)
                     return;
 
-                fromAccount.UpdateBalance(TransactionType.withDraw, transaction.Amount);
-                toAccount.UpdateBalance(TransactionType.Deposit, transaction.Amount);
+               
 
                 transaction.SetBalanceAfterTransaction(fromAccount.Balance);
                 transaction.SetBalanceAfterTransaction(toAccount.Balance);
@@ -103,7 +100,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
             }
         }
 
-        public void TransactionHistory(string AccountNumber) {
+        public static void TransactionHistory(string AccountNumber) {
 
             var account = BankAccounts.Find(a => a.AccountNumber == AccountNumber);
 
@@ -137,7 +134,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
 
         }
 
-        public void ViewAccountDetails(string AccountNumber) {
+        public static void ViewAccountDetails(string AccountNumber) {
 
             var account = BankAccounts.Find(a => a.AccountNumber == AccountNumber);
 
@@ -156,7 +153,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
 
         }
 
-        public void ViewAllAccounts()
+        public static void ViewAllAccounts()
         {
 
 

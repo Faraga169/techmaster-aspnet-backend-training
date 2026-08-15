@@ -7,9 +7,9 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
     public class Customer
     {
 
-        public Customer(string customerId,string fullName,string email,string phoneNumber)
+        public Customer(string fullName,string email,int phoneNumber)
         {
-            CustomerId = customerId;
+            CustomerId = new Guid().ToString();
             FullName= fullName;
             Email= email;
             PhoneNumber = phoneNumber;
@@ -21,7 +21,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Models
 
         public string Email { get; private set; }
 
-        public  string PhoneNumber { get;private set; }
+        public  int PhoneNumber { get;private set; }
 
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 

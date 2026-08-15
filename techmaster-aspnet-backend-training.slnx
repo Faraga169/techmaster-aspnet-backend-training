@@ -16,11 +16,14 @@
   </Folder>
   <Folder Name="/problem-solving/Plus One/">
     <File Path="problem-solving/Plus One/README.md" />
-    <Project Path="Solution02/Solution02.csproj" Id="2c21552d-06a3-4502-bed1-39af057da7d1" />
+    <Project Path="problem-solving/Plus One/Solution02/Solution02.csproj" />
   </Folder>
   <Folder Name="/problem-solving/running-sum-of-1d-array/">
     <File Path="problem-solving/running-sum-of-1d-array/README.md" />
     <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
+  </Folder>
+  <Folder Name="/problem-solving/Two Sum/">
+    <Project Path="Solution04/Solution04.csproj" Id="746adc1e-c187-45b2-9439-808cbc0ef96e" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

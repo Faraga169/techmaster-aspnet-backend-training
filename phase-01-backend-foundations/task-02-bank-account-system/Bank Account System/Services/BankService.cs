@@ -52,6 +52,11 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
                     transaction.SetBalanceAfterTransaction(toAccount.Balance);
                     toAccount.AddTransaction(transaction);
                 }
+
+                else {
+                    throw new InvalidOperationException("Deposit failed. Amount must be greater than zero.");
+
+                }
             }
 
             else if (transaction.TransactionType == TransactionType.withDraw)
@@ -66,6 +71,11 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
                 {
                     transaction.SetBalanceAfterTransaction(fromAccount.Balance);
                     fromAccount.AddTransaction(transaction);
+                }
+                else
+                {
+                    throw new InvalidOperationException("WithDraw failed. Amount must be less than or equal Balance..");
+
                 }
             }
 
@@ -83,12 +93,16 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
                 var withdrawResult = fromAccount.WithDraw(transaction.Amount);
 
                 if (!withdrawResult)
-                    return;
+                    
+                            throw new InvalidOperationException("Transfer failed. Amount must be less than or equal Balance.");
+              
 
                 var depositResult = toAccount.Deposit(transaction.Amount);
 
                 if (!depositResult)
-                    return;
+
+                    throw new InvalidOperationException("Transfer failed. Amount must be greater than zero.");
+               
 
                
 

@@ -10,6 +10,14 @@
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
   <Folder Name="/problem-solving/" />
+  <Folder Name="/problem-solving/Contains Duplicate/">
+    <File Path="problem-solving/Contain Duplicates/README.md" />
+    <Project Path="problem-solving/Contain Duplicates/Solution03/Solution03.csproj" />
+  </Folder>
+  <Folder Name="/problem-solving/Plus One/">
+    <File Path="problem-solving/Plus One/README.md" />
+    <Project Path="Solution02/Solution02.csproj" Id="2c21552d-06a3-4502-bed1-39af057da7d1" />
+  </Folder>
   <Folder Name="/problem-solving/running-sum-of-1d-array/">
     <File Path="problem-solving/running-sum-of-1d-array/README.md" />
     <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />

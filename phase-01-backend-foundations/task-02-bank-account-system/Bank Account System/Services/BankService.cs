@@ -13,6 +13,7 @@ namespace task_02_bank_account_system.Bank_Account_System.Services
     {
         public static List<Customer> Customers { get; private set; } = new List<Customer>();
         public static List<BankAccount> BankAccounts { get; private set; } = new List<BankAccount>();
+        
         public static void AccountCreation(Customer customer,string accountNumber,AccountType accountType) {
             if(customer is null)
                 throw new ArgumentNullException(nameof(customer));

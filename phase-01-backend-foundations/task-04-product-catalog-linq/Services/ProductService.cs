@@ -321,5 +321,22 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
-    }
+
+        #region Products Above Average Price
+        public static List<Products> GetProductsAboveAverage()
+        {
+
+            var averageprice = Products.Average(p => p.Price);
+            var products = Products.Where(p => p.Price > averageprice).ToList();
+                
+                    
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Above Average");
+
+            return products;
+
+        }
+        #endregion
+        }
 }

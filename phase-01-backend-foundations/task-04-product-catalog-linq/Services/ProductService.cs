@@ -137,5 +137,18 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Calculate Total Stock Value
+        public static decimal CalculateTotalStock()
+        {
+
+            var sum = Products.Sum(p => p.Price*p.StockQuantity);
+
+            return sum;
+
+
+
+        }
+        #endregion
     }
 }

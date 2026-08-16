@@ -69,5 +69,18 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Sort by Price Ascending
+        public static List<Products> SearchBypriceAscending()
+        {
+           
+            var product = Products.OrderBy(p => p.Price).ToList();
+            if (product.Count==0)
+                throw new InvalidOperationException($"No Product Found");
+
+            return product;
+
+        }
+        #endregion
     }
 }

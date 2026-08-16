@@ -146,6 +146,24 @@ namespace task_04_product_catalog_linq.Services
 
             return sum;
 
+        }
+        #endregion
+
+        #region Stock Value per Category
+        public static void CalaculateStockPerCategory()
+        {
+
+            var products = Products.GroupBy(p => p.Category).Select(p => new { Category = p.Key, Total = p.Sum(p=>p.StockQuantity*p.Price) }).ToList();
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+            foreach (var i in products)
+            {
+
+                Console.WriteLine($"Category {i.Category} has {i.Total} Stock");
+
+
+            }
+
 
 
         }

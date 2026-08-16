@@ -36,5 +36,22 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Filter by Price Range
+        public static List<Products> FilterByPrice(decimal minPrice,decimal maxPrice)
+        {
+            if (minPrice <= 0)
+                throw new ArgumentOutOfRangeException("min price must be greater than 0");
+            if(maxPrice < minPrice ||maxPrice<=0)
+                throw new ArgumentOutOfRangeException("max price must be greater than min price and greater than 0");
+
+            var products = Products.Where(p => p.Price>=minPrice &&p.Price<=maxPrice).ToList();
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Products in Range between {minPrice} and {maxPrice}");
+
+            return products;
+
+        }
+        #endregion
     }
 }

@@ -21,5 +21,20 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Filter by Category
+        public static List<Products> FilterByCategory(string category)
+        {
+            if (category is null)
+                throw new ArgumentNullException("Category is null");
+
+            var products = Products.Where(p => p.Category.Equals(category,StringComparison.OrdinalIgnoreCase)).ToList();
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Products in {category} category");
+
+            return products;
+
+        }
+        #endregion
     }
 }

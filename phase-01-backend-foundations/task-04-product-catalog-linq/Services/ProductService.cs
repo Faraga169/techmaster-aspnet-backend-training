@@ -191,6 +191,21 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
-#endregion
+
+        #region Out of Stock Products
+        public static List<Products> OutOfStock()
+        {
+            // Filter products that have no stock or are not available
+            var products = Products
+                .Where(p => p.StockQuantity == 0 || !p.IsAvailable)
+                .ToList();
+
+            // Throw an exception if no out-of-stock products are found
+            if (products.Count == 0)
+                throw new InvalidOperationException("No Product Found");
+
+            return products;
+        }
+        #endregion
     }
 }

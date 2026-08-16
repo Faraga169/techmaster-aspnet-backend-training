@@ -281,5 +281,45 @@ namespace task_04_product_catalog_linq.Services
             return products;
         }
         #endregion
+
+        #region Category Statistics
+        public static void CategoryStatistics()
+        {
+
+            var products = Products.GroupBy(p => p.Category)
+                .Select(p => new
+                {
+                    Category = p.Key,
+                    Count = p.Count(),
+                    Total= p.Sum(p => p.Price * p.StockQuantity),
+                    Average = p.Average(p => p.Price * p.StockQuantity),
+                    Max= p.Max( p => p.Price * p.StockQuantity),
+                    Min= p.Min(p => p.Price * p.StockQuantity)
+                })
+                    .ToList();
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+
+
+            Console.WriteLine();
+            Console.WriteLine("============== CategoryStatistics ==============");
+
+            foreach (var i in products)
+            {
+                Console.WriteLine($"Supplier              : {i.Category}");
+                Console.WriteLine($"Products Count        : {i.Count}");
+                Console.WriteLine($"Total Stock Value     : {i.Total:C}");
+                Console.WriteLine($"Average Stock Value   : {i.Average:C}");
+                Console.WriteLine($"Max Stock Value   : {i.Max:C}");
+                Console.WriteLine($"Min Stock Value   : {i.Min:C}");
+                Console.WriteLine("----------------------------------------------");
+            }
+
+            Console.WriteLine("==============================================");
+
+
+        }
+        #endregion
     }
 }

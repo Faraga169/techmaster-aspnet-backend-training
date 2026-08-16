@@ -53,5 +53,21 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Search by Product Name
+        public static Products SearchByproductName(string name)
+        {
+            if (name is null)
+                throw new ArgumentNullException("ProductName is null");
+         
+
+            var product = Products.Find(p => p.Name.Contains(name,StringComparison.OrdinalIgnoreCase));
+            if (product is null)
+                throw new InvalidOperationException($"No Product Found by Name {name}");
+
+            return product;
+
+        }
+        #endregion
     }
 }

@@ -355,5 +355,28 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Pagination Simulation
+                                                   
+        public static List<Products> Pagination(int pageno,int pagesize)
+        {
+
+            if(pageno<=0)
+                throw new ArgumentOutOfRangeException($"Page number must not to be negative or zero");
+
+            if (pagesize <= 0)
+                throw new ArgumentOutOfRangeException($"Page size must not to be negative or zero");
+
+            var products = Products.Skip((pageno-1)*pagesize).Take(pagesize).ToList();
+
+
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Products found");
+
+            return products;
+
+        }
+        #endregion
     }
 }

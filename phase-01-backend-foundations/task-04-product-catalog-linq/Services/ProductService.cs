@@ -177,9 +177,20 @@ namespace task_04_product_catalog_linq.Services
 
             return products;
 
+        }
+        #endregion
 
+        #region Low Stock Products
+        public static List<Products> LowStockProducts()
+        {
+
+            var products = Products.Where(p => p.StockQuantity<=5).ToList();
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+            return products;
 
         }
         #endregion
+#endregion
     }
 }

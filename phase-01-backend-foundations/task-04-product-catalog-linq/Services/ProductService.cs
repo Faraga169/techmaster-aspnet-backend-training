@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Text;
 using task_04_product_catalog_linq.Model;
 using task_04_product_catalog_linq.Seeding;
@@ -205,6 +206,26 @@ namespace task_04_product_catalog_linq.Services
                 throw new InvalidOperationException("No Product Found");
 
             return products;
+        }
+        #endregion
+
+        #region Product Summary DTO Projection
+        public static List<ProjectSummaryDTO> ProjectSummaryDTO()
+        {
+
+            var products = Products.Select(p => new ProjectSummaryDTO()
+            {
+                
+                Name=p.Name,
+                Price=p.Price,
+                StockQuantity=p.StockQuantity,
+                Status = p.StockQuantity == 0 ? "Out of Stock": p.StockQuantity <= 5? "Low Stock": "In Stock"
+            }).ToList();
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+            return products;
+
         }
         #endregion
     }

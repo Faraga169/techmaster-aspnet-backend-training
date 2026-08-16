@@ -95,5 +95,29 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Group Products by Category
+        public static void GroupProductsByCategory()
+        {
+
+            var products = Products.GroupBy(p => p.Category).Select(p=>new { Category=p.Key,Products=p}).ToList();
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+            foreach (var i in products) {
+
+                Console.WriteLine($"Category {i.Category}");
+
+                foreach (var j in i.Products) {
+
+                    Console.WriteLine($"Product Name = {j.Name}");
+                }
+            }
+
+            
+
+        }
+        #endregion
+
+
     }
 }

@@ -168,5 +168,18 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Top 5 Most Expensive Products
+        public static List<Products> TopFiveExpensiveProducts()
+        {
+
+            var products = Products.OrderByDescending(p => p.Price).Take(5).ToList();
+
+            return products;
+
+
+
+        }
+        #endregion
     }
 }

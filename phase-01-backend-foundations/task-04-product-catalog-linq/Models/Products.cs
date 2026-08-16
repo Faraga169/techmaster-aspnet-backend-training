@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_04_product_catalog_linq
+namespace task_04_product_catalog_linq.Model
 {
     public class Products
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_04_product_catalog_linq.Model;
 
-namespace task_04_product_catalog_linq
+namespace task_04_product_catalog_linq.Seeding
 {
     public static class ProductsSeeding
     {

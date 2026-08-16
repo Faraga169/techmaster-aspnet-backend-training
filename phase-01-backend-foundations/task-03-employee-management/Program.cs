@@ -199,7 +199,7 @@ namespace task_03_employee_management
                         case 4:
                             int searchOption;
                             string searchName;
-                            Employee foundEmployee=null!;
+                            List<Employee> foundEmployee=null!;
                             string partialName;
                             int searchId;
 
@@ -229,7 +229,7 @@ namespace task_03_employee_management
                                 } while (!flag);
                               
 
-                                foundEmployee =EmployeeService.SearchEmployee(searchId,null,null);
+                                foundEmployee =EmployeeService.SearchEmployees(searchId,null,null);
                             }
                             else if (searchOption == 2)
                             {
@@ -239,7 +239,7 @@ namespace task_03_employee_management
                                     searchName = Console.ReadLine() ?? "";
                                 } while (string.IsNullOrEmpty(searchName));
 
-                                foundEmployee =EmployeeService.SearchEmployee(null,searchName,null);
+                                foundEmployee =EmployeeService.SearchEmployees(null,searchName,null);
                             }
                             else if (searchOption == 3)
                             {
@@ -249,26 +249,29 @@ namespace task_03_employee_management
                                     partialName = Console.ReadLine() ?? "";
                                 } while (string.IsNullOrEmpty(partialName));
 
-                                foundEmployee =EmployeeService.SearchEmployee(null, null,partialName);
+                                foundEmployee =EmployeeService.SearchEmployees(null, null,partialName);
+                            }
+
+                            foreach (Employee i in foundEmployee) {
+
+                                Console.WriteLine("------------------------------");
+                                Console.WriteLine(
+                                    $"ID         : {i.EmployeeId}");
+                                Console.WriteLine(
+                                    $"Name       : {i.FullName}");
+                                Console.WriteLine(
+                                    $"Email      : {i.Email}");
+                                Console.WriteLine(
+                                    $"Department : {i.Department}");
+                                Console.WriteLine(
+                                    $"Position   : {i.Position}");
+                                Console.WriteLine(
+                                    $"Salary     : {i.Salary}");
+                                Console.WriteLine(
+                                    $"Status     : {(i.IsActive ? "Active" : "Inactive")}");
+                                Console.WriteLine("------------------------------");
                             }
                            
-
-                            Console.WriteLine("------------------------------");
-                            Console.WriteLine(
-                                $"ID         : {foundEmployee.EmployeeId}");
-                            Console.WriteLine(
-                                $"Name       : {foundEmployee.FullName}");
-                            Console.WriteLine(
-                                $"Email      : {foundEmployee.Email}");
-                            Console.WriteLine(
-                                $"Department : {foundEmployee.Department}");
-                            Console.WriteLine(
-                                $"Position   : {foundEmployee.Position}");
-                            Console.WriteLine(
-                                $"Salary     : {foundEmployee.Salary}");
-                            Console.WriteLine(
-                                $"Status     : {(foundEmployee.IsActive ? "Active" : "Inactive")}");
-                            Console.WriteLine("------------------------------");
 
                             break;
 

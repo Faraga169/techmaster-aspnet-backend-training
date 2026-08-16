@@ -23,7 +23,8 @@
     <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Two Sum/">
-    <Project Path="Solution04/Solution04.csproj" Id="746adc1e-c187-45b2-9439-808cbc0ef96e" />
+    <File Path="problem-solving/Two Sum/README.md" />
+    <Project Path="problem-solving/Two Sum/Solution04/Solution04.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

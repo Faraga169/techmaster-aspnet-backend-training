@@ -1,8 +1,8 @@
-# \# Two Sum
+# # Two Sum
 
 # 
 
-# \## Pattern
+# ## Pattern
 
 # 
 
@@ -10,7 +10,7 @@
 
 # 
 
-# \## Initial Approach
+# ## Initial Approach
 
 # 
 
@@ -18,11 +18,11 @@
 
 # 
 
-# This approach requires nested loops and has a time complexity of \*\*O(n²)\*\*.
+# This approach requires nested loops and has a time complexity of **O(n²)**.
 
 # 
 
-# \## Optimized Approach
+# ## Optimized Approach
 
 # 
 
@@ -34,21 +34,21 @@
 
 # 
 
-# 1\. Calculate the number needed to reach the target:
+# 1. Calculate the number needed to reach the target:
 
 # 
 
 # &#x20;  ```csharp
 
-# &#x20;  int needed = target - nums\[i];
+# &#x20;  int needed = target - nums[i];
 
 # &#x20;  ```
 
-# 2\. Check if `needed` already exists in the dictionary.
+# 2. Check if `needed` already exists in the dictionary.
 
-# 3\. If it exists, return the stored index and the current index.
+# 3. If it exists, return the stored index and the current index.
 
-# 4\. Otherwise, store the current number and its index.
+# 4. Otherwise, store the current number and its index.
 
 # 
 
@@ -78,7 +78,7 @@
 
 # 
 
-# \## Time Complexity
+# ## Time Complexity
 
 # 
 
@@ -90,7 +90,7 @@
 
 # 
 
-# \## Space Complexity
+# ## Space Complexity
 
 # 
 
@@ -106,7 +106,7 @@
 
 # 
 
-# \[LeetCode Problem](https://leetcode.com/problems/two-sum/submissions/2108252915/)
+# [LeetCode Problem](https://leetcode.com/problems/two-sum/submissions/2108252915/)
 
 
 

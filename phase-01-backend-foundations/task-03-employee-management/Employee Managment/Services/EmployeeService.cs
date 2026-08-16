@@ -67,29 +67,40 @@ namespace task_03_employee_management
             employee.UpdateStatus();
         }
 
-        public static Employee SearchEmployee(int? employeeId,string? fullName,string? partialName)
+        public static List<Employee> SearchEmployees(int? employeeId,string? fullName,string? partialName)
         {
-            Employee? employee = null;
+            List<Employee> employees = new List<Employee>();
 
             if (employeeId.HasValue)
             {
-                employee = Employees.Find(e => e.EmployeeId == employeeId.Value);
+               var employee = Employees.Find(e => e.EmployeeId == employeeId.Value);
+                if (employee is  null) {
+                    throw new InvalidOperationException("employee is not found");
+                }
+
+                employees.Add(employee);
+               
             }
             else if (!string.IsNullOrWhiteSpace(fullName))
             {
-                employee = Employees.Find(e =>
-                    e.FullName.Equals(fullName, StringComparison.OrdinalIgnoreCase));
+                var employee = Employees.Find(e =>e.FullName.Equals(fullName, StringComparison.OrdinalIgnoreCase));
+                if (employee is null)
+                {
+                    throw new InvalidOperationException("employee is not found");
+                }
+
+                employees.Add(employee);
             }
             else if (!string.IsNullOrWhiteSpace(partialName))
             {
-                employee = Employees.Find(e =>
-                    e.FullName.Contains(partialName, StringComparison.OrdinalIgnoreCase));
+                employees = Employees.Where(e =>e.FullName.Contains(partialName, StringComparison.OrdinalIgnoreCase)).ToList();
+                if (employees.Count == 0)
+                    throw new InvalidOperationException("employee not found");
             }
 
-            if (employee is null)
-                throw new InvalidOperationException("Employee is not found!");
+           
 
-            return employee;
+            return employees;
         }
         public static List<Employee> FilterbyDepartment(Department department) {
 

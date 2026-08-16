@@ -338,5 +338,22 @@ namespace task_04_product_catalog_linq.Services
 
         }
         #endregion
+
+        #region Search + Filter Combined
+        public static List<Products> ApplySearchAndFilter(string category,decimal minprice,decimal maxprice,bool Available)
+        {
+
+            
+            var products = Products.Where(p => p.Category.Equals(category,StringComparison.OrdinalIgnoreCase)).Where(p=>p.Price<=maxprice&&p.Price>=minprice&&p.IsAvailable).ToList();
+
+
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product match this filteration");
+
+            return products;
+
         }
+        #endregion
+    }
 }

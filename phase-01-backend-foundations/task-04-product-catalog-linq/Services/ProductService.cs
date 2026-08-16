@@ -265,5 +265,21 @@ namespace task_04_product_catalog_linq.Services
             }
 
         #endregion
+
+        #region Recently Added Products
+        public static List<Products> CalaculateCountofproductsLast60Days()
+        {
+           
+            var products = Products
+                .Where(p => p.CreatedAt>=DateTime.Now.AddDays(-60))
+                .ToList();
+
+          
+            if (products.Count == 0)
+                throw new InvalidOperationException("No Product Found last 60 days");
+
+            return products;
+        }
+        #endregion
     }
 }

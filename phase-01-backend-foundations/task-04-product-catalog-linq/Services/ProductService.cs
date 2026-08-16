@@ -215,7 +215,6 @@ namespace task_04_product_catalog_linq.Services
 
             var products = Products.Select(p => new ProjectSummaryDTO()
             {
-                
                 Name=p.Name,
                 Price=p.Price,
                 StockQuantity=p.StockQuantity,
@@ -227,6 +226,44 @@ namespace task_04_product_catalog_linq.Services
             return products;
 
         }
+        #endregion
+
+        #region Supplier Report
+        public static void SupplierReport()
+        {
+
+            var products = Products.GroupBy(p => p.SupplierName)
+                .Select(p => new
+                {
+                    Category = p.Key,
+                    Count = p.Count(),
+                    Stock = p.Sum(p => p.Price * p.StockQuantity),
+                    Average = p.Average(p => p.Price * p.StockQuantity)
+                })
+                
+                    .ToList();
+
+            if (products.Count == 0)
+                throw new InvalidOperationException($"No Product Found");
+            
+
+                Console.WriteLine();
+                Console.WriteLine("============== SUPPLIER REPORT ==============");
+
+                foreach (var i in products)
+                {
+                    Console.WriteLine($"Supplier              : {i.Category}");
+                    Console.WriteLine($"Products Count        : {i.Count}");
+                    Console.WriteLine($"Total Stock Value     : {i.Stock:C}");
+                    Console.WriteLine($"Average Stock Value   : {i.Average:C}");
+                    Console.WriteLine("----------------------------------------------");
+                }
+
+                Console.WriteLine("==============================================");
+
+
+            }
+
         #endregion
     }
 }

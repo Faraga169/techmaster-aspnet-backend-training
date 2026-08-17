@@ -10,6 +10,10 @@
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
   <Folder Name="/problem-solving/" />
+  <Folder Name="/problem-solving/Baseball Game/">
+    <File Path="problem-solving/BaseBall/README.md" />
+    <Project Path="Solution05/Solution05.csproj" Id="22f12779-ffc5-4a77-b0ab-1c4a6be89ab5" />
+  </Folder>
   <Folder Name="/problem-solving/Contains Duplicate/">
     <File Path="problem-solving/Contain Duplicates/README.md" />
     <Project Path="problem-solving/Contain Duplicates/Solution03/Solution03.csproj" />

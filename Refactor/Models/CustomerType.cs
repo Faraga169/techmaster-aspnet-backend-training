@@ -6,9 +6,9 @@ namespace Refactor.Models
 {
     public enum CustomerType
     {
-        Regular,
-        Silver,
-        Gold,
-        VIP
+        Regular=1,
+        Silver=2,
+        Gold=3,
+        VIP=4
     }
 }

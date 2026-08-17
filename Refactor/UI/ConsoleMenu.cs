@@ -70,6 +70,7 @@ namespace Refactor.UI
         private static int ReadQuantity()
         {
             int quantity;
+            Console.Write("Enter quantity: ");
             while (!int.TryParse(Console.ReadLine(), out quantity)||quantity<=0)
             {
                 Console.Write("Enter quantity: ");

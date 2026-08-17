@@ -11,6 +11,7 @@ namespace Refactor.Models
             ProductName = productName;
             Price=price;
             Customer = customer;
+            Quantity = quantity;
         }
 
         public string ProductName { get; private set; } = null!;

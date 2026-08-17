@@ -7,7 +7,8 @@
   </Folder>
   <Folder Name="/phase-01-backend-foundations/task-00-setup/" />
   <Folder Name="/phase-01-backend-foundations/task-05-debug-refactor-pack/">
-    <Project Path="Refactor/Refactor.csproj" Id="df57b5f1-c146-437d-b4ac-540f986f9af5" />
+    <File Path="phase-01-backend-foundations/task-05-debug-refactor-pack/README.md" />
+    <Project Path="phase-01-backend-foundations/task-05-debug-refactor-pack/Refactor/Refactor.csproj" />
   </Folder>
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />

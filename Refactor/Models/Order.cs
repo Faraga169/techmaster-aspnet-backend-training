@@ -6,11 +6,6 @@ namespace Refactor.Models
 {
     public class Order
  {
-        //        ProductName
-        //Price
-        //Quantity
-        //Customer
-
         public Order(string productName,decimal price,int quantity,Customer customer)
         {
             ProductName = productName;

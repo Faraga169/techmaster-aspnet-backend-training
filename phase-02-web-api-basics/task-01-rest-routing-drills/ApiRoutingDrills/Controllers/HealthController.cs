@@ -7,5 +7,11 @@ namespace ApiRoutingDrills.Controllers
     [ApiController]
     public class HealthController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult GetHealth() {
+
+            return Ok(new { status = "Running", service = "TechMaster API", time = DateTime.UtcNow });
+
+        }
     }
 }

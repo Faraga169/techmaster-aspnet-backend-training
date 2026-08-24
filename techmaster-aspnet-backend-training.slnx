@@ -26,6 +26,20 @@
   <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/">
     <File Path="phase-01-backend-foundations/task-07-interview-answers/README.md" />
   </Folder>
+  <Folder Name="/phase-02-web-api-basics/">
+    <File Path="phase-02-web-api-basics/README.md" />
+  </Folder>
+  <Folder Name="/phase-02-web-api-basics/task-00-api-setup/" />
+  <Folder Name="/phase-02-web-api-basics/task-01-rest-routing-drills/">
+    <File Path="phase-02-web-api-basics/task-01-rest-routing-drills/ApiRoutingDrills/README.md" />
+    <Project Path="phase-02-web-api-basics/task-01-rest-routing-drills/ApiRoutingDrills/ApiRoutingDrills.csproj" Id="c5df7872-a705-42ee-bec0-560088c610a3" />
+  </Folder>
+  <Folder Name="/phase-02-web-api-basics/task-02-student-management-api/" />
+  <Folder Name="/phase-02-web-api-basics/task-03-products-categories-api/" />
+  <Folder Name="/phase-02-web-api-basics/task-04-book-store-api/" />
+  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/" />
+  <Folder Name="/phase-02-web-api-basics/task-06-api-standards-refactor-pack/" />
+  <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

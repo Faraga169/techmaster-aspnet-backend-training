@@ -11,11 +11,25 @@
     <Project Path="phase-01-backend-foundations/task-05-debug-refactor-pack/Refactor/Refactor.csproj" />
   </Folder>
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
-  <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/" />
+  <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/LibraryManangmentSystemScenario/">
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/LibraryManangmentSystem/Library Management System.pdf" />
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/LibraryManangmentSystem/README.md" />
+  </Folder>
+  <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/StoreSystemScenario/">
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/Simple Store &amp; Orders System/README.md" />
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/Simple Store &amp; Orders System/Simple Store &amp; Orders System.pdf" />
+  </Folder>
+  <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/TrainingCenterManagementSystemScenario/">
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/Training Center Management System/README.md" />
+    <File Path="phase-01-backend-foundations/task-06-sql-erd-starter/Training Center Management System/Training Center Registration System.pdf" />
+  </Folder>
+  <Folder Name="/phase-01-backend-foundations/task-07-interview-answers/">
+    <File Path="phase-01-backend-foundations/task-07-interview-answers/README.md" />
+  </Folder>
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />
-    <Project Path="Solution05/Solution05.csproj" Id="22f12779-ffc5-4a77-b0ab-1c4a6be89ab5" />
+    <Project Path="problem-solving/BaseBall/Solution05/Solution05.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Contains Duplicate/">
     <File Path="problem-solving/Contain Duplicates/README.md" />
@@ -25,6 +39,10 @@
     <File Path="problem-solving/Plus One/README.md" />
     <Project Path="problem-solving/Plus One/Solution02/Solution02.csproj" />
   </Folder>
+  <Folder Name="/problem-solving/RangeSumQuery/">
+    <File Path="problem-solving/Range Sum Query/README.md" />
+    <Project Path="Solution06/Solution06.csproj" Id="29fd11f4-a71b-4273-a884-467658949829" />
+  </Folder>
   <Folder Name="/problem-solving/running-sum-of-1d-array/">
     <File Path="problem-solving/running-sum-of-1d-array/README.md" />
     <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
@@ -32,6 +50,10 @@
   <Folder Name="/problem-solving/Two Sum/">
     <File Path="problem-solving/Two Sum/README.md" />
     <Project Path="problem-solving/Two Sum/Solution04/Solution04.csproj" />
+  </Folder>
+  <Folder Name="/problem-solving/Valid Pranthesis/">
+    <File Path="problem-solving/Valid Pranthesis/README.md" />
+    <Project Path="Solution07/Solution07.csproj" Id="4d1c56e8-2acf-4f1d-8d23-ecf9c1f0860a" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

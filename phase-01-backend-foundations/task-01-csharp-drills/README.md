@@ -1,4 +1,4 @@
-## Phase 01 - C# Drills
+\## Phase 01 - C# Drills
 
 The table below tracks the completed drills for the Phase 01 C# drills project.
 
@@ -47,6 +47,4 @@ The table below tracks the completed drills for the Phase 01 C# drills project.
 | Drill 19 - Simple Ticket Price Calculator | Calculate ticket pricing with rules | Completed |
 
 | Drill 20 - Method Refactoring Challenge | Refactor methods for clarity / reuse | Completed |
-
-
 

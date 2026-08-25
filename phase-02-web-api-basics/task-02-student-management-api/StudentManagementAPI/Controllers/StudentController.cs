@@ -60,5 +60,17 @@ namespace StudentManagementAPI.Controllers
             return Ok(studentUpdate);
 
         }
+
+
+        [HttpGet("Stats")]
+        public IActionResult GetStats()
+        {
+
+            var students = studentService.Stats();
+
+            return Ok(students);
+
+        }
+
     }
 }

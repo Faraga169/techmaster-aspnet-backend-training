@@ -190,5 +190,34 @@ namespace StudentManagementAPI.Services
 
         }
 
+        public StudentStatsResponse Stats()
+        {
+
+            var TotalStudents = StudentSeeding.Students.Count();
+
+            var ActiveStudents = StudentSeeding.Students.Where(s => s.IsActive).Count();
+
+            var InActiveStudents = StudentSeeding.Students.Where(s => !s.IsActive).Count();
+
+            var CountBytrack = StudentSeeding.Students.GroupBy(s => s.TrackName).Select(s=>new TrackStatsResponse {TrackName=s.Key,Count=s.Count() }).ToList();
+
+
+            var Result = new StudentStatsResponse()
+            {
+
+                TotalStudents = TotalStudents,
+                ActiveStudents = ActiveStudents,
+                InActiveStudents = InActiveStudents,
+                CountByTrack = CountBytrack
+            };
+            
+
+
+            return Result;
+
+
+
+        }
+
     }
 }

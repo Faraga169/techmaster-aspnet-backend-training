@@ -166,5 +166,29 @@ namespace StudentManagementAPI.Services
 
         }
 
+
+
+        public Student UpdateStatus(Guid Id,UpdateStudentStatusRequest updateStudentStatus)
+        {
+
+
+           
+            var result = StudentSeeding.Students.Find(s => s.Id==Id);
+
+            if (result is null)
+            {
+                throw new BusinessException("Student not found", 404);
+            }
+
+            result.IsActive = updateStudentStatus.IsActive;
+          
+
+
+            return result;
+
+
+
+        }
+
     }
 }

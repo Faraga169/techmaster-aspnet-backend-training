@@ -50,5 +50,15 @@ namespace StudentManagementAPI.Controllers
             return Ok(studentUpdate);
 
         }
+
+        [HttpPatch]
+        public IActionResult Update(Guid Id, UpdateStudentStatusRequest updateStudentstatus)
+        {
+
+            var studentUpdate = studentService.UpdateStatus(Id, updateStudentstatus);
+
+            return Ok(studentUpdate);
+
+        }
     }
 }

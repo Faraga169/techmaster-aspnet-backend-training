@@ -1,4 +1,6 @@
 
+using StudentManagementAPI.Middleware;
+
 namespace Products_CategoriesAPI
 {
     public class Program
@@ -23,6 +25,7 @@ namespace Products_CategoriesAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

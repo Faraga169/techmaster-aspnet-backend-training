@@ -24,12 +24,24 @@ namespace ApiRoutingDrills.Controllers
         public IActionResult GetById(Guid? id) {
 
             if (id is null)
-                return BadRequest(new {Message= "id is not provided" });
+                return BadRequest(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Code = 400,
+                    Details = ["id is required"]
+                });
 
             var note = creatednotes.CreateNotes.Find(n => n.Id == id.Value);
 
             if(note is null)
-                return NotFound(new { message = "Note not found" });
+                return NotFound(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Note not found",
+                    Code = 404,
+                    Details = [$"No note exists with id {id}"]
+                });
 
             return Ok(note);
         }
@@ -56,17 +68,35 @@ namespace ApiRoutingDrills.Controllers
         public IActionResult Update(Guid? id,UpdateNoteRequest createNote)
         {
             if (string.IsNullOrWhiteSpace(createNote.Title))
-                return BadRequest(new { Message = "Title is Required" });
+                return BadRequest(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Code = 400,
+                    Details = ["Title is required"]
+                });
 
             if (string.IsNullOrWhiteSpace(createNote.Content))
-                return BadRequest(new { Message = "Content is Required" });
+                return BadRequest(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Invalid request",
+                    Code = 400,
+                    Details = ["Content is required"]
+                });
 
 
 
             var note = creatednotes.CreateNotes.Find(n => n.Id == id);
             if(note is null)
 
-                return NotFound(new { message = "Note not found" });
+                return NotFound(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Note not found",
+                    Code = 404,
+                    Details = [$"No note exists with id {id}"]
+                });
 
 
             note.Title = createNote.Title;
@@ -81,7 +111,13 @@ namespace ApiRoutingDrills.Controllers
         public IActionResult Search(string? keyword)
         {
             if (string.IsNullOrWhiteSpace(keyword))
-                return BadRequest(new { Message = "keyword is not provided" });
+                return BadRequest(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "key word not provided",
+                    Code = 400,
+                    Details = ["keyword is required"]
+                });
 
             var note = creatednotes.CreateNotes.Where(n => n.Title.Contains(keyword,StringComparison.OrdinalIgnoreCase) ||n.Content.Contains(keyword,StringComparison.OrdinalIgnoreCase) );
            
@@ -95,7 +131,7 @@ namespace ApiRoutingDrills.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("pagination")]
         public IActionResult Pagination(int pagenumber,int pagesize)
         {
             if (pagenumber<=0)
@@ -124,10 +160,16 @@ namespace ApiRoutingDrills.Controllers
             var note = creatednotes.CreateNotes.Find(n => n.Id == id);
             if (note is null)
 
-                return NotFound(new { message = "Note not found" });
+                return NotFound(new ErrorResponse
+                {
+                    Success = false,
+                    Message = "Note not found",
+                    Code = 404,
+                    Details = [$"No note exists with id {id}"]
+                });
 
 
-              creatednotes.CreateNotes.Remove(note);
+            creatednotes.CreateNotes.Remove(note);
 
 
             return NoContent();

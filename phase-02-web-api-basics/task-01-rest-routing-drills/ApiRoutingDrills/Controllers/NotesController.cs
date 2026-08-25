@@ -77,5 +77,62 @@ namespace ApiRoutingDrills.Controllers
 
         }
 
+        [HttpGet("search")]
+        public IActionResult Search(string? keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+                return BadRequest(new { Message = "keyword is not provided" });
+
+            var note = creatednotes.CreateNotes.Where(n => n.Title.Contains(keyword,StringComparison.OrdinalIgnoreCase) ||n.Content.Contains(keyword,StringComparison.OrdinalIgnoreCase) );
+           
+            if (note.Count()==0)
+
+                return NotFound(new { message = "No Matching Note" });
+
+
+            return Ok(note);
+
+        }
+
+
+        [HttpGet]
+        public IActionResult Pagination(int pagenumber,int pagesize)
+        {
+            if (pagenumber<=0)
+                return BadRequest(new { Message = "page number is must be greater than 0" });
+
+            if(pagesize<1 || pagesize>50)
+                return BadRequest(new { Message = "page size is out of range" });
+
+            var notes = creatednotes.CreateNotes.Skip((pagenumber-1)*pagesize).Take(pagesize);
+
+            if (notes.Count() == 0)
+
+                return NotFound(new { message = "No Notes available" });
+
+
+            return Ok(new { items = notes, pagenumber = pagenumber, pagesize=pagesize,totalCount=creatednotes.CreateNotes.Count() });
+
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid? id)
+        {
+
+            var note = creatednotes.CreateNotes.Find(n => n.Id == id);
+            if (note is null)
+
+                return NotFound(new { message = "Note not found" });
+
+
+              creatednotes.CreateNotes.Remove(note);
+
+
+            return NoContent();
+
+        }
+
     }
 }

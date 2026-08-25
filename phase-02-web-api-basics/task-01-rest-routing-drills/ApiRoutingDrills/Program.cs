@@ -1,4 +1,6 @@
 
+using ApiRoutingDrills.Services;
+
 namespace ApiRoutingDrills
 {
     public class Program
@@ -13,6 +15,10 @@ namespace ApiRoutingDrills
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ConverterService>();
+
+            builder.Services.AddSingleton<Creatednotes>();
 
             var app = builder.Build();
 

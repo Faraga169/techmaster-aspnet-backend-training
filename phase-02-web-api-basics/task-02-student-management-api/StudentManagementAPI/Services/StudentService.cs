@@ -33,6 +33,30 @@ namespace StudentManagementAPI.Services
         }
 
 
+        public StudentResponse GetById(Guid id) {
+
+            var student = StudentSeeding.Students.Find(s => s.Id == id);
+            if (student is null) {
+
+                throw new BusinessException("student not found", 404);
+            }
+
+            var studentResponseDto = new StudentResponse()
+            {
+
+                Id = student.Id,
+                Email = student.Email,
+                FullName = student.FullName,
+                GitHubProfileUrl = student.GitHubProfileUrl,
+                LinkedInProfileUrl = student.LinkedInProfileUrl,
+                TrackName = student.TrackName,
+                PhoneNumber = student.PhoneNumber
+            };
+
+            return studentResponseDto;
+
+        }
+
         public PagedResultResponse GetAll(string?name,string?email,string?trackName,bool? IsActive,int pagenumber=1,int pagesize=5) {
             
            

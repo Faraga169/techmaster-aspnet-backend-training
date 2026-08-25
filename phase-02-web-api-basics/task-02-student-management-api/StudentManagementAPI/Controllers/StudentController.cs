@@ -22,12 +22,22 @@ namespace StudentManagementAPI.Controllers
         }
 
 
+        [HttpGet("{id:Guid}")]
+        public IActionResult GetById(Guid id)
+        {
+
+            var student = studentService.GetById(id);
+
+            return Ok(student);
+
+        }
+
         [HttpPost]
         public IActionResult Create(CreateStudentRequest createStudent) {
 
             var studentCreate = studentService.Create(createStudent);
 
-            return Ok(studentCreate);
+            return CreatedAtAction(nameof(GetById),new { id=studentCreate.Id},studentCreate);
 
         }
     }

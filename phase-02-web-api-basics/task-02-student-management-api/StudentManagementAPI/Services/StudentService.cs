@@ -1,4 +1,5 @@
-﻿using StudentManagementAPI.DTOS;
+﻿using System.Xml.Linq;
+using StudentManagementAPI.DTOS;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Seeding;
@@ -111,5 +112,59 @@ namespace StudentManagementAPI.Services
             return pagedResultDTO;
 
         }
+
+        public Student Update(Guid Id,UpdateStudentRequest updateStudent)
+        {
+           
+
+            if (string.IsNullOrWhiteSpace(updateStudent.TrackName))
+            {
+
+                throw new BusinessException("Track Name is required", 400);
+
+            }
+           
+            if (string.IsNullOrWhiteSpace(updateStudent.FullName))
+            {
+                throw new BusinessException("Full Name is required", 400);
+            }
+
+            if (string.IsNullOrWhiteSpace(updateStudent.Email))
+            {
+                throw new BusinessException("Email is required", 400);
+            }
+
+            if (string.IsNullOrWhiteSpace(updateStudent.PhoneNumber))
+            {
+                throw new BusinessException("Phone is required", 400);
+            }
+            var emailExists = StudentSeeding.Students.Any(s =>s.Email.Equals(updateStudent.Email, StringComparison.OrdinalIgnoreCase)&& s.Id != Id);
+
+            if (emailExists)
+            {
+                throw new BusinessException("Email must be unique", 400);
+            }
+
+            var result = StudentSeeding.Students.Find(s => s.Id == Id);
+            if (result is null)
+                throw new BusinessException("Student not found", 404);
+
+
+
+               result.FullName = updateStudent.FullName;
+                result.Email = updateStudent.Email;
+                result.PhoneNumber = updateStudent.PhoneNumber;
+                result.TrackName = updateStudent.TrackName;
+                result.IsActive = updateStudent.IsActive;
+                result.LinkedInProfileUrl = updateStudent.LinkedInProfileUrl;
+               result.GitHubProfileUrl = updateStudent.GitHubProfileUrl;
+           
+
+            return result;
+
+
+
+        }
+
     }
 }

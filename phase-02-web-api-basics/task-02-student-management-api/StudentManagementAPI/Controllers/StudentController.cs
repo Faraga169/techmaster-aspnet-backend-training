@@ -40,5 +40,15 @@ namespace StudentManagementAPI.Controllers
             return CreatedAtAction(nameof(GetById),new { id=studentCreate.Id},studentCreate);
 
         }
+
+        [HttpPut("{Id}")]
+        public IActionResult Update(Guid Id, UpdateStudentRequest updateStudent)
+        {
+
+            var studentUpdate = studentService.Update(Id,updateStudent);
+
+            return Ok(studentUpdate);
+
+        }
     }
 }

@@ -1,4 +1,4 @@
-\# Phase 02 — REST \& Routing Drill Pack
+# Phase 02 — REST & Routing Drill Pack
 
 
 
@@ -6,23 +6,23 @@ A collection of small ASP.NET Core Web API drills focused on controllers, routin
 
 
 
-\## Required Output
+## Required Output
 
 
 
-\* Minimum 15 API drills.
+* Minimum 15 API drills.
 
-\* Each drill documented in this README.
+* Each drill documented in this README.
 
-\* Swagger screenshot for at least 5 drills.
+* Swagger screenshot for at least 5 drills.
 
-\* Postman evidence for at least 8 drills.
+* Postman evidence for at least 8 drills.
 
-\* Commit after every 3–5 drills.
+* Commit after every 3–5 drills.
 
 
 
-\## Drill Table
+## Drill Table
 
 
 
@@ -34,7 +34,7 @@ A collection of small ASP.NET Core Web API drills focused on controllers, routin
 
 | 02        | `GET /api/tools/echo/{name}`                        | Route parameter                            | Done    | Postman screenshot |
 
-| 03        | `GET /api/calculator/add?a=10\&b=5`                  | Query parameters                           | Done    | Postman screenshot |
+| 03        | `GET /api/calculator/add?a=10&b=5`                  | Query parameters                           | Done    | Postman screenshot |
 
 | 04        | `GET /api/converter/celsius-to-fahrenheit?value=25` | Business calculation + Service + DI        | Done    | Swagger screenshot |
 
@@ -52,59 +52,59 @@ A collection of small ASP.NET Core Web API drills focused on controllers, routin
 
 | 11        | `GET /api/notes/search?keyword=api`                 | Query string search + LINQ                 | Done    | Postman screenshot |
 
-| 12        | `GET /api/notes/pagination?pageNumber=1\&pageSize=5` | Pagination + Skip / Take                   | Done    | Swagger screenshot |
+| 12        | `GET /api/notes/pagination?pageNumber=1&pageSize=5` | Pagination + Skip / Take                   | Done    | Swagger screenshot |
 
 | 13        | `GET /api/request-info`                             | Custom request headers                     | Done    | Postman screenshot |
 
-| 14        | `GET/POST multiple`                                 | HTTP status codes: 200, 201, 204, 400, 404 | Done    |      —             |
+| 14        | `GET/POST multiple`                                 | HTTP status codes: 200, 201, 204, 400, 404 | Done    | —                  |
 
-| 15        | `GET /api/errors/demo`                              | Standard error response shape              | Done    |      —             |
-
-
-
-\## Drill Details
+| 15        | `GET /api/errors/demo`                              | Standard error response shape              | Done    | —                  |
 
 
 
-\### Drill 01 — Health Check
+## Drill Details
 
 
 
-\*\*Endpoint:\*\* `GET /api/health`
+### Drill 01 — Health Check
 
 
 
-\*\*Purpose:\*\* Verify that the API is running and reachable.
+**Endpoint:** `GET /api/health`
 
 
 
-\*\*Response:\*\*
+**Purpose:** Verify that the API is running and reachable.
 
 
 
-\* HTTP `200 OK`
-
-\* JSON response containing status, service name, and server time.
+**Response:**
 
 
 
-\---
+* HTTP `200 OK`
+
+* JSON response containing status, service name, and server time.
 
 
 
-\### Drill 02 — Route Parameter Echo
+---
 
 
 
-\*\*Endpoint:\*\* `GET /api/tools/echo/{name}`
+### Drill 02 — Route Parameter Echo
 
 
 
-\*\*Purpose:\*\* Practice receiving data directly from the route.
+**Endpoint:** `GET /api/tools/echo/{name}`
 
 
 
-\*\*Example:\*\*
+**Purpose:** Practice receiving data directly from the route.
+
+
+
+**Example:**
 
 
 
@@ -120,49 +120,49 @@ The response contains the original name and a greeting message.
 
 
 
-\---
+---
 
 
 
-\### Drill 03 — Query String Calculator
+### Drill 03 — Query String Calculator
 
 
 
-\*\*Endpoint:\*\* `GET /api/calculator/add?a=10\&b=5`
+**Endpoint:** `GET /api/calculator/add?a=10&b=5`
 
 
 
-\*\*Purpose:\*\* Practice receiving values from the query string and returning a calculated result.
+**Purpose:** Practice receiving values from the query string and returning a calculated result.
 
 
 
-\*\*Response fields:\*\*
+**Response fields:**
 
 
 
-\* `a`
+* `a`
 
-\* `b`
+* `b`
 
-\* `operation`
+* `operation`
 
-\* `result`
-
-
-
-\---
+* `result`
 
 
 
-\### Drill 04 — Temperature Conversion API
+---
 
 
 
-\*\*Endpoint:\*\* `GET /api/converter/celsius-to-fahrenheit?value=25`
+### Drill 04 — Temperature Conversion API
 
 
 
-\*\*Purpose:\*\* Convert the Phase 01 temperature calculation into an API endpoint.
+**Endpoint:** `GET /api/converter/celsius-to-fahrenheit?value=25`
+
+
+
+**Purpose:** Convert the Phase 01 temperature calculation into an API endpoint.
 
 
 
@@ -170,7 +170,7 @@ The calculation is handled by `ConverterService` and injected through Dependency
 
 
 
-\*\*Formula:\*\*
+**Formula:**
 
 
 
@@ -182,19 +182,19 @@ Fahrenheit = (Celsius × 9 / 5) + 32
 
 
 
-\---
+---
 
 
 
-\### Drill 05 — Grade API
+### Drill 05 — Grade API
 
 
 
-\*\*Endpoint:\*\* `GET /api/grades/calculate?score=85`
+**Endpoint:** `GET /api/grades/calculate?score=85`
 
 
 
-\*\*Purpose:\*\* Practice validation and conditional logic inside an API endpoint.
+**Purpose:** Practice validation and conditional logic inside an API endpoint.
 
 
 
@@ -218,19 +218,19 @@ Valid values return the grade and pass/fail status.
 
 
 
-\---
+---
 
 
 
-\### Drill 06 — Create Note
+### Drill 06 — Create Note
 
 
 
-\*\*Endpoint:\*\* `POST /api/notes`
+**Endpoint:** `POST /api/notes`
 
 
 
-\*\*Purpose:\*\* Practice receiving JSON request bodies through a DTO and creating a new resource.
+**Purpose:** Practice receiving JSON request bodies through a DTO and creating a new resource.
 
 
 
@@ -242,29 +242,29 @@ A successful creation returns the generated:
 
 
 
-\* ID
+* ID
 
-\* Title
+* Title
 
-\* Content
+* Content
 
-\* CreatedAt
-
-
-
-\---
+* CreatedAt
 
 
 
-\### Drill 07 — Get Notes List
+---
 
 
 
-\*\*Endpoint:\*\* `GET /api/notes`
+### Drill 07 — Get Notes List
 
 
 
-\*\*Purpose:\*\* Practice returning a collection from an API endpoint.
+**Endpoint:** `GET /api/notes`
+
+
+
+**Purpose:** Practice returning a collection from an API endpoint.
 
 
 
@@ -276,19 +276,19 @@ If no notes exist, an empty collection can be returned.
 
 
 
-\---
+---
 
 
 
-\### Drill 08 — Get Note By ID
+### Drill 08 — Get Note By ID
 
 
 
-\*\*Endpoint:\*\* `GET /api/notes/{id}`
+**Endpoint:** `GET /api/notes/{id}`
 
 
 
-\*\*Purpose:\*\* Practice route parameters and `404 Not Found`.
+**Purpose:** Practice route parameters and `404 Not Found`.
 
 
 
@@ -316,19 +316,19 @@ If the note does not exist:
 
 
 
-\---
+---
 
 
 
-\### Drill 09 — Update Note
+### Drill 09 — Update Note
 
 
 
-\*\*Endpoint:\*\* `PUT /api/notes/{id}`
+**Endpoint:** `PUT /api/notes/{id}`
 
 
 
-\*\*Purpose:\*\* Practice updating an existing resource using a route ID and request body DTO.
+**Purpose:** Practice updating an existing resource using a route ID and request body DTO.
 
 
 
@@ -336,9 +336,9 @@ The endpoint validates:
 
 
 
-\* Title
+* Title
 
-\* Content
+* Content
 
 
 
@@ -370,19 +370,19 @@ A successful update returns the updated note.
 
 
 
-\---
+---
 
 
 
-\### Drill 10 — Delete Note
+### Drill 10 — Delete Note
 
 
 
-\*\*Endpoint:\*\* `DELETE /api/notes/{id}`
+**Endpoint:** `DELETE /api/notes/{id}`
 
 
 
-\*\*Purpose:\*\* Practice RESTful DELETE behavior and HTTP status codes.
+**Purpose:** Practice RESTful DELETE behavior and HTTP status codes.
 
 
 
@@ -410,19 +410,19 @@ If the note does not exist:
 
 
 
-\---
+---
 
 
 
-\### Drill 11 — Search Notes
+### Drill 11 — Search Notes
 
 
 
-\*\*Endpoint:\*\* `GET /api/notes/search?keyword=api`
+**Endpoint:** `GET /api/notes/search?keyword=api`
 
 
 
-\*\*Purpose:\*\* Practice query string search and LINQ filtering.
+**Purpose:** Practice query string search and LINQ filtering.
 
 
 
@@ -430,9 +430,9 @@ The endpoint searches both:
 
 
 
-\* Note title
+* Note title
 
-\* Note content
+* Note content
 
 
 
@@ -452,19 +452,19 @@ An empty keyword returns:
 
 
 
-\---
+---
 
 
 
-\### Drill 12 — Pagination
+### Drill 12 — Pagination
 
 
 
-\*\*Endpoint:\*\* `GET /api/notes/pagination?pageNumber=1\&pageSize=5`
+**Endpoint:** `GET /api/notes/pagination?pageNumber=1&pageSize=5`
 
 
 
-\*\*Purpose:\*\* Practice API pagination using LINQ `Skip()` and `Take()`.
+**Purpose:** Practice API pagination using LINQ `Skip()` and `Take()`.
 
 
 
@@ -486,13 +486,13 @@ The response contains:
 
 
 
-\* `items`
+* `items`
 
-\* `pageNumber`
+* `pageNumber`
 
-\* `pageSize`
+* `pageSize`
 
-\* `totalCount`
+* `totalCount`
 
 
 
@@ -500,25 +500,25 @@ Validation:
 
 
 
-\* `pageNumber` must be greater than `0`.
+* `pageNumber` must be greater than `0`.
 
-\* `pageSize` must be between `1` and `50`.
-
-
-
-\---
+* `pageSize` must be between `1` and `50`.
 
 
 
-\### Drill 13 — Header Reader
+---
 
 
 
-\*\*Endpoint:\*\* `GET /api/request-info`
+### Drill 13 — Header Reader
 
 
 
-\*\*Purpose:\*\* Practice reading custom HTTP request headers.
+**Endpoint:** `GET /api/request-info`
+
+
+
+**Purpose:** Practice reading custom HTTP request headers.
 
 
 
@@ -538,9 +538,9 @@ The response contains:
 
 
 
-\* Student name from the header.
+* Student name from the header.
 
-\* Current request path.
+* Current request path.
 
 
 
@@ -556,11 +556,11 @@ If the header is missing:
 
 
 
-\---
+---
 
 
 
-\## HTTP Status Codes Used
+## HTTP Status Codes Used
 
 
 
@@ -580,45 +580,41 @@ If the header is missing:
 
 
 
-\## Key Concepts Practiced
+## Key Concepts Practiced
 
 
 
-\* Controllers and Actions
+* Controllers and Actions
 
-\* HTTP Methods
+* HTTP Methods
 
-\* Route Parameters
+* Route Parameters
 
-\* Query Parameters
+* Query Parameters
 
-\* Request Body
+* Request Body
 
-\* DTOs
+* DTOs
 
-\* Model Validation
+* Model Validation
 
-\* Dependency Injection
+* Dependency Injection
 
-\* Services
+* Services
 
-\* LINQ
+* LINQ
 
-\* CRUD Operations
+* CRUD Operations
 
-\* HTTP Headers
+* HTTP Headers
 
-\* HTTP Status Codes
+* HTTP Status Codes
 
-\* Search
+* Search
 
-\* Pagination
+* Pagination
 
-\* `Skip()` and `Take()`
+* `Skip()` and `Take()`
 
-\* Standard API Response Shapes
-
-
-
-
+* Standard API Response Shapes
 

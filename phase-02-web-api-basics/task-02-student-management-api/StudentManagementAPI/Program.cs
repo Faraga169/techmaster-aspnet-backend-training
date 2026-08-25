@@ -1,4 +1,7 @@
 
+using StudentManagementAPI.Middleware;
+using StudentManagementAPI.Services;
+
 namespace StudentManagementAPI
 {
     public class Program
@@ -10,6 +13,8 @@ namespace StudentManagementAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddScoped<StudentService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -22,7 +27,7 @@ namespace StudentManagementAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

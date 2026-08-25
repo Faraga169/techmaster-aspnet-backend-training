@@ -6,7 +6,7 @@ namespace StudentManagementAPI.Services
 {
     public class StudentService
     {
-        public void Create(CreateStudentRequest createStudent) {
+        public Student Create(CreateStudentRequest createStudent) {
 
             if (createStudent is null)
                 throw new ArgumentNullException("createStudent is null");
@@ -27,6 +27,7 @@ namespace StudentManagementAPI.Services
             };
 
             StudentSeeding.Students().Add(Student);
+            return Student;
 
 
 

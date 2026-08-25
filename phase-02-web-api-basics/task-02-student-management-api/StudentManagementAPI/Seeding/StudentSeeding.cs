@@ -4,10 +4,9 @@ namespace StudentManagementAPI.Seeding
 {
     public static class StudentSeeding
     {
-        public static List<Student> Students()
+        public static List<Student> Students { get; } =new List<Student>
         {
-            var students = new List<Student>
-            {
+            
                 new Student
                 {
                     Id = Guid.NewGuid(),
@@ -69,7 +68,6 @@ namespace StudentManagementAPI.Seeding
                 }
             };
 
-            return students;
-        }
+        
     }
 }

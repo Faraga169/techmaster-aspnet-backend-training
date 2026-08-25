@@ -1,4 +1,5 @@
 ﻿using StudentManagementAPI.DTOS;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Seeding;
 
@@ -7,17 +8,15 @@ namespace StudentManagementAPI.Services
     public class StudentService
     {
         public Student Create(CreateStudentRequest createStudent) {
-
-            if (createStudent is null)
-                throw new ArgumentNullException("createStudent is null");
-            var result = StudentSeeding.Students().Any(s=>s.Email.Equals(createStudent.Email));
+            var result = StudentSeeding.Students.Any(s=>s.Email.Equals(createStudent.Email));
 
             if (result)
-                throw new InvalidOperationException("Email must be unique");
+                throw new BusinessException("Email must be unique",400);
 
             var Student = new Student() {
 
                 Id = Guid.NewGuid(),
+                FullName= createStudent.FullName,
                 Email = createStudent.Email,
                 PhoneNumber = createStudent.PhoneNumber,
                 TrackName = createStudent.TrackName,
@@ -26,10 +25,66 @@ namespace StudentManagementAPI.Services
                 GitHubProfileUrl = createStudent.GitHubProfileUrl
             };
 
-            StudentSeeding.Students().Add(Student);
+            StudentSeeding.Students.Add(Student);
             return Student;
 
 
+
+        }
+
+
+        public PagedResultResponse GetAll(string?name,string?email,string?trackName,bool? IsActive,int pagenumber=1,int pagesize=5) {
+            
+           
+            var students= StudentSeeding.Students;
+            if (!string.IsNullOrWhiteSpace(trackName)) {
+
+                 students = students.Where(s => s.TrackName.Equals(trackName, StringComparison.OrdinalIgnoreCase)).ToList();
+               
+            }
+            if (IsActive is not null) {
+                students = students.Where(s => s.IsActive==IsActive).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(name)) {
+                students = students.Where(s => s.FullName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(email)) {
+                students = students.Where(s => s.Email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (pagesize <= 0) { 
+            
+                throw new BusinessException("Page size must be greater than 0",400);
+            }
+
+            if (pagenumber <= 0) {
+
+                throw new BusinessException("Page number must be greater than 0", 400);
+
+            }
+
+            var TotalCount = students.Count();
+            var numberofpages = (int)Math.Ceiling((decimal)TotalCount / pagesize);
+            if (pagenumber > numberofpages && numberofpages>0)
+            {
+                throw new BusinessException($"Page number must be in range between 1 and {numberofpages}", 400);
+            }
+
+               
+                students = students.Skip((pagenumber - 1) * pagesize).Take(pagesize).ToList();
+             
+
+            var pagedResultDTO = new PagedResultResponse()
+            {
+
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                TotalCount = TotalCount,
+                TotalPages = numberofpages,
+                Students = students.ToList(),
+            };
+            return pagedResultDTO;
 
         }
     }

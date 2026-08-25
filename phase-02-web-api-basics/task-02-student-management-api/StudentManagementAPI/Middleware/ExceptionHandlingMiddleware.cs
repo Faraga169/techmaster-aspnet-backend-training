@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using StudentManagementAPI.Exceptions;
 
 namespace StudentManagementAPI.Middleware
 {
@@ -19,9 +20,9 @@ namespace StudentManagementAPI.Middleware
                 await _next(context);
             }
 
-            catch (InvalidOperationException ex)
+            catch (BusinessException ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.StatusCode = ex.StatusCode;
                 context.Response.ContentType = "application/json";
 
                 var response = new

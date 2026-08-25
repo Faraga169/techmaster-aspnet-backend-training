@@ -14,7 +14,7 @@ namespace StudentManagementAPI.Models
 
         public string Email { get; set; } = null!;
 
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
 
        
         public string TrackName { get; set; } = null!;

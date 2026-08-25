@@ -35,6 +35,7 @@
     <Project Path="phase-02-web-api-basics/task-01-rest-routing-drills/ApiRoutingDrills/ApiRoutingDrills.csproj" Id="c5df7872-a705-42ee-bec0-560088c610a3" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-02-student-management-api/">
+    <File Path="phase-02-web-api-basics/task-02-student-management-api/README.md" />
     <Project Path="phase-02-web-api-basics/task-02-student-management-api/StudentManagementAPI/StudentManagementAPI.csproj" Id="138ea243-0460-4f67-9467-42687f80bc15" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-03-products-categories-api/" />

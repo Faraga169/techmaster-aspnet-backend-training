@@ -4,6 +4,19 @@ namespace Products_CategoriesAPI.Seeding
 {
     public static class ProductsSeeding
     {
+
+        static ProductsSeeding()
+        {
+            foreach (var product in Products)
+            {
+                var category = Categories.Find(c => c.Id == product.CategoryId);
+
+                if (category is not null)
+                {
+                    category.Products.Add(product);
+                }
+            }
+        }
         // Categories
         public static List<Category> Categories { get; } = new List<Category>
         {

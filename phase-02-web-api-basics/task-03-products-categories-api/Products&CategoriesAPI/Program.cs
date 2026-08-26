@@ -1,4 +1,5 @@
 
+using Products_CategoriesAPI.Services;
 using StudentManagementAPI.Middleware;
 
 namespace Products_CategoriesAPI
@@ -16,6 +17,8 @@ namespace Products_CategoriesAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            //builder.Services.AddScoped<IProductService, ProductService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

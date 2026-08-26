@@ -5,7 +5,8 @@ namespace Products_CategoriesAPI.DTOS
 {
     public class ProductResponse
     {
-       
+        public Guid Id { get; set; }
+
         public string Name { get; set; } = null!;
 
       
@@ -19,6 +20,7 @@ namespace Products_CategoriesAPI.DTOS
 
         public string SupplierName { get; set; } = null!;
 
+        public string CategoryName { get; set; } = null!;
 
     }
 }

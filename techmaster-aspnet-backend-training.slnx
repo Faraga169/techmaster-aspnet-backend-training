@@ -38,7 +38,10 @@
     <File Path="phase-02-web-api-basics/task-02-student-management-api/README.md" />
     <Project Path="phase-02-web-api-basics/task-02-student-management-api/StudentManagementAPI/StudentManagementAPI.csproj" Id="138ea243-0460-4f67-9467-42687f80bc15" />
   </Folder>
-  <Folder Name="/phase-02-web-api-basics/task-03-products-categories-api/" />
+  <Folder Name="/phase-02-web-api-basics/task-03-products-categories-api/">
+    <File Path="phase-02-web-api-basics/task-03-products-categories-api/README.md" />
+    <Project Path="phase-02-web-api-basics/task-03-products-categories-api/Products&amp;CategoriesAPI/Products&amp;CategoriesAPI.csproj" Id="961c4cde-a2ba-41fa-9104-1ccd2707f30c" />
+  </Folder>
   <Folder Name="/phase-02-web-api-basics/task-04-book-store-api/" />
   <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/" />
   <Folder Name="/phase-02-web-api-basics/task-06-api-standards-refactor-pack/" />

@@ -5,7 +5,7 @@ namespace Products_CategoriesAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
     }
 }

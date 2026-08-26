@@ -6,10 +6,8 @@ namespace Products_CategoriesAPI.Models
     {
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage ="CategoryName is Required")]
         public string Name { get; set; } = null!;
 
-        [StringLength(100,ErrorMessage ="Description characters must be less than 100")]
         public string? Description{ get; set; }
 
         public bool IsActive { get; set; }

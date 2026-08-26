@@ -32,8 +32,9 @@ namespace StudentManagementAPI.Middleware
 
                 await context.Response.WriteAsJsonAsync(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 

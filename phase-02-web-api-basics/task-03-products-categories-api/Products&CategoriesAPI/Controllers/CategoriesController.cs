@@ -7,7 +7,7 @@ namespace Products_CategoriesAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController(CategoryService categoryService) : ControllerBase
+    public class CategoriesController(ICategoryService categoryService) : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
@@ -54,7 +54,7 @@ namespace Products_CategoriesAPI.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult GetStats(Guid id)
+        public IActionResult Delete(Guid id)
         {
 
             categoryService.Delete(id);

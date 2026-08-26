@@ -9,11 +9,12 @@ namespace Products_CategoriesAPI.Services
     {
         public IEnumerable<CategoryResponse> GetAll()
         {
-            var Categories = ProductsSeeding.Categories.ToList();
+            var Categories = ProductsSeeding.Categories.Where(c=>c.IsActive).ToList();
 
             var CategoryResponseDTO = Categories.Select(
                 c => new CategoryResponse()
                 {
+                    Id=c.Id,
                     Name = c.Name,
                     Description = c.Description,
                     IsActive = c.IsActive,
@@ -40,12 +41,12 @@ namespace Products_CategoriesAPI.Services
 
             var CategoryResponseDTO = new CategoryResponse()
             {
+                Id=Category.Id,
                 Name = Category.Name,
                 Description = Category.Description,
                 IsActive = Category.IsActive,
                 Products = Category.Products.Select(p => new ProductResponse()
                 {
-
                     Name = p.Name,
                     Price = p.Price,
                     IsAvailable = p.IsAvailable,

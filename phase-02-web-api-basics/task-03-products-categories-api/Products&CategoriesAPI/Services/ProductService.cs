@@ -291,7 +291,15 @@ namespace Products_CategoriesAPI.Services
 
             var totalstock = stockReport.Sum(s=>s.StockQuantity);
 
-            var stockpercategory = stockReport.GroupBy(s => s.Category).Select(s => new stockperCategoryResponse { CategoryName = s.Key.Name, Count =s.Sum(s=>s.StockQuantity) }).ToList();
+            var stockpercategory = stockReport.GroupBy(s => s.CategoryId).Select(g => {
+
+                var category = ProductsSeeding.Categories.FirstOrDefault(c => c.Id == g.Key);
+
+                return new stockperCategoryResponse { CategoryName = category?.Name??"unknown", Count = g.Sum(s => s.StockQuantity) };
+          
+          }).ToList();
+         
+            
 
             var lowstockproducts = stockReport.Where(s => s.StockQuantity <= 5).Select(s=>new ProductResponse() { 
             
@@ -318,7 +326,13 @@ namespace Products_CategoriesAPI.Services
 
             }).ToList();
 
-            var countproductspercategory = stockReport.GroupBy(s => s.Category).Select(s => new ProductsperCategoryResponse { CategoryName = s.Key.Name, Count = s.Count() }).ToList();
+            var countproductspercategory = stockReport.GroupBy(s => s.CategoryId).Select(g => {
+
+                var category = ProductsSeeding.Categories.FirstOrDefault(c => c.Id == g.Key);
+                return new ProductsperCategoryResponse { CategoryName = category?.Name ?? "unknown", Count = g.Count() };
+           
+           }).ToList();
+         
 
 
             var stockreportResponse = new StockReportResponse()

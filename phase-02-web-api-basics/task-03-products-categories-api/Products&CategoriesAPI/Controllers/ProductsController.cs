@@ -78,5 +78,12 @@ namespace Products_CategoriesAPI.Controllers
             var products = productService.Filter( CategoryName,  availability,  maxprice, minprice, lowstock);
             return Ok(products);
         }
+
+        [HttpGet("Report")]
+        public IActionResult Report()
+        {
+            var products = productService.StockReport();
+            return Ok(products);
+        }
     }
 }

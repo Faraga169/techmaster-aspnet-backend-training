@@ -18,5 +18,6 @@ namespace Products_CategoriesAPI.Services
 
         public IEnumerable<ProductResponse> Filter(string? CategoryName, bool? availability, decimal? maxprice, decimal? minprice, int? lowstock);
 
+        public StockReportResponse StockReport();
     }
 }

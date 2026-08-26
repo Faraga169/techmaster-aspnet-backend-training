@@ -2,5 +2,8 @@
 {
     public class stockperCategoryResponse
     {
+        public string CategoryName { get; set; } = null!;
+
+        public int Count { get; set; }
     }
 }

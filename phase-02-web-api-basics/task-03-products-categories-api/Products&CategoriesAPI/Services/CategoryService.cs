@@ -84,7 +84,7 @@ namespace Products_CategoriesAPI.Services
 
             var CategoryResponseDTO = new CategoryResponse()
             {
-
+                Id=Category.Id,
                 Name = Category.Name,
                 Description = Category.Description,
                 IsActive = Category.IsActive

@@ -3,16 +3,16 @@ using Products_CategoriesAPI.Models;
 
 namespace Products_CategoriesAPI.DTOS
 {
-    public class CreateCategoryRequest
+    public class CategoryResponse
     {
 
-        [Required(ErrorMessage = "CategoryName is Required")]
         public string Name { get; set; } = null!;
 
-        [StringLength(100, ErrorMessage = "Description characters must be less than 100")]
+    
         public string? Description { get; set; }
 
         public bool IsActive { get; set; }
 
+        public List<ProductResponse> Products { get; set; } = new List<ProductResponse>();
     }
 }

@@ -25,6 +25,6 @@ namespace Products_CategoriesAPI.Models
 
         public Category Category { get; set; } = null!;
 
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
     }
 }

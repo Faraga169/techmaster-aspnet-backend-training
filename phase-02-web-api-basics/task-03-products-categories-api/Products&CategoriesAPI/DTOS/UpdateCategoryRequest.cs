@@ -3,7 +3,7 @@ using Products_CategoriesAPI.Models;
 
 namespace Products_CategoriesAPI.DTOS
 {
-    public class CreateCategoryRequest
+    public class UpdateCategoryRequest
     {
 
         [Required(ErrorMessage = "CategoryName is Required")]
@@ -14,5 +14,6 @@ namespace Products_CategoriesAPI.DTOS
 
         public bool IsActive { get; set; }
 
+      
     }
 }

@@ -6,7 +6,7 @@ using StudentManagementAPI.Seeding;
 
 namespace StudentManagementAPI.Services
 {
-    public class StudentService
+    public class StudentService:IStudentService
     {
         public Student Create(CreateStudentRequest createStudent) {
             var result = StudentSeeding.Students.Any(s=>s.Email.Equals(createStudent.Email));

@@ -284,5 +284,56 @@ namespace Products_CategoriesAPI.Services
         }
 
 
+
+        public StockReportResponse StockReport() {
+
+            var stockReport = ProductsSeeding.Products.ToList();
+
+            var totalstock = stockReport.Sum(s=>s.StockQuantity);
+
+            var stockpercategory = stockReport.GroupBy(s => s.Category).Select(s => new stockperCategoryResponse { CategoryName = s.Key.Name, Count =s.Sum(s=>s.StockQuantity) }).ToList();
+
+            var lowstockproducts = stockReport.Where(s => s.StockQuantity <= 5).Select(s=>new ProductResponse() { 
+            
+                Id=s.Id,
+                Name=s.Name,
+                IsAvailable=s.IsAvailable,
+                Price=s.Price,
+                StockQuantity=s.StockQuantity,
+                SupplierName=s.SupplierName,
+                CategoryName=ProductsSeeding.Categories.FirstOrDefault(c=>c.Id==s.CategoryId)?.Name??"Unknown"
+            
+            }).ToList();
+
+            var outstockproducts= stockReport.Where(s => s.StockQuantity ==0).Select(s => new ProductResponse()
+            {
+
+                Id = s.Id,
+                Name = s.Name,
+                IsAvailable = s.IsAvailable,
+                Price = s.Price,
+                StockQuantity = s.StockQuantity,
+                SupplierName = s.SupplierName,
+                CategoryName = ProductsSeeding.Categories.FirstOrDefault(c => c.Id == s.CategoryId)?.Name ?? "Unknown"
+
+            }).ToList();
+
+            var countproductspercategory = stockReport.GroupBy(s => s.Category).Select(s => new ProductsperCategoryResponse { CategoryName = s.Key.Name, Count = s.Count() }).ToList();
+
+
+            var stockreportResponse = new StockReportResponse()
+            {
+
+                TotalStock = totalstock,
+                LowStockProducts = lowstockproducts,
+                OutStockProducts = outstockproducts,
+                TotalStockPerCategory = stockpercategory,
+                NumberofproductsperCategory=countproductspercategory
+            };
+
+            return stockreportResponse;
+        }
+
+
     }
 }

@@ -188,7 +188,66 @@ namespace Products_CategoriesAPI.Seeding
                 SupplierName = "HyperX",
                 CreatedAt = DateTime.UtcNow,
                 CategoryId = Guid.Parse("55555555-5555-5555-5555-555555555555")
-            }
+            },
+            new Product
+{
+    Id = Guid.NewGuid(),
+    Name = "Google Pixel 9",
+    Price = 42000,
+    StockQuantity = 7,
+    IsAvailable = true,
+    SupplierName = "Google Egypt",
+    CreatedAt = DateTime.UtcNow,
+    CategoryId = Guid.Parse("11111111-1111-1111-1111-111111111111")
+},
+
+new Product
+{
+    Id = Guid.NewGuid(),
+    Name = "HP Pavilion 15",
+    Price = 35000,
+    StockQuantity = 4,
+    IsAvailable = true,
+    SupplierName = "HP Egypt",
+    CreatedAt = DateTime.UtcNow,
+    CategoryId = Guid.Parse("22222222-2222-2222-2222-222222222222")
+},
+
+new Product
+{
+    Id = Guid.NewGuid(),
+    Name = "USB-C Hub",
+    Price = 1800,
+    StockQuantity = 3,
+    IsAvailable = true,
+    SupplierName = "Anker",
+    CreatedAt = DateTime.UtcNow,
+    CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333")
+},
+
+new Product
+{
+    Id = Guid.NewGuid(),
+    Name = "Wireless Charger",
+    Price = 1500,
+    StockQuantity = 0,
+    IsAvailable = false,
+    SupplierName = "Anker",
+    CreatedAt = DateTime.UtcNow,
+    CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333")
+},
+
+new Product
+{
+    Id = Guid.NewGuid(),
+    Name = "Electric Kettle",
+    Price = 2200,
+    StockQuantity = 2,
+    IsAvailable = true,
+    SupplierName = "Tefal",
+    CreatedAt = DateTime.UtcNow,
+    CategoryId = Guid.Parse("44444444-4444-4444-4444-444444444444")
+}
         };
     }
 }

@@ -62,5 +62,21 @@ namespace Products_CategoriesAPI.Controllers
             return NoContent();
 
         }
+
+        [HttpGet("search")]
+
+        public IActionResult Search(string  name) { 
+        
+            var products=productService.Search(name);
+            return Ok(products);
+        }
+
+        [HttpGet("filter")]
+        public IActionResult Filter(string? CategoryName, bool? availability, decimal? maxprice, decimal? minprice, int? lowstock)
+        {
+
+            var products = productService.Filter( CategoryName,  availability,  maxprice, minprice, lowstock);
+            return Ok(products);
+        }
     }
 }

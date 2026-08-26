@@ -312,7 +312,7 @@ From the project directory:
 
 Bash
 dotnet run
-Open Swagger: https://localhost:<port>/swagger
+Open Swagger: https://localhost:7155/swagger/v1/swagger.json
 
 2. Test Categories
 GET All Categories: GET /api/Categories (Verify categories & embedded products).

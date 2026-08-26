@@ -73,3 +73,8 @@ StudentManagementAPI
 │   └── StudentService.cs
 │
 └── Program.cs
+
+
+Bash
+dotnet run
+Open Swagger: https://localhost:7101/swagger/v1/swagger.json

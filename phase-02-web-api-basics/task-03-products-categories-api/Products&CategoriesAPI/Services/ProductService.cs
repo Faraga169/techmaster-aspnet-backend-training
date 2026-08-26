@@ -1,4 +1,5 @@
-﻿using Products_CategoriesAPI.DTOS;
+﻿using System.Xml.Linq;
+using Products_CategoriesAPI.DTOS;
 using Products_CategoriesAPI.Models;
 using Products_CategoriesAPI.Seeding;
 using StudentManagementAPI.Exceptions;
@@ -14,6 +15,7 @@ namespace Products_CategoriesAPI.Services
 
             var ProductResponseDTO = Products.Select(p => new ProductResponse()
             {
+                Id=p.Id,
                 Name = p.Name,
                 Price = p.Price,
                 IsAvailable = p.IsAvailable,
@@ -54,18 +56,15 @@ namespace Products_CategoriesAPI.Services
         {
           
             if (string.IsNullOrWhiteSpace(createProductRequest.Name))
-            {
 
                 throw new BusinessException("Product Name is Required", 400);
 
-            }
 
             if (string.IsNullOrWhiteSpace(createProductRequest.SupplierName))
-            {
 
                 throw new BusinessException("Supplier Name is Required", 400);
 
-            }
+
             if (createProductRequest.Price<0)
                 throw new BusinessException("Product Price must be positive", 400);
 
@@ -79,7 +78,7 @@ namespace Products_CategoriesAPI.Services
 
            
            
-            var category= ProductsSeeding.Categories.FirstOrDefault(c => c.Id==createProductRequest.CategoryId);
+            var category= ProductsSeeding.Categories.Find(c => c.Id==createProductRequest.CategoryId);
             
             if(category is  null)
                 throw new BusinessException("Category not found", 404);
@@ -191,11 +190,97 @@ namespace Products_CategoriesAPI.Services
 
             var productexistcategory = ProductsSeeding.Categories.FirstOrDefault(c => c.Id == Product.CategoryId);
 
-            if (productexistcategory is not null)
-                throw new BusinessException("Cannot delete product related to category", 400);
-
             productexistcategory?.Products.Remove(Product);
             ProductsSeeding.Products.Remove(Product);
+        }
+
+
+        public IEnumerable<ProductResponse> Search(string name) {
+
+            if (string.IsNullOrWhiteSpace(name))
+                throw new BusinessException("Product name is required", 400);
+
+            var searchName = ProductsSeeding.Products.Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if(searchName.Count==0)
+                throw new BusinessException("No Product name match ", 404);
+            var ProductResponseDTO = searchName.Select(s => new ProductResponse() {
+              Id=  s.Id,
+              Name=  s.Name,
+              Price=  s.Price,
+             IsAvailable= s.IsAvailable,
+             StockQuantity= s.StockQuantity,
+             SupplierName= s.SupplierName,
+             CategoryName=ProductsSeeding.Categories.FirstOrDefault(c => c.Id == s.CategoryId)?.Name ?? "Unknown"
+
+            }
+
+            ).ToList();
+
+            return ProductResponseDTO;
+        }
+
+
+        public IEnumerable<ProductResponse> Filter(string? CategoryName, bool? availability, decimal? maxprice, decimal? minprice, int? lowstock) {
+
+            var Filterproducts=ProductsSeeding.Products.ToList();
+            if (!string.IsNullOrWhiteSpace(CategoryName)) {
+
+                var category = ProductsSeeding.Categories.FirstOrDefault(c =>c.Name.Equals(CategoryName, StringComparison.OrdinalIgnoreCase));
+
+                if (category is null)
+                    throw new BusinessException("Category not found", 404);
+
+                Filterproducts = Filterproducts.Where(p => p.CategoryId == category.Id).ToList();
+
+            }
+
+            if (minprice.HasValue&&minprice < 0)
+                throw new BusinessException("Min price cannot be negative", 400);
+
+            if (minprice.HasValue && maxprice.HasValue &&maxprice < minprice)
+                throw new BusinessException("Max price must be greater than or equal to min price", 400);
+
+            if (minprice.HasValue)
+                Filterproducts = Filterproducts.Where(p => p.Price >= minprice.Value).ToList();
+
+            if (maxprice.HasValue&&maxprice.HasValue)
+                Filterproducts = Filterproducts.Where(p => p.Price <= maxprice.Value).ToList();
+
+
+            if (lowstock.HasValue && lowstock <= 0)
+                throw new BusinessException("low stock must be greater than 0", 400);
+
+            if (lowstock.HasValue) {
+                Filterproducts = Filterproducts.Where(f => f.StockQuantity<=lowstock).ToList();
+            }
+
+            if (availability is not null) {
+
+                Filterproducts = Filterproducts.Where(f => f.IsAvailable == availability).ToList();
+            }
+
+            if (Filterproducts.Count == 0)
+                throw new BusinessException("No Products Found", 404);
+
+            var ProductResponseDTO = Filterproducts.Select(s => new ProductResponse()
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price,
+                IsAvailable = s.IsAvailable,
+                StockQuantity = s.StockQuantity,
+                SupplierName = s.SupplierName,
+                CategoryName = ProductsSeeding.Categories.FirstOrDefault(c => c.Id == s.CategoryId)?.Name ?? "Unknown"
+
+            }
+
+           ).ToList();
+
+            return ProductResponseDTO;
+
+
+
         }
 
 

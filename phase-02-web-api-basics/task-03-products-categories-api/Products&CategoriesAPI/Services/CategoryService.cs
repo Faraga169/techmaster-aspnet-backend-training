@@ -21,6 +21,7 @@ namespace Products_CategoriesAPI.Services
                     Products = c.Products.Where(p => p.CategoryId == c.Id).Select(
                  p => new ProductResponse()
                  {
+                     Id=p.Id,
                      Name = p.Name,
                      Price = p.Price,
                      IsAvailable = p.IsAvailable,
@@ -47,6 +48,7 @@ namespace Products_CategoriesAPI.Services
                 IsActive = Category.IsActive,
                 Products = Category.Products.Select(p => new ProductResponse()
                 {
+                    Id=p.Id,
                     Name = p.Name,
                     Price = p.Price,
                     IsAvailable = p.IsAvailable,

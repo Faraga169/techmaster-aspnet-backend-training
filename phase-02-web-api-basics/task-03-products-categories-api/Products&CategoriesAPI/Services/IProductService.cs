@@ -13,5 +13,10 @@ namespace Products_CategoriesAPI.Services
         public ProductResponse Update(Guid Id, UpdateProductRequest updateProductRequest);
 
         public void Delete(Guid Id);
+
+        public IEnumerable<ProductResponse> Search(string name);
+
+        public IEnumerable<ProductResponse> Filter(string? CategoryName, bool? availability, decimal? maxprice, decimal? minprice, int? lowstock);
+
     }
 }

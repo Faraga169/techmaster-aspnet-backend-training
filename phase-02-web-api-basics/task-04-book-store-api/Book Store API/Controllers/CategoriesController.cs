@@ -22,8 +22,8 @@ namespace Book_Store_API.Controllers
         public IActionResult Create(CreateCategoryRequest createCategoryRequest)
         {
 
-            var Author = categoryService.Create(createCategoryRequest);
-            return Ok(Author);
+            var Category = categoryService.Create(createCategoryRequest);
+            return Ok(Category);
         }
 
         [HttpDelete("{id:int}")]

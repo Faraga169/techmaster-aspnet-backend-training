@@ -19,6 +19,7 @@ namespace Book_Store_API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IAuthorService, AuthorService>();
+            builder.Services.AddScoped<ICategoryService,CategoryService>();
 
             var app = builder.Build();
 

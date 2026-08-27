@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Diagnostics;
+using StudentManagementAPI.Middleware;
+
 namespace Book_Store_API
 {
     public class Program
@@ -23,6 +26,7 @@ namespace Book_Store_API
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

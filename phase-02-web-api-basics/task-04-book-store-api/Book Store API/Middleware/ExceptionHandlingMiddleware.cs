@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using StudentManagementAPI.Exceptions;
+using Book_Store_API.Exceptions;
 
 namespace StudentManagementAPI.Middleware
 {

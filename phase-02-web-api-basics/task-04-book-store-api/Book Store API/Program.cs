@@ -1,4 +1,5 @@
 
+using Book_Store_API.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using StudentManagementAPI.Middleware;
 
@@ -16,6 +17,8 @@ namespace Book_Store_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IAuthorService, AuthorService>();
 
             var app = builder.Build();
 

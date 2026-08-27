@@ -23,5 +23,14 @@ namespace Book_Store_API.Controllers
             var Author=authorService.Create(createAuthorRequest);
             return Ok(Author);
         }
+
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+
+            authorService.Delete(id);
+            return NoContent();
+        }
+
     }
 }

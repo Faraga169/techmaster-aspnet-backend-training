@@ -7,5 +7,7 @@ namespace Book_Store_API.Services
         public IEnumerable<AuthorResponse> GetAll();
 
         public AuthorResponse Create(CreateAuthorRequest createAuthor);
+
+        public void Delete(int id);
     }
 }

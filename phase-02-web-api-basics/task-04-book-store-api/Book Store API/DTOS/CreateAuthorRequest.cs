@@ -17,6 +17,5 @@ namespace Book_Store_API.DTOS
         [DataType(DataType.Date)]
         public DateOnly BirthDate { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

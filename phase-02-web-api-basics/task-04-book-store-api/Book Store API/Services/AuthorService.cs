@@ -13,7 +13,7 @@ namespace Book_Store_API.Services
             var Authors = BookSeeding.Authors.ToList();
             var AuthorResponseDTO = Authors.Select(s => new AuthorResponse()
             {
-
+                Id=s.Id,
                 FullName = s.FullName,
                 Country = s.Country,
                 BirthDate = s.BirthDate
@@ -50,6 +50,7 @@ namespace Book_Store_API.Services
             var CreateAuthorRequestDTO = new AuthorResponse()
             {
 
+                Id=CreateAuthor.Id,
                 FullName = CreateAuthor.FullName,
                 BirthDate = CreateAuthor.BirthDate,
                 Country = CreateAuthor.Country
@@ -59,6 +60,20 @@ namespace Book_Store_API.Services
 
         }
 
-       
+        public void Delete(int id)
+        {
+            var Author = BookSeeding.Authors.Find(s => s.Id == id);
+            if(Author is null)
+                throw new BusinessException("Author Not Found", 404);
+
+            var AuthorexistBooks = BookSeeding.Books.FirstOrDefault(s => s.AuthorId == id);
+
+            if(AuthorexistBooks is not null)
+                throw new BusinessException("Author cannot delete because related to books", 404);
+
+            BookSeeding.Authors.Remove(Author);
+
+
+        }
     }
 }

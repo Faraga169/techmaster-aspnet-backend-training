@@ -2,7 +2,7 @@
 
 namespace Book_Store_API.Seeding
 {
-    public static class Seeding
+    public static class BookSeeding
     {
         public static List<Category> Categories { get; } = new List<Category>
         {

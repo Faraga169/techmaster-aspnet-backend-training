@@ -1,4 +1,4 @@
-﻿namespace StudentManagementAPI.Exceptions
+﻿namespace Book_Store_API.Exceptions
 {
     public class BusinessException:Exception
     {

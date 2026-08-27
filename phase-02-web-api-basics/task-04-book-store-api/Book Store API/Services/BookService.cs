@@ -5,7 +5,7 @@ using Book_Store_API.Seeding;
 
 namespace Book_Store_API.Services
 {
-    public class BookService
+    public class BookService:IBookService
     {
         public IEnumerable<BookResponse> GetAll(string? Title,string? category,string?author,bool availability=true,int pagesize=5,int pagenumber=1)
         {

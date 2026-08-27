@@ -20,6 +20,7 @@ namespace Book_Store_API
 
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<ICategoryService,CategoryService>();
+            builder.Services.AddScoped<IBookService, BookService>();
 
             var app = builder.Build();
 

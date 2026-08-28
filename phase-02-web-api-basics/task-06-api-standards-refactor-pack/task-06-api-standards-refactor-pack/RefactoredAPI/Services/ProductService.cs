@@ -12,7 +12,7 @@ namespace task_06_api_standards_refactor_pack.RefactoredAPI.Services
             var result = ProductsSeeding.Products.Any(s => s.Name.Equals(createProduct.Name));
 
             if (result)
-                throw new BusinessException("Email must be unique", 400);
+                throw new BusinessException("product name must be unique", 400);
 
             var Product = new Product()
             {

@@ -1,4 +1,4 @@
-﻿namespace Book_Store_API.Exceptions
+﻿namespace task_06_api_standards_refactor_pack.Exceptions
 {
     public class BusinessException:Exception
     {

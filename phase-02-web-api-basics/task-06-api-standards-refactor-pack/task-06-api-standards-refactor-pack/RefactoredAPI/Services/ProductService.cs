@@ -1,7 +1,7 @@
 ﻿using task_06_api_standards_refactor_pack.Exceptions;
-using task_06_api_standards_refactor_pack.OriginalBadCode;
 using task_06_api_standards_refactor_pack.RefactoredAPI.DTOS;
 using task_06_api_standards_refactor_pack.RefactoredAPI.Seeding;
+using task_06_api_standards_refactor_pack.RefactoredAPI.Models;
 
 namespace task_06_api_standards_refactor_pack.RefactoredAPI.Services
 {
@@ -9,6 +9,7 @@ namespace task_06_api_standards_refactor_pack.RefactoredAPI.Services
     {
         public ProductResponse Create(CreateProductRequest createProduct)
         {
+
             var result = ProductsSeeding.Products.Any(s => s.Name.Equals(createProduct.Name));
 
             if (result)

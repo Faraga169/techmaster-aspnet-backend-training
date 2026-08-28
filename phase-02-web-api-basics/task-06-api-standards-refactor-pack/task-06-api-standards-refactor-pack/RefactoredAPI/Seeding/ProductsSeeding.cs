@@ -1,4 +1,5 @@
-﻿using task_06_api_standards_refactor_pack.OriginalBadCode;
+﻿
+using task_06_api_standards_refactor_pack.RefactoredAPI.Models;
 
 namespace task_06_api_standards_refactor_pack.RefactoredAPI.Seeding
 {

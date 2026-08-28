@@ -46,8 +46,40 @@
     <File Path="phase-02-web-api-basics/task-04-book-store-api/README.md" />
     <Project Path="phase-02-web-api-basics/task-04-book-store-api/Book Store API/Book Store API.csproj" Id="872288cc-87ce-4705-8a4f-9347b9274499" />
   </Folder>
-  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/" />
-  <Folder Name="/phase-02-web-api-basics/task-06-api-standards-refactor-pack/" />
+  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/">
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/README.md" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/TechMaster ASP.NET Phase 02.postman_collection.json" />
+  </Folder>
+  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/" />
+  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/">
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/BookReportSummary.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/BookSerach.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/BusinessValidationerror.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/CreateBook.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/CreateProduct.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/CreateStudent.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/error-400.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/error-404.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/GetStudentById.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/GetStudents.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/ProductsLowStock.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/Searchproduct.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Postman/UpdateStudent.png" />
+  </Folder>
+  <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/">
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/BookCreate.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/BookReportSummary.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/CreateProduct.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/CreateStudent.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/GetStudentById.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/GetStudents.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/productlowstock.png" />
+    <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/Evidence/Swagger/SearchProduct.png" />
+  </Folder>
+  <Folder Name="/phase-02-web-api-basics/task-06-api-standards-refactor-pack/">
+    <File Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/README.md" />
+    <Project Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack.csproj" Id="f8ba54c4-1787-4b0b-b434-66e0c4521e8d" />
+  </Folder>
   <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">

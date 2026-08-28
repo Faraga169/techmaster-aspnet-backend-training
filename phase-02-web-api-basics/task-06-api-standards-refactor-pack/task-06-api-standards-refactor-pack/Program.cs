@@ -1,4 +1,7 @@
 
+using task_06_api_standards_refactor_pack.Middleware;
+using task_06_api_standards_refactor_pack.RefactoredAPI.Services;
+
 namespace task_06_api_standards_refactor_pack
 {
     public class Program
@@ -10,6 +13,7 @@ namespace task_06_api_standards_refactor_pack
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<IProductService, ProductService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -23,6 +27,7 @@ namespace task_06_api_standards_refactor_pack
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

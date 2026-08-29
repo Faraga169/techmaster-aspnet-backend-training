@@ -80,7 +80,9 @@
     <File Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/README.md" />
     <Project Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack.csproj" Id="f8ba54c4-1787-4b0b-b434-66e0c4521e8d" />
   </Folder>
-  <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/" />
+  <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/">
+    <File Path="phase-02-web-api-basics/task-07-interview-answers/README.md" />
+  </Folder>
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

@@ -1,8 +1,8 @@
-\# Phase 02 — Required Questions \& Answers
+# Phase 02 — Required Questions & Answers
 
 
 
-\## 1. What does REST mean in the context of Web APIs?
+## 1. What does REST mean in the context of Web APIs?
 
 
 
@@ -10,11 +10,11 @@ REST stands for Representational State Transfer. It is an architectural style fo
 
 
 
-\---
+---
 
 
 
-\## 2. What is the difference between GET, POST, PUT, PATCH and DELETE?
+## 2. What is the difference between GET, POST, PUT, PATCH and DELETE?
 
 
 
@@ -22,11 +22,11 @@ GET is used to retrieve resources. POST is commonly used to create a new resourc
 
 
 
-\---
+---
 
 
 
-\## 3. When should an API return 200, 201, 204, 400 and 404?
+## 3. When should an API return 200, 201, 204, 400 and 404?
 
 
 
@@ -34,23 +34,23 @@ GET is used to retrieve resources. POST is commonly used to create a new resourc
 
 
 
-\---
+---
 
 
 
-\## 4. What is the difference between route parameters and query parameters?
+## 4. What is the difference between route parameters and query parameters?
 
 
 
-A route parameter is part of the URL path and is typically used to identify a specific resource, such as /api/products/5. A query parameter comes after ? in the URL and is commonly used for filtering, searching, sorting, or pagination, such as /api/products?name=laptop\&page=2.
+A route parameter is part of the URL path and is typically used to identify a specific resource, such as /api/products/5. A query parameter comes after ? in the URL and is commonly used for filtering, searching, sorting, or pagination, such as /api/products?name=laptop&page=2.
 
 
 
-\---
+---
 
 
 
-\## 5. What is the role of a controller in ASP.NET Core Web API?
+## 5. What is the role of a controller in ASP.NET Core Web API?
 
 
 
@@ -58,11 +58,11 @@ A Controller is responsible for handling HTTP requests and returning HTTP respon
 
 
 
-\---
+---
 
 
 
-\## 6. Why should we use DTOs instead of exposing models directly?
+## 6. Why should we use DTOs instead of exposing models directly?
 
 
 
@@ -70,11 +70,11 @@ We use DTOs to control the data exchanged between the client and the API instead
 
 
 
-\---
+---
 
 
 
-\## 7. Why should business logic not stay inside the controller?
+## 7. Why should business logic not stay inside the controller?
 
 
 
@@ -82,11 +82,11 @@ Business logic should not stay inside the Controller because Controllers should 
 
 
 
-\---
+---
 
 
 
-\## 8. What is Dependency Injection and why is it useful?
+## 8. What is Dependency Injection and why is it useful?
 
 
 
@@ -94,23 +94,23 @@ Dependency Injection is a design technique used to provide a class with the depe
 
 
 
-\---
+---
 
 
 
-\## 9. Where can validation happen in a Web API?
+## 9. Where can validation happen in a Web API?
 
 
 
-Validation can happen at different levels. Input or model validation can be handled using Data Annotations on DTOs, and with \[ApiController], ASP.NET Core automatically returns a 400 Bad Request when model validation fails before the action executes. Business validation, such as checking whether a product already exists or whether there is enough stock, should be handled in the Service Layer.
+Validation can happen at different levels. Input or model validation can be handled using Data Annotations on DTOs, and with [ApiController], ASP.NET Core automatically returns a 400 Bad Request when model validation fails before the action executes. Business validation, such as checking whether a product already exists or whether there is enough stock, should be handled in the Service Layer.
 
 
 
-\---
+---
 
 
 
-\## 10. What is Swagger/OpenAPI used for?
+## 10. What is Swagger/OpenAPI used for?
 
 
 
@@ -118,11 +118,11 @@ OpenAPI is a standard specification used to describe and document Web APIs, incl
 
 
 
-\---
+---
 
 
 
-\## 11. Why do we need Postman if Swagger already exists?
+## 11. Why do we need Postman if Swagger already exists?
 
 
 
@@ -130,11 +130,11 @@ Swagger can be used to interact with and test individual endpoints, but Postman 
 
 
 
-\---
+---
 
 
 
-\## 12. What makes an API response professional and predictable?
+## 12. What makes an API response professional and predictable?
 
 
 
@@ -142,11 +142,11 @@ A professional API should have a clear and consistent response shape. We should 
 
 
 
-\---
+---
 
 
 
-\## 13. How would you implement search and filtering in an API?
+## 13. How would you implement search and filtering in an API?
 
 
 
@@ -154,23 +154,23 @@ Search and filtering are usually implemented using query parameters because they
 
 
 
-\---
+---
 
 
 
-\## 14. Why is pagination important in APIs?
+## 14. Why is pagination important in APIs?
 
 
 
-Pagination is important because returning a large number of records in a single response can increase response size, memory usage, network bandwidth, database load, and response time. We can use pageNumber and pageSize to return only a specific portion of the data. In LINQ, this can be implemented using Skip((pageNumber - 1) \* pageSize) and Take(pageSize), preferably at the database query level.
+Pagination is important because returning a large number of records in a single response can increase response size, memory usage, network bandwidth, database load, and response time. We can use pageNumber and pageSize to return only a specific portion of the data. In LINQ, this can be implemented using Skip((pageNumber - 1) * pageSize) and Take(pageSize), preferably at the database query level.
 
 
 
-\---
+---
 
 
 
-\## 15. What is the difference between UI, controller, service and data storage?
+## 15. What is the difference between UI, controller, service and data storage?
 
 
 
@@ -178,11 +178,11 @@ The UI is responsible for user interaction and sending HTTP requests. The Contro
 
 
 
-\---
+---
 
 
 
-\## 16. What should reviewers see in your commit history?
+## 16. What should reviewers see in your commit history?
 
 
 
@@ -190,11 +190,11 @@ Reviewers should see clear and focused commits where each commit represents a sp
 
 
 
-\---
+---
 
 
 
-\## 17. How do you prove that your API works without running it on the reviewer device?
+## 17. How do you prove that your API works without running it on the reviewer device?
 
 
 
@@ -202,11 +202,11 @@ I can prove that the API works using Swagger and Postman evidence. I can provide
 
 
 
-\---
+---
 
 
 
-\## 18. How do you investigate an endpoint that returns 500?
+## 18. How do you investigate an endpoint that returns 500?
 
 
 
@@ -214,11 +214,11 @@ When an endpoint returns 500, I first reproduce the issue and check the logs and
 
 
 
-\---
+---
 
 
 
-\## 19. Why should we not trust request data from users?
+## 19. Why should we not trust request data from users?
 
 
 
@@ -226,11 +226,11 @@ We should never trust data coming from the client because client-side validation
 
 
 
-\---
+---
 
 
 
-\## 20. Why is in-memory storage not enough for real applications?
+## 20. Why is in-memory storage not enough for real applications?
 
 
 

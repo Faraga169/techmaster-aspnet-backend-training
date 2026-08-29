@@ -14,8 +14,8 @@ The repository is organized by phases, with each phase containing its own projec
 
 ## Phase Folders
 
-* `phase-01-backend-foundations` — [Phase 01 README](./phase-01-backend-foundations/README.md)
-* `phase-02-web-api-basics` — [Phase 02 README](./phase-02-web-api-basics/README.md)
+* `phase-01-backend-foundations`
+* `phase-02-web-api-basics` 
 * `phase-03-database-and-ef-core`
 * `phase-04-auth-and-architecture`
 * `final-capstone`

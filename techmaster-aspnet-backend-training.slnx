@@ -83,6 +83,22 @@
   <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/">
     <File Path="phase-02-web-api-basics/task-07-interview-answers/README.md" />
   </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/" />
+  <Folder Name="/phase-03-real-backend-data-systems/Task 00 - Workspace &amp; Environment Setup/">
+    <File Path="phase-03-real-backend-data-systems/Task 00 - Workspace &amp; Environment Setup/README.md" />
+  </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/">
+    <Project Path="phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/Drill 01-DbContext &amp; First Migration/EF Core Modeling Drill Pack.csproj" Id="c0232224-ac2f-41fb-8762-a911c9cd7d02" />
+  </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/task-02-requirements-to-erd/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-03-training-center-database-api/">
+    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.Api/TrainingCenter.Api.csproj" Id="5848ed8b-2ec1-43c3-a804-71dd831b28fe" />
+  </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/task-04-querying-filtering-reporting/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-05-business-rules-data-integrity/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-06-production-hosting-remote-database/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

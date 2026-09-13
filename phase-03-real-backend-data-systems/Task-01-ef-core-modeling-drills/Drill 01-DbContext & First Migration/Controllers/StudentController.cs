@@ -1,4 +1,5 @@
-﻿using Drill_01_DbContext___First_Migration.Services;
+﻿using Drill_01_DbContext___First_Migration.DTOS;
+using Drill_01_DbContext___First_Migration.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,5 +18,40 @@ namespace Drill_01_DbContext___First_Migration.Controllers
             return Ok(result);
 
         }
+
+        [HttpGet("DeletedStudents")]
+        public IActionResult GetAll()
+        {
+
+            var result = studentService.GetAllDeleted();
+            return Ok(result);
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id) {
+
+            studentService.SoftDelete(id);
+            return NoContent();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateStudentDTO createStudentDTO) { 
+        
+            var student=await studentService.Create(createStudentDTO);
+            return Ok(student);
+        }
+
+        [HttpPut]
+
+        public async Task<IActionResult> Update(UpdateStudentDTO updateStudentDTO)
+        {
+
+            var student = await studentService.Update(updateStudentDTO);
+            return Ok(student);
+        }
+
     }
 }

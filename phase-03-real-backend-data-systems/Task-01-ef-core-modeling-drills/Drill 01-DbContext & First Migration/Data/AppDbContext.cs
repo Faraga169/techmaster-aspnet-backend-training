@@ -11,6 +11,29 @@ namespace Drill_01_DbContext___First_Migration.Data
         }
 
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                if (entry.Entity is Student student)
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        student.CreatedAt = DateTime.UtcNow;
+                    }
+
+                    if (entry.State == EntityState.Modified)
+                    {
+                        student.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentProfile>()
@@ -45,6 +68,9 @@ namespace Drill_01_DbContext___First_Migration.Data
                         .HasForeignKey<PaymentSummary>(p => p.EnrollmentId);
 
             modelBuilder.Entity<PaymentSummary>().HasIndex(p => p.EnrollmentId).IsUnique();
+
+
+            modelBuilder.Entity<Student>().HasQueryFilter(s => !s.IsDeleted);
 
 
             modelBuilder.Entity<PaymentSummary>().Property(p => p.PaymentStatus).HasConversion<string>();

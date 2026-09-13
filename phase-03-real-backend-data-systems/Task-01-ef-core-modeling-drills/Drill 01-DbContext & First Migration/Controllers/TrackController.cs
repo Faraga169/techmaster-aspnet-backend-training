@@ -8,6 +8,16 @@ namespace Drill_01_DbContext___First_Migration.Controllers
     [ApiController]
     public class TrackController(ITrackService trackService) : ControllerBase
     {
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+
+            var result = trackService.GetAll();
+            return Ok(result);
+
+        }
+
         [HttpGet("{id}/students")]
 
         public IActionResult GetById(int id)

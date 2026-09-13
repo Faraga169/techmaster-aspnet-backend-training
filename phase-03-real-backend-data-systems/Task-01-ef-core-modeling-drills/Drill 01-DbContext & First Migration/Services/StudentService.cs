@@ -76,6 +76,7 @@ namespace Drill_01_DbContext___First_Migration.Services
         }
 
 
+
         public async Task<int> Update(UpdateStudentDTO updateStudentDTO)
         {
             var student = await appContext.Students.FindAsync(updateStudentDTO.Id);
@@ -89,8 +90,40 @@ namespace Drill_01_DbContext___First_Migration.Services
             return await appContext.SaveChangesAsync();
         }
 
+        public StudentProfileDTO GetStudentProfile(int id)
+        {
+           var Student= appContext.Students.Include(s=>s.StudentProfile).FirstOrDefault(s=>s.StudentProfile.StudentId==id);
+
+            if(Student is  null)
+                throw new BusinessException("Student profile not found", 404);
+
+            var StudentProfileDTO = new StudentProfileDTO()
+            {
+
+                FullName = Student.FullName,
+                NationalId = Student.StudentProfile.NationalId,
+                Address = Student.StudentProfile.Address,
+                DateOfBirth = Student.StudentProfile.DateOfBirth,
+                EmergencyPhone = Student.StudentProfile.EmergencyPhone
+
+            };
+
+            return StudentProfileDTO;
 
 
+        }
 
+        public IEnumerable<StudentsDTO> GetAll()
+        {
+            var Students = appContext.Students.AsNoTracking().ToList();
+            var StudentsDTO = Students.Select(s => new StudentsDTO()
+            {
+
+                FullName = s.FullName,
+                Email = s.Email
+            });
+
+            return StudentsDTO.ToList();
+        }
     }
 }

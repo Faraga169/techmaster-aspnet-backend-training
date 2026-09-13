@@ -9,10 +9,10 @@ namespace Drill_01_DbContext___First_Migration.Controllers
     public class EnrollmentController(IEnrollmentService enrollmentService) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int pagesize=5,int pagenumber=1)
         {
 
-            var result = enrollmentService.GetAll();
+            var result = enrollmentService.GetAll(pagesize,pagenumber);
             return Ok(result);
 
         }

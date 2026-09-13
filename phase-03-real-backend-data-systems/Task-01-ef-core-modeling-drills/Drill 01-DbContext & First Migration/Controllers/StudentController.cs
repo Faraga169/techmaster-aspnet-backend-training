@@ -9,6 +9,17 @@ namespace Drill_01_DbContext___First_Migration.Controllers
     [ApiController]
     public class StudentController(IStudentService studentService) : ControllerBase
     {
+
+
+        [HttpGet("AllStudents")]
+        public IActionResult GetAll()
+        {
+
+            var result = studentService.GetAll();
+            return Ok(result);
+
+        }
+
         [HttpGet("{id}/tracks")]
 
         public IActionResult GetById(int id)
@@ -19,8 +30,17 @@ namespace Drill_01_DbContext___First_Migration.Controllers
 
         }
 
+        [HttpGet("{id}/StudentProfile")]
+        public IActionResult GetStudentProfile(int id)
+        {
+
+            var result = studentService.GetStudentProfile(id);
+            return Ok(result);
+
+        }
+
         [HttpGet("DeletedStudents")]
-        public IActionResult GetAll()
+        public IActionResult GetAllDeletedStudents()
         {
 
             var result = studentService.GetAllDeleted();
@@ -40,8 +60,8 @@ namespace Drill_01_DbContext___First_Migration.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateStudentDTO createStudentDTO) { 
         
-            var student=await studentService.Create(createStudentDTO);
-            return Ok(student);
+            await studentService.Create(createStudentDTO);
+            return Created("","Student is Added Successfully");
         }
 
         [HttpPut]
@@ -49,8 +69,8 @@ namespace Drill_01_DbContext___First_Migration.Controllers
         public async Task<IActionResult> Update(UpdateStudentDTO updateStudentDTO)
         {
 
-            var student = await studentService.Update(updateStudentDTO);
-            return Ok(student);
+            await studentService.Update(updateStudentDTO);
+            return Ok("Student is Updated Successfully");
         }
 
     }

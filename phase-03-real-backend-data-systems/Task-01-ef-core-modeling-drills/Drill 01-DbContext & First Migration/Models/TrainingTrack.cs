@@ -11,5 +11,7 @@
         public int InstructorId { get; set; }
 
         public Instructor Instructor { get; set; } = null!;
+
+        public ICollection<Enrollment> Enrollments { get; set; }= new List<Enrollment>();
     }
 }

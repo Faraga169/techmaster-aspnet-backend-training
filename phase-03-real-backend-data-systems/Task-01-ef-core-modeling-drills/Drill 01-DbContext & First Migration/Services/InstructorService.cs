@@ -1,6 +1,7 @@
 ﻿using Drill_01_DbContext___First_Migration.Data;
 using Drill_01_DbContext___First_Migration.DTOS;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementAPI.Exceptions;
 
 namespace Drill_01_DbContext___First_Migration.Services
 {
@@ -20,6 +21,24 @@ namespace Drill_01_DbContext___First_Migration.Services
             });
 
             return GetAllInstructorswithtrackDTO;
+        }
+
+        public GetAllInstructorwithtracksDTO GetById(int id) {
+
+            var Instructor= appContext.Instructors.Include(s => s.TrainingTracks).FirstOrDefault(s=>s.Id==id);
+            if (Instructor is null)
+                throw new BusinessException("Instructor not Found", 404);
+
+
+            var GetInstructorswithtrackByIdDTO = new GetAllInstructorwithtracksDTO()
+            {
+
+                FullName = Instructor.FullName,
+                Email = Instructor.Email,
+                TracksName = Instructor.TrainingTracks.Where(t => t.InstructorId == Instructor.Id).Select(t => t.Name).ToList()
+            };
+
+            return GetInstructorswithtrackByIdDTO;
         }
     }
 }

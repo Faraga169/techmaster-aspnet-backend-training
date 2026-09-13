@@ -25,10 +25,31 @@ namespace Drill_01_DbContext___First_Migration.Data
                         .IsRequired();
 
 
+            modelBuilder.Entity<Enrollment>()
+                        .HasOne(e => e.Student)
+                        .WithMany(s=>s.Enrollments)
+                        .HasForeignKey(e => e.StudentId);
+
+            modelBuilder.Entity<Enrollment>().Property(e => e.Status).HasConversion<string>();
+
+            modelBuilder.Entity<Enrollment>().HasIndex(e => new { e.StudentId, e.TrackId }).IsUnique().HasFilter("[Status] = 'Active'");
+
+            modelBuilder.Entity<Enrollment>()
+                       .HasOne(e => e.Track)
+                       .WithMany(s => s.Enrollments)
+                       .HasForeignKey(e => e.TrackId);
+
+            modelBuilder.Entity<PaymentSummary>()
+                        .HasOne(p => p.Enrollment)
+                        .WithOne(e => e.PaymentSummary)
+                        .HasForeignKey<PaymentSummary>(p => p.EnrollmentId);
+
+            modelBuilder.Entity<PaymentSummary>().HasIndex(p => p.EnrollmentId).IsUnique();
 
 
+            modelBuilder.Entity<PaymentSummary>().Property(p => p.PaymentStatus).HasConversion<string>();
 
-            modelBuilder.Entity<Instructor>().HasData(
+             modelBuilder.Entity<Instructor>().HasData(
     new Instructor
     {
         Id = 1,
@@ -124,6 +145,99 @@ namespace Drill_01_DbContext___First_Migration.Data
                 }
             );
 
+            modelBuilder.Entity<Enrollment>().HasData(
+    new Enrollment
+    {
+        Id = 1,
+        StudentId = 1,
+        TrackId = 1,
+        Status = Status.Active,
+        EnrollmentDate = new DateTime(2026, 9, 1),
+        FinalGrade = 92.5m
+    },
+    new Enrollment
+    {
+        Id = 2,
+        StudentId = 1,
+        TrackId = 2,
+        Status = Status.Pending,
+        EnrollmentDate = new DateTime(2026, 9, 2),
+        FinalGrade = 0m
+    },
+    new Enrollment
+    {
+        Id = 3,
+        StudentId = 2,
+        TrackId = 1,
+        Status = Status.Completed,
+        EnrollmentDate = new DateTime(2026, 8, 20),
+        FinalGrade = 88.0m
+    },
+    new Enrollment
+    {
+        Id = 4,
+        StudentId = 2,
+        TrackId = 3,
+        Status = Status.Active,
+        EnrollmentDate = new DateTime(2026, 9, 3),
+        FinalGrade = 85.5m
+    },
+    new Enrollment
+    {
+        Id = 5,
+        StudentId = 3,
+        TrackId = 3,
+        Status = Status.Completed,
+        EnrollmentDate = new DateTime(2026, 8, 25),
+        FinalGrade = 95.0m,
+
+    }
+
+    );
+    modelBuilder.Entity<PaymentSummary>().HasData(
+    new PaymentSummary
+    {
+        Id = 1,
+        EnrollmentId = 1,
+        TotalRequired = 10000m,
+        TotalPaid = 10000m,
+        PaymentStatus = PaymentStatus.Paid,
+     
+    },
+    new PaymentSummary
+    {
+        Id = 2,
+        EnrollmentId = 2,
+        TotalRequired = 12000m,
+        TotalPaid = 4000m,
+        PaymentStatus = PaymentStatus.PartiallyPaid
+    },
+    new PaymentSummary
+    {
+        Id = 3,
+        EnrollmentId = 3,
+        TotalRequired = 10000m,
+        TotalPaid = 0m,
+        PaymentStatus = PaymentStatus.Pending
+    },
+    new PaymentSummary
+    {
+        Id = 4,
+        EnrollmentId = 4,
+        TotalRequired = 15000m,
+        TotalPaid = 7500m,
+        PaymentStatus = PaymentStatus.PartiallyPaid
+    },
+    new PaymentSummary
+    {
+        Id = 5,
+        EnrollmentId = 5,
+        TotalRequired = 15000m,
+        TotalPaid = 15000m,
+        PaymentStatus = PaymentStatus.Paid
+    }
+
+);
 
         }
 
@@ -134,5 +248,10 @@ namespace Drill_01_DbContext___First_Migration.Data
         public virtual DbSet<Instructor> Instructors { get; set; }
 
         public virtual DbSet<TrainingTrack> Tracks { get; set; }
+
+
+        public virtual DbSet<Enrollment> Enrollments { get; set; }
+
+        public virtual DbSet<PaymentSummary> PaymentSummaries { get; set; }
     }
 }

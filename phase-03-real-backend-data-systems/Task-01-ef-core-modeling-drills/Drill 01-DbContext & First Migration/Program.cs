@@ -2,6 +2,7 @@
 using Drill_01_DbContext___First_Migration.Data;
 using Drill_01_DbContext___First_Migration.Services;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementAPI.Middleware;
 
 namespace Drill_01_DbContext___First_Migration
 {
@@ -17,6 +18,9 @@ namespace Drill_01_DbContext___First_Migration
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IInstructorService, InstructorService>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+            builder.Services.AddScoped<ITrackService, TrackService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -30,6 +34,7 @@ namespace Drill_01_DbContext___First_Migration
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

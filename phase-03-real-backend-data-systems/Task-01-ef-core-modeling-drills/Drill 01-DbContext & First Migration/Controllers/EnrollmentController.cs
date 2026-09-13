@@ -6,26 +6,15 @@ namespace Drill_01_DbContext___First_Migration.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstructorController(IInstructorService instructorService) : ControllerBase
+    public class EnrollmentController(IEnrollmentService enrollmentService) : ControllerBase
     {
-
         [HttpGet]
         public IActionResult GetAll()
         {
 
-            var result=instructorService.GetAll();
-            return Ok(result);
-
-        }
-
-        [HttpGet("{id}/tracks")]
-
-        public IActionResult GetById(int id) {
-
-            var result = instructorService.GetById(id);
+            var result = enrollmentService.GetAll();
             return Ok(result);
 
         }
     }
-
 }

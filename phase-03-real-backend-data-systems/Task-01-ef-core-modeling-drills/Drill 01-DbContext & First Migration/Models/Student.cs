@@ -13,5 +13,8 @@
         public bool IsActive { get; set; }
 
         public StudentProfile StudentProfile { get; set; } = null!;
+
+
+        public ICollection<Enrollment> Enrollments { get; set; }= new List<Enrollment>();
     }
 }

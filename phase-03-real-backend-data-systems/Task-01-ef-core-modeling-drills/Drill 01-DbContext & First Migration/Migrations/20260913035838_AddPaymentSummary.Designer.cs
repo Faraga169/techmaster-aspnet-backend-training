@@ -4,6 +4,7 @@ using Drill_01_DbContext___First_Migration.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Drill_01_DbContext___First_Migration.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260913035838_AddPaymentSummary")]
+    partial class AddPaymentSummary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                         .IsUnique()
                         .HasFilter("[Status] = 'Active'");
 
-                    b.ToTable("Enrollments", (string)null);
+                    b.ToTable("Enrollments");
 
                     b.HasData(
                         new
@@ -122,7 +125,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Instructors", (string)null);
+                    b.ToTable("Instructors");
 
                     b.HasData(
                         new
@@ -165,7 +168,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                     b.HasIndex("EnrollmentId")
                         .IsUnique();
 
-                    b.ToTable("PaymentSummaries", (string)null);
+                    b.ToTable("PaymentSummaries");
 
                     b.HasData(
                         new
@@ -234,7 +237,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
 
                     b.HasData(
                         new
@@ -293,7 +296,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                     b.HasIndex("StudentId")
                         .IsUnique();
 
-                    b.ToTable("StudentsProfile", (string)null);
+                    b.ToTable("StudentsProfile");
 
                     b.HasData(
                         new
@@ -348,7 +351,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("Tracks", (string)null);
+                    b.ToTable("Tracks");
 
                     b.HasData(
                         new

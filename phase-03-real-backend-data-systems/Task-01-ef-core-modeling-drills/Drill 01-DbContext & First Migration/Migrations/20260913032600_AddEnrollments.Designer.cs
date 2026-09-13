@@ -4,6 +4,7 @@ using Drill_01_DbContext___First_Migration.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Drill_01_DbContext___First_Migration.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260913032600_AddEnrollments")]
+    partial class AddEnrollments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                         .IsUnique()
                         .HasFilter("[Status] = 'Active'");
 
-                    b.ToTable("Enrollments", (string)null);
+                    b.ToTable("Enrollments");
 
                     b.HasData(
                         new
@@ -122,7 +125,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Instructors", (string)null);
+                    b.ToTable("Instructors");
 
                     b.HasData(
                         new
@@ -136,77 +139,6 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                             Id = 2,
                             Email = "mohamed.ali@example.com",
                             FullName = "Mohamed Ali"
-                        });
-                });
-
-            modelBuilder.Entity("Drill_01_DbContext___First_Migration.Models.PaymentSummary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EnrollmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPaid")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalRequired")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EnrollmentId")
-                        .IsUnique();
-
-                    b.ToTable("PaymentSummaries", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EnrollmentId = 1,
-                            PaymentStatus = "Paid",
-                            TotalPaid = 10000m,
-                            TotalRequired = 10000m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EnrollmentId = 2,
-                            PaymentStatus = "PartiallyPaid",
-                            TotalPaid = 4000m,
-                            TotalRequired = 12000m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EnrollmentId = 3,
-                            PaymentStatus = "Pending",
-                            TotalPaid = 0m,
-                            TotalRequired = 10000m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EnrollmentId = 4,
-                            PaymentStatus = "PartiallyPaid",
-                            TotalPaid = 7500m,
-                            TotalRequired = 15000m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EnrollmentId = 5,
-                            PaymentStatus = "Paid",
-                            TotalPaid = 15000m,
-                            TotalRequired = 15000m
                         });
                 });
 
@@ -234,7 +166,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
 
                     b.HasData(
                         new
@@ -293,7 +225,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                     b.HasIndex("StudentId")
                         .IsUnique();
 
-                    b.ToTable("StudentsProfile", (string)null);
+                    b.ToTable("StudentsProfile");
 
                     b.HasData(
                         new
@@ -348,7 +280,7 @@ namespace Drill_01_DbContext___First_Migration.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("Tracks", (string)null);
+                    b.ToTable("Tracks");
 
                     b.HasData(
                         new
@@ -393,17 +325,6 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                     b.Navigation("Track");
                 });
 
-            modelBuilder.Entity("Drill_01_DbContext___First_Migration.Models.PaymentSummary", b =>
-                {
-                    b.HasOne("Drill_01_DbContext___First_Migration.Models.Enrollment", "Enrollment")
-                        .WithOne("PaymentSummary")
-                        .HasForeignKey("Drill_01_DbContext___First_Migration.Models.PaymentSummary", "EnrollmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Enrollment");
-                });
-
             modelBuilder.Entity("Drill_01_DbContext___First_Migration.Models.StudentProfile", b =>
                 {
                     b.HasOne("Drill_01_DbContext___First_Migration.Models.Student", "Student")
@@ -424,12 +345,6 @@ namespace Drill_01_DbContext___First_Migration.Migrations
                         .IsRequired();
 
                     b.Navigation("Instructor");
-                });
-
-            modelBuilder.Entity("Drill_01_DbContext___First_Migration.Models.Enrollment", b =>
-                {
-                    b.Navigation("PaymentSummary")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Drill_01_DbContext___First_Migration.Models.Instructor", b =>

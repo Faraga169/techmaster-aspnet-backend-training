@@ -1,1188 +1,849 @@
-# Task 01 - EF Core Modeling Drills
+# Task 02 - Requirements to ERD
 
-## TechMaster Academy | ASP.NET Backend Career Training
+## TechMaster ASP.NET Backend Career Training
 
-**Phase:** Phase 03 - Real Backend Data Systems
-**Task:** Task 01 - EF Core Modeling Drill Pack
-**Focus:** EF Core Modeling, Relationships, Migrations, Seed Data, Soft Delete, Auditing, Projection, and Pagination
+### Phase 03 - Real Backend Data Systems
 
 ---
 
-## 📌 Task Overview
+## Task Overview
 
-This task contains **10 focused EF Core drills**, each designed to practice one important production database concept before building the main **Training Center API**.
+This task focuses on converting a real-world backend system requirement into a clear and structured database design.
 
-The drills progress from basic EF Core setup to more advanced database patterns used in real backend applications.
+The goal is to analyze the business requirements, identify the required entities and relationships, define primary and foreign keys, establish business rules, and produce an Entity Relationship Diagram (ERD) before starting the actual EF Core implementation.
 
-### Main Goals
+The system is designed for **TechMaster Academy**, an internal backend system used to manage:
 
-* Understand `DbContext` and `DbSet`.
-* Create and apply EF Core migrations.
-* Understand and implement database relationships.
-* Work with Foreign Keys and Navigation Properties.
-* Model One-to-One, One-to-Many, and Many-to-Many relationships.
-* Understand join entities and business data.
-* Seed realistic development data.
-* Implement Soft Delete.
-* Implement audit fields.
-* Use DTO projection with `Select`.
-* Implement server-side pagination.
-* Verify database schema and API behavior.
+* Students
+* Instructors
+* Training Tracks
+* Enrollments
+* Payments
 
 ---
 
-# 📁 Project Structure
+## Business Story
 
-```text
-task-01-ef-core-modeling-drills/
-│
-├── README.md
-│
-├── Drill01_DbContextFirstMigration/
-│
-├── Drill02_OneToOneStudentProfile/
-│
-├── Drill03_OneToManyInstructorTracks/
-│
-├── Drill04_ManyToManyEnrollment/
-│
-├── Drill05_PaymentSummary/
-│
-├── Drill06_SeedData/
-│
-├── Drill07_SoftDelete/
-│
-├── Drill08_AuditFields/
-│
-├── Drill09_ProjectionDTO/
-│
-└── Drill10_Pagination/
-```
+TechMaster Academy needs an internal backend system to manage its students, instructors, training tracks, enrollments, and payments.
 
-Each drill contains its own implementation and the required migration/schema evidence.
+A student can enroll in multiple training tracks, and each training track can contain multiple students.
 
----
+Each enrollment stores important business information such as:
 
-# 🧰 Technologies Used
+* Enrollment date
+* Enrollment status
+* Progress percentage
+* Final result
 
-* C#
-* ASP.NET Core
-* Entity Framework Core
-* SQL Server
-* LINQ
-* REST API
-* Swagger / OpenAPI
-* EF Core Migrations
-* DTOs
-* Dependency Injection
+Each training track has one main instructor, while an instructor can teach multiple training tracks.
 
-### Main EF Core Packages
+Training tracks also contain information such as:
 
-```text
-Microsoft.EntityFrameworkCore
-Microsoft.EntityFrameworkCore.SqlServer
-Microsoft.EntityFrameworkCore.Tools
-```
+* Capacity
+* Level
+* Start date
+* End date
+* Status
+
+Payments are linked to enrollments. A student may make multiple payments for an enrollment.
+
+Each payment stores:
+
+* Amount
+* Payment method
+* Payment date
+* Payment status
+* Reference number
+* Notes
+
+The database should also support business reporting such as active students, unpaid enrollments, track capacity, revenue by track, and instructor workload.
 
 ---
 
-# 🧩 Drills Overview
+# Objectives
 
-| Drill | Topic                       | Main Concept                  |
-| ----- | --------------------------- | ----------------------------- |
-| 01    | DbContext & First Migration | DbContext / DbSet / Migration |
-| 02    | Student Profile             | One-to-One                    |
-| 03    | Instructor & Tracks         | One-to-Many                   |
-| 04    | Enrollment                  | Many-to-Many via Join Entity  |
-| 05    | Payment Summary             | One-to-One                    |
-| 06    | Seed Data                   | HasData / Development Seeding |
-| 07    | Soft Delete                 | IsDeleted / DeletedAt         |
-| 08    | Audit Fields                | CreatedAt / UpdatedAt         |
-| 09    | Projection DTO              | Select Projection             |
-| 10    | Pagination                  | Skip / Take / Total Count     |
+The main objectives of this task are:
 
----
-
-# 🥇 Drill 01 - DbContext & First Migration
-
-### Concept
-
-`DbContext` / `DbSet` / EF Core Migration
-
-### Objective
-
-Create the first EF Core workspace and prove that an entity can generate a real SQL Server table.
-
-### Requirements
-
-* Create a `Student` entity.
-* Add:
-
-  * `Id`
-  * `FullName`
-  * `Email`
-  * `CreatedAt`
-  * `IsActive`
-* Create `AppDbContext`.
-* Add `DbSet<Student>`.
-* Configure SQL Server connection.
-* Register `AppDbContext` in `Program.cs`.
-* Create migration:
-
-```text
-InitialStudentSchema
-```
-
-* Apply the migration.
-* Verify the `Students` table in SQL Server.
-
-### Expected Result
-
-```text
-Migrations/
-    InitialStudentSchema/
-```
-
-And SQL Server contains:
-
-```text
-Students
-```
-
-### Key Learning
-
-`DbContext` represents the session between the application and database.
-
-`DbSet<Student>` represents the collection/table that EF Core uses to query and persist `Student` entities.
-
-### Evidence
-
-* Migration files.
-* SQL Server `Students` table.
-* Screenshot showing successful migration.
-* README explanation of `DbContext` and `DbSet`.
+1. Analyze the business requirements.
+2. Identify the required database entities.
+3. Define entity attributes.
+4. Identify primary keys and foreign keys.
+5. Identify relationships between entities.
+6. Resolve the Student ↔ TrainingTrack many-to-many relationship.
+7. Define important business rules and constraints.
+8. Design a readable ERD.
+9. Identify the business questions that the database must answer.
+10. Prepare the database design before implementing it with EF Core.
 
 ---
 
-# 🥈 Drill 02 - One-to-One Student Profile
+# System Entities
 
-### Concept
+The system contains five main entities:
 
-One-to-One Relationship
-
-### Scenario
-
-Each student can have one student profile.
-
-```text
-Student
-   │
-   │ 1 : 1
-   ▼
-StudentProfile
-```
-
-### Requirements
-
-Create:
-
-```text
-Student
-StudentProfile
-```
-
-`StudentProfile` contains:
-
-* `NationalId`
-* `Address`
-* `EmergencyPhone`
-* `DateOfBirth`
-
-The relationship must support:
-
-```text
-Student → StudentProfile
-StudentProfile → Student
-```
-
-### Database Design
-
-`StudentProfiles` should contain:
-
-```text
-StudentId FK
-```
-
-with a unique relationship.
-
-### Migration
-
-```text
-AddStudentProfile
-```
-
-### Expected Behavior
-
-A student can be queried with its profile:
-
-```csharp
-.Include(s => s.StudentProfile)
-```
-
-A missing profile should not cause the application to crash.
-
-### Evidence
-
-* ERD or database relationship screenshot.
-* StudentProfiles table.
-* Foreign Key evidence.
+1. `Student`
+2. `Instructor`
+3. `TrainingTrack`
+4. `Enrollment`
+5. `Payment`
 
 ---
 
-# 🥉 Drill 03 - One-to-Many Instructor Tracks
+# 1. Student
 
-### Concept
+Represents a student registered in the academy.
 
-One-to-Many Relationship
+### Fields
 
-### Scenario
+| Field       | Type      | Key / Constraint | Description                             |
+| ----------- | --------- | ---------------- | --------------------------------------- |
+| StudentId   | int       | PK               | Unique student identifier               |
+| FullName    | string    | Required         | Student full name                       |
+| Email       | string    | Required, Unique | Student email                           |
+| PhoneNumber | string    | Optional         | Student phone number                    |
+| CreatedAt   | DateTime  | Required         | Creation date in UTC                    |
+| UpdatedAt   | DateTime? | Optional         | Last update date                        |
+| IsActive    | bool      | Required         | Indicates whether the student is active |
+| IsDeleted   | bool      | Required         | Soft-delete flag                        |
+| DeletedAt   | DateTime? | Optional         | Soft deletion date                      |
+
+### Relationship
+
+A student can have many enrollments.
+
+```text
+Student 1 ───────< Enrollment
+```
+
+---
+
+# 2. Instructor
+
+Represents an instructor who teaches training tracks.
+
+### Fields
+
+| Field          | Type     | Key / Constraint | Description                  |
+| -------------- | -------- | ---------------- | ---------------------------- |
+| InstructorId   | int      | PK               | Unique instructor identifier |
+| FullName       | string   | Required         | Instructor full name         |
+| Email          | string   | Required, Unique | Instructor email             |
+| Specialization | string   | Required         | Instructor specialization    |
+| Bio            | string   | Optional         | Instructor biography         |
+| IsActive       | bool     | Required         | Instructor active status     |
+| CreatedAt      | DateTime | Required         | Creation date in UTC         |
+
+### Relationship
 
 One instructor can teach many training tracks.
 
 ```text
-Instructor
-     │
-     │ 1 : Many
-     ▼
-TrainingTrack
+Instructor 1 ───────< TrainingTrack
 ```
-
-### Requirements
-
-Create:
-
-```text
-Instructor
-TrainingTrack
-```
-
-`TrainingTrack` must contain:
-
-```text
-InstructorId
-```
-
-as a Foreign Key.
-
-`Instructor` contains:
-
-```csharp
-ICollection<TrainingTrack>
-```
-
-### Business Rule
-
-A training track cannot exist without a valid instructor.
-
-### Migration
-
-```text
-AddInstructorsAndTracks
-```
-
-### Required Endpoint
-
-```http
-GET /instructor/{id}/tracks
-```
-
-### Expected Result
-
-The endpoint returns all tracks belonging to the instructor.
-
-### Evidence
-
-* Swagger endpoint screenshot.
-* Database relationship screenshot.
-* TrainingTracks table showing `InstructorId`.
 
 ---
 
-# 4️⃣ Drill 04 - Many-to-Many Enrollment
+# 3. TrainingTrack
 
-### Concept
+Represents a training program offered by TechMaster Academy.
 
-Many-to-Many Relationship through a Join Entity
+### Fields
 
-### Scenario
+| Field           | Type     | Key / Constraint | Description                |
+| --------------- | -------- | ---------------- | -------------------------- |
+| TrainingTrackId | int      | PK               | Unique track identifier    |
+| Title           | string   | Required         | Track title                |
+| Code            | string   | Required, Unique | Unique track code          |
+| Description     | string   | Optional         | Track description          |
+| Level           | string   | Required         | Track level                |
+| Capacity        | int      | Required         | Maximum number of students |
+| StartDate       | DateTime | Required         | Track start date           |
+| EndDate         | DateTime | Required         | Track end date             |
+| Status          | string   | Required         | Track status               |
+| InstructorId    | int      | FK               | Main instructor            |
+| CreatedAt       | DateTime | Required         | Creation date in UTC       |
+| IsDeleted       | bool     | Required         | Soft-delete flag           |
 
-A student can enroll in many tracks, and a track can contain many students.
+### Relationships
 
-```text
-Student
-   │
-   │
-   ▼
-Enrollment
-   ▲
-   │
-   │
-TrainingTrack
-```
+A training track:
 
-### Why a Join Entity?
-
-We do **not** use automatic EF Core many-to-many because `Enrollment` contains business data.
-
-### Enrollment Fields
-
-```text
-StudentId
-TrainingTrackId
-Status
-EnrollmentDate
-FinalGrade
-```
-
-`FinalGrade` is optional.
-
-### Requirements
-
-Create:
+* Belongs to one instructor.
+* Can have many enrollments.
 
 ```text
-Enrollment
+Instructor 1 ───────< TrainingTrack
+
+TrainingTrack 1 ───────< Enrollment
 ```
-
-with:
-
-```text
-StudentId FK
-TrainingTrackId FK
-```
-
-Add navigation collections to `Student` and `TrainingTrack`.
-
-### Migration
-
-```text
-AddEnrollments
-```
-
-### Querying
-
-Practice:
-
-```csharp
-Include()
-ThenInclude()
-```
-
-to retrieve related enrollment information.
-
-### Expected Behavior
-
-Student:
-
-```text
-Student
-   └── Enrollments
-          └── TrainingTrack
-```
-
-Track:
-
-```text
-TrainingTrack
-   └── Enrollments
-          └── Student
-```
-
-### Future Business Rule
-
-Prevent duplicate active enrollment for the same student and track.
-
-### Evidence
-
-* ERD.
-* Enrollment table.
-* Foreign Keys.
-* Sample GET response.
 
 ---
 
-# 5️⃣ Drill 05 - Payment Summary
+# 4. Enrollment
 
-### Concept
+`Enrollment` represents the relationship between a student and a training track.
 
-One-to-One Relationship
+This entity is required because the Student ↔ TrainingTrack relationship is **many-to-many** and the relationship itself contains business data.
 
-### Scenario
+### Fields
 
-Each enrollment has one payment summary.
+| Field              | Type      | Key / Constraint | Description                  |
+| ------------------ | --------- | ---------------- | ---------------------------- |
+| EnrollmentId       | int       | PK               | Unique enrollment identifier |
+| StudentId          | int       | FK               | Enrolled student             |
+| TrainingTrackId    | int       | FK               | Selected training track      |
+| EnrollmentDate     | DateTime  | Required         | Enrollment date              |
+| Status             | string    | Required         | Enrollment status            |
+| ProgressPercentage | decimal   | Required         | Student progress             |
+| FinalResult        | string    | Optional         | Final result                 |
+| CreatedAt          | DateTime  | Required         | Creation date in UTC         |
+| UpdatedAt          | DateTime? | Optional         | Last update date             |
+
+### Relationships
+
+An enrollment:
+
+* Belongs to one student.
+* Belongs to one training track.
+* Can have many payments.
 
 ```text
-Enrollment
-     │
-     │ 1 : 1
-     ▼
-PaymentSummary
+Student 1 ───────< Enrollment >─────── 1 TrainingTrack
+
+Enrollment 1 ───────< Payment
 ```
 
-### Requirements
+---
 
-Create:
+# 5. Payment
 
-```text
-PaymentSummary
-```
+Represents a payment made for an enrollment.
 
-Fields:
+A student does not have a direct relationship with `Payment`.
 
-```text
-TotalRequired
-TotalPaid
-RemainingAmount
-PaymentStatus
-```
+The payment belongs to an `Enrollment`, which already belongs to a student.
 
-Money values must use:
+### Fields
 
-```csharp
-decimal
-```
+| Field           | Type     | Key / Constraint | Description                    |
+| --------------- | -------- | ---------------- | ------------------------------ |
+| PaymentId       | int      | PK               | Unique payment identifier      |
+| EnrollmentId    | int      | FK               | Related enrollment             |
+| Amount          | decimal  | Required         | Payment amount                 |
+| PaymentMethod   | string   | Required         | Payment method                 |
+| PaymentDate     | DateTime | Required         | Payment date                   |
+| PaymentStatus   | string   | Required         | Payment status                 |
+| ReferenceNumber | string   | Required         | Payment reference              |
+| Notes           | string   | Optional         | Additional payment information |
 
 ### Relationship
 
-`PaymentSummary` must contain a unique:
+One enrollment can have many payments.
 
 ```text
-EnrollmentId FK
+Enrollment 1 ───────< Payment
 ```
 
-### Payment Status
+---
 
-Possible values:
+# Entity Relationship Diagram
+
+The core database relationships are:
 
 ```text
-Pending
-PartiallyPaid
-Paid
+                     ┌─────────────────┐
+                     │    Instructor   │
+                     │-----------------│
+                     │ InstructorId PK │
+                     └────────┬────────┘
+                              │
+                              │ 1 : Many
+                              ▼
+                     ┌─────────────────┐
+                     │ TrainingTrack   │
+                     │-----------------│
+                     │ TrainingTrackId │
+                     │ InstructorId FK │
+                     └────────┬────────┘
+                              │
+                              │ 1 : Many
+                              ▼
+┌─────────────────┐    ┌─────────────────┐
+│     Student     │    │    Enrollment   │
+│-----------------│    │-----------------│
+│ StudentId PK    │───<│ EnrollmentId PK │
+│ FullName        │ 1:M│ StudentId FK    │
+│ Email           │    │ TrainingTrackFK │
+└─────────────────┘    └────────┬────────┘
+                                │
+                                │ 1 : Many
+                                ▼
+                       ┌─────────────────┐
+                       │     Payment     │
+                       │-----------------│
+                       │ PaymentId PK    │
+                       │ EnrollmentId FK │
+                       │ Amount          │
+                       │ PaymentStatus   │
+                       └─────────────────┘
 ```
 
-### Migration
+### Simplified Relationship Model
 
 ```text
-AddPaymentSummary
+Student 1 ───────< Enrollment >─────── 1 TrainingTrack
+                                          │
+                                          │
+                                          │ Many : 1
+                                          ▼
+                                      Instructor
+
+Enrollment 1 ───────< Payment
 ```
 
-### Design Consideration
+---
 
-The model should be extendable later to support a payment history:
+# Relationship Explanation
+
+## Student → Enrollment
+
+**One-to-Many**
+
+One student can have multiple enrollments.
+
+Each enrollment belongs to exactly one student.
+
+```text
+Student 1 ───────< Enrollment
+```
+
+---
+
+## TrainingTrack → Enrollment
+
+**One-to-Many**
+
+One training track can have multiple enrollments.
+
+Each enrollment belongs to exactly one training track.
+
+```text
+TrainingTrack 1 ───────< Enrollment
+```
+
+---
+
+## Student ↔ TrainingTrack
+
+**Many-to-Many through Enrollment**
+
+A student can enroll in many training tracks.
+
+A training track can contain many students.
+
+Instead of creating a direct many-to-many relationship, `Enrollment` is used as a junction entity because it contains important business data.
+
+```text
+Student
+   │
+   │ 1
+   ▼
+Enrollment
+   ▲
+   │ 1
+   │
+TrainingTrack
+```
+
+Enrollment stores information such as:
+
+* EnrollmentDate
+* Status
+* ProgressPercentage
+* FinalResult
+
+Therefore, `Enrollment` is not just a linking table. It is a real business entity.
+
+---
+
+## Instructor → TrainingTrack
+
+**One-to-Many**
+
+One instructor can teach multiple training tracks.
+
+Each training track has one main instructor.
+
+```text
+Instructor 1 ───────< TrainingTrack
+```
+
+---
+
+## Enrollment → Payment
+
+**One-to-Many**
+
+One enrollment can have multiple payments.
+
+This supports scenarios such as:
 
 ```text
 Enrollment
    │
-   ├── PaymentSummary
-   │
-   └── Payments
+   ├── Payment 1
+   ├── Payment 2
+   └── Payment 3
 ```
 
-### Evidence
-
-* Database relationship.
-* PaymentSummary table.
-* Enrollment → PaymentSummary result.
+This allows students to pay in installments.
 
 ---
 
-# 6️⃣ Drill 06 - Seed Data
+# Primary Keys
 
-### Concept
+| Entity        | Primary Key     |
+| ------------- | --------------- |
+| Student       | StudentId       |
+| Instructor    | InstructorId    |
+| TrainingTrack | TrainingTrackId |
+| Enrollment    | EnrollmentId    |
+| Payment       | PaymentId       |
 
-EF Core Data Seeding
+---
 
-### Objective
+# Foreign Keys
 
-Provide realistic initial data so the API can be tested without manually creating every record.
+| Entity        | Foreign Key     | References                    |
+| ------------- | --------------- | ----------------------------- |
+| TrainingTrack | InstructorId    | Instructor.InstructorId       |
+| Enrollment    | StudentId       | Student.StudentId             |
+| Enrollment    | TrainingTrackId | TrainingTrack.TrainingTrackId |
+| Payment       | EnrollmentId    | Enrollment.EnrollmentId       |
 
-### Required Seed Data
+---
 
-At least:
+# Business Rules
+
+The database design follows the following business rules.
+
+### Student Rules
+
+* Student email must be unique.
+* A student can have multiple enrollments.
+* Deleted students should be handled using soft delete.
+* `CreatedAt` should be stored in UTC.
+
+### Instructor Rules
+
+* Instructor email must be unique.
+* An instructor can teach multiple tracks.
+* An instructor can be inactive without being deleted.
+
+### Training Track Rules
+
+* Track code must be unique.
+* Every track must have one main instructor.
+* Capacity must be greater than zero.
+* End date should be after the start date.
+* A track can have many enrollments.
+* Deleted tracks should use soft delete.
+
+### Enrollment Rules
+
+* Every enrollment belongs to exactly one student.
+* Every enrollment belongs to exactly one training track.
+* Progress percentage should be between `0` and `100`.
+* An enrollment can have multiple payments.
+* A student should not have duplicate active enrollments for the same track.
+
+### Payment Rules
+
+* Every payment belongs to one enrollment.
+* Payment amount must be greater than zero.
+* Payment reference should identify the transaction.
+* Multiple payments can belong to the same enrollment.
+
+---
+
+# Important Design Decision: Payments and Unpaid Enrollments
+
+Payments are modeled as a separate entity instead of storing one payment amount directly inside `Enrollment`.
+
+This allows the system to support multiple payments:
 
 ```text
-5 Students
-2 Instructors
-3 Training Tracks
-5 Enrollments
+Enrollment
+    │
+    ├── Payment 1
+    ├── Payment 2
+    └── Payment 3
 ```
 
-### Possible Approaches
+However, if the system needs to calculate an exact **remaining amount**, the database also needs to know the total required amount for the enrollment or track.
 
-#### Option 1 - HasData
+For example:
 
-```csharp
-modelBuilder.Entity<Student>()
-    .HasData(...);
+```text
+Total Required = 10,000
+Total Paid     = 6,000
+Remaining      = 4,000
 ```
 
-#### Option 2 - Development Seed Service
+Therefore, during the implementation phase, a field such as:
 
-A development-only service can insert the initial data.
+```text
+Enrollment.TotalRequired
+```
 
-### Requirements
+or
 
-Seed data must be:
+```text
+TrainingTrack.Price
+```
 
-* Realistic.
-* Repeatable.
-* Documented.
-* Free from duplicates.
+can be introduced if the business requires exact outstanding-balance calculations.
 
-### Expected Behavior
-
-Restarting the application must not create duplicate records.
-
-### Evidence
-
-* Swagger screenshot showing seeded records.
-* SQL Server screenshot showing seed rows.
-* Sample IDs documented in README.
+This is intentionally identified as a design consideration before EF Core implementation.
 
 ---
 
-# 7️⃣ Drill 07 - Soft Delete
+# Business Questions
 
-### Concept
+The database design should be able to answer the following questions.
 
-Soft Delete
+### 1. Which students are enrolled in a specific training track?
 
-### Objective
+Using:
 
-Delete records logically instead of physically removing them from the database.
+```text
+Student → Enrollment → TrainingTrack
+```
 
-### Required Fields
+### 2. Which training tracks have available seats?
+
+Using:
+
+```text
+Capacity - Active Enrollments
+```
+
+### 3. Which enrollments are unpaid?
+
+Using enrollment and payment information.
+
+### 4. How much revenue did each training track generate?
+
+Using:
+
+```text
+TrainingTrack
+    ↓
+Enrollment
+    ↓
+Payment
+```
+
+and aggregating payment amounts.
+
+### 5. Which instructor has the highest workload?
+
+Using:
+
+```text
+Instructor → TrainingTrack → Enrollment
+```
+
+### 6. Which students have active enrollments?
+
+Filter enrollments by their active status.
+
+### 7. Which training tracks start this month?
+
+Filter tracks using `StartDate`.
+
+### 8. What is the payment history for a specific enrollment?
+
+Using:
+
+```text
+Enrollment → Payment
+```
+
+### 9. Which training tracks are full?
+
+Compare:
+
+```text
+Active Enrollment Count >= Capacity
+```
+
+### 10. How many enrollments exist by status?
+
+Group enrollments by their `Status`.
+
+---
+
+# Suggested Database Structure
+
+```text
+Student
+   │
+   │ 1 : Many
+   ▼
+Enrollment
+   │
+   │ Many : 1
+   ▼
+TrainingTrack
+   │
+   │ Many : 1
+   ▼
+Instructor
+```
+
+And:
+
+```text
+Enrollment
+   │
+   │ 1 : Many
+   ▼
+Payment
+```
+
+---
+
+# ERD Tool
+
+The ERD can be created using an ERD/database modeling tool such as **dbdiagram.io**.
+
+The purpose of the ERD is to provide a visual representation of:
+
+* Tables
+* Columns
+* Primary keys
+* Foreign keys
+* Relationships
+* Cardinality
+
+The final ERD should be readable and clearly show all five core entities.
+
+---
+
+# DBML Schema
+
+The following schema can be imported into a DBML-compatible ERD tool to generate the diagram:
+
+```text
+Table Student {
+  StudentId int [pk]
+  FullName varchar
+  Email varchar [unique]
+  PhoneNumber varchar
+  CreatedAt datetime
+  UpdatedAt datetime
+  IsActive bool
+  IsDeleted bool
+  DeletedAt datetime
+}
+
+Table Instructor {
+  InstructorId int [pk]
+  FullName varchar
+  Email varchar [unique]
+  Specialization varchar
+  Bio varchar
+  IsActive bool
+  CreatedAt datetime
+}
+
+Table TrainingTrack {
+  TrainingTrackId int [pk]
+  Title varchar
+  Code varchar [unique]
+  Description varchar
+  Level varchar
+  Capacity int
+  StartDate datetime
+  EndDate datetime
+  Status varchar
+  InstructorId int [ref: > Instructor.InstructorId]
+  CreatedAt datetime
+  IsDeleted bool
+}
+
+Table Enrollment {
+  EnrollmentId int [pk]
+  StudentId int [ref: > Student.StudentId]
+  TrainingTrackId int [ref: > TrainingTrack.TrainingTrackId]
+  EnrollmentDate datetime
+  Status varchar
+  ProgressPercentage decimal
+  FinalResult varchar
+  CreatedAt datetime
+  UpdatedAt datetime
+}
+
+Table Payment {
+  PaymentId int [pk]
+  EnrollmentId int [ref: > Enrollment.EnrollmentId]
+  Amount decimal
+  PaymentMethod varchar
+  PaymentDate datetime
+  PaymentStatus varchar
+  ReferenceNumber varchar
+  Notes varchar
+}
+```
+
+---
+
+# Design Decisions
+
+## 1. Enrollment as a Junction Entity
+
+The relationship between students and training tracks is many-to-many.
+
+Instead of using EF Core's automatic many-to-many relationship, `Enrollment` is explicitly modeled as an entity because the relationship contains business information.
+
+---
+
+## 2. Payments as a Separate Entity
+
+Payments are separated from enrollments because one enrollment can contain multiple payments.
+
+This supports installment-based payments and payment history.
+
+---
+
+## 3. Soft Delete
+
+Students and training tracks use soft delete fields:
 
 ```text
 IsDeleted
 DeletedAt
 ```
 
-### Expected Delete Behavior
-
-Instead of:
-
-```sql
-DELETE FROM Students
-```
-
-the application performs something equivalent to:
-
-```text
-IsDeleted = true
-DeletedAt = current UTC time
-```
-
-### GET Behavior
-
-Normal GET requests should exclude deleted records.
-
-Example:
-
-```text
-GET /students
-```
-
-returns only active records.
-
-### Optional Admin Query
-
-Provide a way to retrieve deleted records when required.
-
-### Migration
-
-```text
-AddSoftDeleteFields
-```
-
-### Evidence
-
-Before deletion:
-
-```text
-IsDeleted = false
-DeletedAt = null
-```
-
-After deletion:
-
-```text
-IsDeleted = true
-DeletedAt = <UTC date>
-```
-
-The database row must remain.
+This prevents important historical data from being physically removed from the database.
 
 ---
 
-# 8️⃣ Drill 08 - Audit Fields
+## 4. UTC Dates
 
-### Concept
-
-CreatedAt / UpdatedAt
-
-### Objective
-
-Track when records are created and modified.
-
-### Required Fields
+System-generated timestamps such as:
 
 ```text
 CreatedAt
 UpdatedAt
+DeletedAt
 ```
 
-### Rules
+should use UTC.
 
-When creating:
-
-```text
-CreatedAt = UTC now
-```
-
-When updating:
-
-```text
-UpdatedAt = UTC now
-```
-
-The client should **not** provide these values manually.
-
-### Implementation Options
-
-#### Service-Level
-
-Set values inside create/update service methods.
-
-#### SaveChanges Override
-
-Centralize audit logic inside:
-
-```csharp
-SaveChangesAsync()
-```
-
-### Time Standard
-
-Use:
-
-```csharp
-DateTime.UtcNow
-```
-
-rather than local server time.
-
-### Expected Behavior
-
-Create:
-
-```text
-CreatedAt → populated
-```
-
-Update:
-
-```text
-UpdatedAt → changed
-```
-
-### Evidence
-
-* API response.
-* Database screenshot.
-* Before/after update evidence.
+This avoids problems caused by different time zones.
 
 ---
 
-# 9️⃣ Drill 09 - Projection DTO
+## 5. Decimal for Money
 
-### Concept
-
-LINQ `Select` Projection
-
-### Objective
-
-Return DTOs instead of exposing EF Core entities directly.
-
-### Required DTOs
-
-```text
-StudentListItemDto
-TrackDetailsDto
-```
-
-### Example
-
-Instead of returning the entire entity:
-
-```csharp
-_context.Students.ToList();
-```
-
-use projection:
-
-```csharp
-_context.Students
-    .Select(s => new StudentListItemDto
-    {
-        Id = s.Id,
-        FullName = s.FullName,
-        Email = s.Email
-    });
-```
-
-### Important Rule
-
-Return only the fields required by the use case.
-
-### Avoid
-
-Large navigation-heavy entity graphs.
-
-### Projection Advantage
-
-Projection allows EF Core to generate a query that selects only the required columns.
-
-### Expected Behavior
-
-List endpoint:
-
-```text
-Small DTO response
-```
-
-Details endpoint:
-
-```text
-Only required related information
-```
-
-Internal entity fields must not accidentally appear in API responses.
-
-### Evidence
-
-* Swagger response.
-* DTO code.
-* Projection code.
-
----
-
-# 🔟 Drill 10 - Pagination
-
-### Concept
-
-`Skip` / `Take` / `Count`
-
-### Objective
-
-Implement proper server-side pagination for a listing endpoint.
-
-### Query Parameters
-
-```http
-?pageNumber=1&pageSize=5
-```
-
-### Validation
-
-`pageNumber` must be:
-
-```text
->= 1
-```
-
-`pageSize` must be:
-
-```text
-1 - 50
-```
-
-### Pagination Formula
-
-```text
-skip = (pageNumber - 1) × pageSize
-```
+Payment amounts should use a decimal numeric type rather than floating-point values.
 
 Example:
 
 ```text
-pageNumber = 3
-pageSize = 5
-
-skip = (3 - 1) × 5
-     = 10
+decimal
 ```
 
-### Required Response
-
-The response must contain:
-
-```text
-items
-totalCount
-pageNumber
-pageSize
-totalPages
-```
-
-### Recommended DTO
-
-```text
-PaginationResult<T>
-```
-
-### Recommended EF Core Flow
-
-```csharp
-var totalCount = await query.CountAsync();
-
-var items = await query
-    .Skip((pageNumber - 1) * pageSize)
-    .Take(pageSize)
-    .ToListAsync();
-```
-
-### Important Performance Rule
-
-Do not load all records before calling `Skip()` and `Take()`.
-
-❌ Avoid:
-
-```csharp
-var data = await query.ToListAsync();
-
-var result = data
-    .Skip(...)
-    .Take(...);
-```
-
-✅ Prefer:
-
-```csharp
-var result = await query
-    .Skip(...)
-    .Take(...)
-    .ToListAsync();
-```
-
-This allows SQL Server to perform the pagination.
-
-### Expected Test Cases
-
-```text
-?pageNumber=1&pageSize=5
-```
-
-→ `200 OK`
-
-```text
-?pageNumber=0&pageSize=5
-```
-
-→ `400 Bad Request`
-
-```text
-?pageNumber=1&pageSize=100
-```
-
-→ `400 Bad Request`
-
-### Evidence
-
-* Swagger request.
-* Swagger response.
-* Pagination metadata.
-* README formula explanation.
+This is important for financial calculations.
 
 ---
 
-# 🔗 Relationship Summary
+## 6. Unique Business Identifiers
 
-The complete model developed throughout the drills can be visualized as:
+The following fields should be unique:
 
 ```text
-Student
-   │
-   ├─────────────── 1 : 1 ──────────────── StudentProfile
-   │
-   │
-   └─────────────── 1 : Many
-                         │
-                         ▼
-                    Enrollment
-                         │
-                         │ Many : 1
-                         ▼
-                   TrainingTrack
-                         │
-                         │ Many : 1
-                         ▼
-                     Instructor
+Student.Email
+Instructor.Email
+TrainingTrack.Code
+```
 
+This prevents duplicate business identifiers.
 
-Enrollment
+---
+
+# Project Structure
+
+```text
+phase-03-real-backend-data-systems/
+│
+├── task-01-ef-core-modeling-drills/
+│
+└── task-02-requirements-to-erd/
     │
-    │ 1 : 1
-    ▼
-PaymentSummary
+    ├── README.md
+    │
+    ├── ERD/
+    │   └── TechMaster-Academy-ERD.png
+    │
+    └── Documentation/
+        └── Business-Rules.md
 ```
 
-A simplified relationship view:
-
-```text
-Student
-  │
-  ├── StudentProfile
-  │
-  └── Enrollment
-          │
-          ├── TrainingTrack
-          │       └── Instructor
-          │
-          └── PaymentSummary
-```
+The exact file structure can be adjusted depending on the final project submission requirements.
 
 ---
 
-# 🗃️ Database Concepts Covered
 
-By completing this task, the following EF Core concepts are practiced:
-
-### Core EF Core
-
-* `DbContext`
-* `DbSet`
-* Entity Configuration
-* Connection Strings
-* Dependency Injection
-* Migrations
-* Database Updates
-
-### Relationships
-
-* One-to-One
-* One-to-Many
-* Many-to-Many
-* Join Entities
-* Foreign Keys
-* Navigation Properties
-* Collection Navigation Properties
-
-### Querying
-
-* `Include`
-* `ThenInclude`
-* `Select`
-* `Skip`
-* `Take`
-* `Count`
-* LINQ
-
-### Production Patterns
-
-* DTOs
-* Data Seeding
-* Soft Delete
-* Audit Fields
-* UTC timestamps
-* Pagination
-* Business Validation
-
----
-
-# 🧪 Evidence Checklist
-
-Each drill should provide evidence proving that the required behavior works.
-
-| Drill | Required Evidence                        | Status |
-| ----- | ---------------------------------------- | ------ |
-| 01    | Migration + Students table               | ⬜      |
-| 02    | One-to-One database relationship         | ⬜      |
-| 03    | Instructor/Track relationship + endpoint | ⬜      |
-| 04    | Enrollment ERD + table + GET response    | ⬜      |
-| 05    | PaymentSummary relationship              | ⬜      |
-| 06    | Seeded database records                  | ⬜      |
-| 07    | Soft-delete before/after evidence        | ⬜      |
-| 08    | CreatedAt/UpdatedAt evidence             | ⬜      |
-| 09    | DTO response + projection code           | ⬜      |
-| 10    | Swagger pagination + metadata            | ⬜      |
-
----
-
-# 🧱 Recommended Development Order
-
-The drills should be completed in the following order:
-
-```text
-Drill 01
-   ↓
-Drill 02
-   ↓
-Drill 03
-   ↓
-Drill 04
-   ↓
-Drill 05
-   ↓
-Drill 06
-   ↓
-Drill 07
-   ↓
-Drill 08
-   ↓
-Drill 09
-   ↓
-Drill 10
-```
-
-Each group builds on concepts introduced earlier.
-
----
-
-# 🔄 Migration Strategy
-
-Each database schema change should be represented by an EF Core migration.
-
-Example:
-
-```bash
-dotnet ef migrations add InitialStudentSchema
-dotnet ef database update
-```
-
-Then later:
-
-```bash
-dotnet ef migrations add AddStudentProfile
-dotnet ef database update
-```
-
-And similarly for the remaining schema changes.
-
-### Migration Naming
-
-Recommended names:
-
-```text
-InitialStudentSchema
-AddStudentProfile
-AddInstructorsAndTracks
-AddEnrollments
-AddPaymentSummary
-AddSeedData
-AddSoftDeleteFields
-AddAuditFields
-```
-
----
-
-# 📸 Documentation & Evidence
-
-Database screenshots are stored separately in the project documentation/Drive as required.
-
-Evidence should demonstrate:
-
-1. Database tables exist.
-2. Foreign Keys are correctly configured.
-3. Relationships match the intended model.
-4. Seed data exists.
-5. Soft Delete keeps records in the database.
-6. Audit fields are populated.
-7. DTO projection returns the intended shape.
-8. Pagination returns correct metadata.
-
----
-
-# 📦 Commit Strategy
-
-Commits should be made after every **2–3 drills** to keep the development history clear.
-
-Example:
-
-```text
-feat: complete EF Core drills 01-03
-feat: complete EF Core drills 04-06
-feat: complete EF Core drills 07-08
-feat: complete EF Core drills 09-10
-```
-
----
-
-# 🎯 Final Learning Outcomes
+# Learning Outcomes
 
 After completing this task, I should be able to:
 
-* Create an EF Core `DbContext`.
-* Configure SQL Server.
-* Create and apply migrations.
-* Design database relationships.
-* Configure Foreign Keys.
-* Use Navigation Properties.
-* Understand One-to-One relationships.
-* Understand One-to-Many relationships.
-* Implement Many-to-Many relationships using a Join Entity.
-* Query related data using `Include` and `ThenInclude`.
-* Seed development data safely.
-* Implement Soft Delete.
-* Track entity creation and modification times.
-* Use DTO projection with `Select`.
-* Build server-side pagination.
-* Validate pagination parameters.
-* Understand the difference between database-side and memory-side operations.
-* Verify database changes using SQL Server and API responses.
+* Read backend business requirements and extract database requirements.
+* Identify entities from a real-world scenario.
+* Identify relationships between entities.
+* Understand one-to-one, one-to-many, and many-to-many relationships.
+* Understand why some many-to-many relationships require an explicit junction entity.
+* Identify primary keys and foreign keys.
+* Define database constraints and business rules.
+* Design an ERD before writing EF Core code.
+* Translate business requirements into a relational database structure.
+* Prepare a clean database model for the next implementation phase.
 
 ---
 
-# 🚀 Preparation for the Training Center API
+# Final Architecture
 
-These drills form the database foundation for the upcoming **Training Center API**.
-
-The final project will build on the same concepts:
+The final conceptual model is:
 
 ```text
-Students
-   │
-   ├── Profiles
-   │
-   └── Enrollments
-          │
-          ├── Tracks
-          │      └── Instructors
-          │
-          └── Payment Summaries
+                    Instructor
+                         │
+                         │ 1 : Many
+                         ▼
+                  TrainingTrack
+                         │
+                         │ 1 : Many
+                         ▼
+Student ───────────> Enrollment
+  1                    │
+                       │ 1 : Many
+                       ▼
+                    Payment
 ```
 
-The purpose of this drill pack is not only to make the API work, but to understand **why the database is modeled this way and how EF Core translates that model into a real SQL Server database**.
-
----
-
-## ✅ Task Completion
+More precisely:
 
 ```text
-[ ] Drill 01 - DbContext & First Migration
-[ ] Drill 02 - One-to-One Student Profile
-[ ] Drill 03 - One-to-Many Instructor Tracks
-[ ] Drill 04 - Many-to-Many Enrollment
-[ ] Drill 05 - Payment Summary
-[ ] Drill 06 - Seed Data
-[ ] Drill 07 - Soft Delete
-[ ] Drill 08 - Audit Fields
-[ ] Drill 09 - Projection DTO
-[ ] Drill 10 - Pagination
+Student 1 ───────< Enrollment >─────── 1 TrainingTrack
+                                          │
+                                          │
+                                          ▼
+                                      Instructor
+
+Enrollment 1 ───────< Payment
 ```
 
-### Task Status
-
-**10 / 10 Drills Required**
-
-**Phase 03 - Real Backend Data Systems**
+This design provides a normalized relational structure that can later be implemented using **ASP.NET Core + EF Core + SQL Server**.

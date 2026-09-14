@@ -7,7 +7,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
-using TrainingCenter.DAL.Repositories.Specifications;
+using TrainingCenter.DAL.Specifications;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
@@ -21,9 +21,6 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         //}/ status Change enrollment status using valid transitions.
         //GET / api / students /{ id}/ enrollments Return student enrollment history.
         //GET /api/tracks/{id}/ students
-
-
-        public Task<IEnumerable<Enrollment>> GetAll(ISpecification<Enrollment> spec);
 
         public Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec);
 

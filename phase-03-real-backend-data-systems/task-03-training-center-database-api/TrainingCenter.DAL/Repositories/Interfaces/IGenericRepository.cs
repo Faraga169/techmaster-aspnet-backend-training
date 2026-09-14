@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.presistent.Models;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity<int>
     {
-        public Task<IEnumerable<TEntity>> GetAll();
+        public Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity> spec);
 
-        public Task<TEntity?> GetById(int id);
+        public Task<TEntity?> GetById(ISpecification<TEntity> spec);
 
         public Task Create(TEntity entity);
 

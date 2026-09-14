@@ -8,29 +8,29 @@ using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
-using TrainingCenter.DAL.Repositories.Specifications;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
     public class EnrollmentRepository(AppDbContext dbContext) : GenericRepository<Enrollment>(dbContext),IEnrollmentRepository
     {
 
-        public async Task<IEnumerable<Enrollment>> GetAll(ISpecification<Enrollment> spec)
-        {
-            var query = dbContext.Enrollmets.AsNoTracking().AsQueryable();
+        //public async Task<IEnumerable<Enrollment>> GetAll(ISpecification<Enrollment> spec)
+        //{
+        //    var query = dbContext.Enrollmets.AsNoTracking().AsQueryable();
 
-            query = SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
+        //    query = SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
 
-            return await query.ToListAsync();
+        //    return await query.ToListAsync();
 
-        }
+        //}
 
-        public async Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec)
-        {
-            var query =  dbContext.Enrollmets.AsNoTracking();
-            query= SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
-            return await query.FirstOrDefaultAsync();
-        }
+        //public async Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec)
+        //{
+        //    var query =  dbContext.Enrollmets.AsNoTracking();
+        //    query= SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
+        //    return await query.FirstOrDefaultAsync();
+        //}
         
         public async Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(ISpecification<Enrollment> spec)
         {

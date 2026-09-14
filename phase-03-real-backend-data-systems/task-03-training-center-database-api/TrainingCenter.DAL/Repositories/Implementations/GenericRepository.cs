@@ -8,23 +8,26 @@ using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
     public class GenericRepository<TEntity>(AppDbContext dbContext) : IGenericRepository<TEntity> where TEntity:BaseEntity<int>
     {
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity> spec)
         {
-            var Entities = await dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
-            return Entities;
+            var query = dbContext.Set<TEntity>().AsNoTracking();
+            query = SpecificationEvaluator<TEntity>.GetQuery(query, spec);
+            return await query.ToListAsync();
         }
 
 
-        public async Task<TEntity?> GetById(int id)
+        public async Task<TEntity?> GetById(ISpecification<TEntity> spec)
         {
-            var entity = await dbContext.Set<TEntity>().FindAsync(id);
-            return entity;
+            var query = dbContext.Set<TEntity>().AsNoTracking();
+            query = SpecificationEvaluator<TEntity>.GetQuery(query, spec);
+            return await query.FirstOrDefaultAsync();
         }
 
 
@@ -47,6 +50,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
                 return false;
 
             entity.IsDeleted = true;
+            entity.DeletedAt = DateTime.UtcNow;
             return true;
         }
 

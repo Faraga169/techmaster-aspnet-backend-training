@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
-using TrainingCenter.DAL.Repositories.Specifications;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
 {

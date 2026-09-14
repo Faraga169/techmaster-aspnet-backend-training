@@ -24,7 +24,6 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
 
-        [Range(0,100,ErrorMessage ="Progress Percentage must between 0 and 100")]
         public decimal ProgressPercentage { get; set; }
 
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;

@@ -30,10 +30,7 @@ namespace TrainingCenter.DAL.Persistent
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
                 }
 
-                else {
-
-                    entry.Entity.DeletedAt = DateTime.UtcNow;
-                }
+                
             }
 
             return await base.SaveChangesAsync(cancellationToken);

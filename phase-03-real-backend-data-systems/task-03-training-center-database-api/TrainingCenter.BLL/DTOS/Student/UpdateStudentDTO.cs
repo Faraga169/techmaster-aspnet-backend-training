@@ -4,23 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using TrainingCenter.DAL.Persistent.Models;
 
-namespace TrainingCenter.DAL.presistent.Models
+namespace TrainingCenter.BLL.DTOS.Student
 {
-    public class Student:BaseEntity<int>
+    public class UpdateStudentDTO
     {
+        public int Id { get; set; }
+
         public string FullName { get; set; } = null!;
 
+        [EmailAddress]
         public string Email { get; set; } = null!;
 
+        [Phone]
         public string? PhoneNumber { get; set; }
 
         public bool IsActive { get; set; } = true;
 
-
-        public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
-
+        public DateTime UpdatedAt { get; set; }
     }
 }

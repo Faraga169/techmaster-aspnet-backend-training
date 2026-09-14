@@ -8,16 +8,18 @@ using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
+using TrainingCenter.DAL.Repositories.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
     public class InstructorRepository(AppDbContext dbContext) : GenericRepository<Instructor>(dbContext),IInstructorRepository
     {
        
-        public async Task<IEnumerable<TrainingTrack>> GetTracksByInstructorId(int id)
+        public async Task<IEnumerable<TrainingTrack>> GetTracksByInstructorId(int id,ISpecification<TrainingTrack> spec)
         {
-            var TracksByInstructor = await dbContext.TrainingTracks.AsNoTracking().Where(t => t.InstructorId == id).ToListAsync();
-            return TracksByInstructor;
+            var query = dbContext.TrainingTracks.AsNoTracking();
+             query=SpecificationEvaluator<TrainingTrack>.GetQuery(query,spec);
+            return await query.ToListAsync();
         }
     }
 }

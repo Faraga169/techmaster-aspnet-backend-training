@@ -8,45 +8,44 @@ using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
+using TrainingCenter.DAL.Repositories.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
     public class EnrollmentRepository(AppDbContext dbContext) : GenericRepository<Enrollment>(dbContext),IEnrollmentRepository
     {
 
-        public async Task<IEnumerable<Enrollment>> GetAll(EnrollmentStatus? status, int? trackId, int? StudentId, PaymentStatus? PaymentStatus)
+        public async Task<IEnumerable<Enrollment>> GetAll(ISpecification<Enrollment> spec)
         {
             var query = dbContext.Enrollmets.AsNoTracking().AsQueryable();
 
-            if (status is not null)
-                query = query.Where(e => e.Status==status.Value);
-            if(trackId is not null)
-                query = query.Where(e => e.TrainingTrackId == trackId);
-            if (StudentId is not null) 
-                query = query.Where(e => e.StudentId == StudentId);
-            if(PaymentStatus is not null)
-                query = query.Where(e => e.Payments.Any(p=>p.Status==PaymentStatus.Value));
+            query = SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
 
             return await query.ToListAsync();
 
         }
 
-        public async Task<Enrollment?> GetByIdWithDetails(int id)
+        public async Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec)
         {
-            var Enrollment = await dbContext.Enrollmets.AsNoTracking().Include(e=>e.Payments).Include(e=>e.TrainingTrack).Include(e=>e.Student).FirstOrDefaultAsync(e=>e.Id==id);
-            return Enrollment;
+            var query =  dbContext.Enrollmets.AsNoTracking();
+            query= SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
+            return await query.FirstOrDefaultAsync();
         }
         
-        public async Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(int studentid)
+        public async Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(ISpecification<Enrollment> spec)
         {
-            var EnrollmentsByStudentId = await dbContext.Enrollmets.AsNoTracking().Where(e => e.StudentId == studentid).ToListAsync();
-            return EnrollmentsByStudentId;
+            var query = dbContext.Enrollmets.AsNoTracking();
+            query = SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
+            return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByTrackId(int trackid)
+        public async Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Student> spec)
         {
-            var EnrollmentsByStudentId = await dbContext.Students.AsNoTracking().Where(s=>s.Enrollments.Any(e=>e.TrainingTrackId==trackid)).ToListAsync();
-            return EnrollmentsByStudentId;
+            var query = dbContext.Students.AsNoTracking();
+            query = SpecificationEvaluator<Student>.GetQuery(query, spec);
+            return await query.ToListAsync();
+            //var EnrollmentsByStudentId = await dbContext.Students.AsNoTracking().Where(s=>s.Enrollments.Any(e=>e.TrainingTrackId==trackid)).ToListAsync();
+            //return EnrollmentsByStudentId;
         }
 
        

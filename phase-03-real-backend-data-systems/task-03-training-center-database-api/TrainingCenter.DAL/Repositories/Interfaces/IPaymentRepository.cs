@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.Repositories.Specifications;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -19,9 +20,9 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         //    }/payments Return payment history for enrollment.
         //PUT /api/payments/{id
         //}/ status Update payment status.
-        Task<IEnumerable<Payment>> GetAll(DateTime? from,DateTime? to,PaymentStatus? paymentStatus);
+        Task<IEnumerable<Payment>> GetAll(ISpecification<Payment> spec);
 
-        Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(int enrollmentId);
+        Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(ISpecification<Payment> spec);
 
 
     }

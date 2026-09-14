@@ -7,6 +7,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
+using TrainingCenter.DAL.Repositories.Specifications;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
@@ -22,13 +23,13 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         //GET /api/tracks/{id}/ students
 
 
-        public Task<IEnumerable<Enrollment>> GetAll(EnrollmentStatus? status, int? trackId, int? StudentId, PaymentStatus? PaymentStatus);
+        public Task<IEnumerable<Enrollment>> GetAll(ISpecification<Enrollment> spec);
 
-        public Task<Enrollment?> GetByIdWithDetails(int id);
+        public Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec);
 
-        public Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(int studentid);
+        public Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(ISpecification<Enrollment> spec);
 
-        public Task<IEnumerable<Student>> GetStudentsByTrackId(int trackid);
+        public Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Enrollment> spec);
 
 
 

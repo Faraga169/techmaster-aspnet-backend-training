@@ -13,9 +13,9 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
         public Task<TEntity?> GetById(int id);
 
-        public Task<int> Create(TEntity entity);
+        public Task Create(TEntity entity);
 
-        public Task<int> Update(TEntity entity);
+        public Task Update(TEntity entity);
 
         public Task<bool> Delete(int id);
     }

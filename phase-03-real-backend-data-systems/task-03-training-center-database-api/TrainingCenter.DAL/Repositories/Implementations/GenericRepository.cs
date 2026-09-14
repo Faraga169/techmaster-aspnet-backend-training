@@ -28,17 +28,15 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         }
 
 
-        public async Task<int> Create(TEntity entity)
+        public async Task Create(TEntity entity)
         {
             await dbContext.Set<TEntity>().AddAsync(entity);
-            return await dbContext.SaveChangesAsync();
         }
 
 
-        public async Task<int> Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
             dbContext.Update(entity);
-            return await dbContext.SaveChangesAsync();
         }
 
 
@@ -49,7 +47,6 @@ namespace TrainingCenter.DAL.Repositories.Implementations
                 return false;
 
             entity.IsDeleted = true;
-            await dbContext.SaveChangesAsync();
             return true;
         }
 

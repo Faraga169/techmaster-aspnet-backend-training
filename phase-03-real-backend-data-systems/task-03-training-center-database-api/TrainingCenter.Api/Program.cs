@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using TrainingCenter.Api.Data;
+using TrainingCenter.DAL.Persistent;
 
 namespace TrainingCenter.Api
 {

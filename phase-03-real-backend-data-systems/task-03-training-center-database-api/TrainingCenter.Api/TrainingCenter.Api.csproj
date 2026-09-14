@@ -23,4 +23,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TrainingCenter.BLL\TrainingCenter.BLL.csproj" />
+  </ItemGroup>
+
 </Project>

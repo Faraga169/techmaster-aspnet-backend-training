@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TrainingCenter.DAL.Persistent.Models
 {
-    internal class TrackLevel
+    public enum TrackLevel
     {
+        Beginner=1,
+        Intermediate,
+        Advanced
     }
 }

@@ -88,11 +88,18 @@
     <File Path="phase-03-real-backend-data-systems/Task 00 - Workspace &amp; Environment Setup/README.md" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/">
-    <Project Path="phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/Drill 01-DbContext &amp; First Migration/EF Core Modeling Drill Pack.csproj" Id="c0232224-ac2f-41fb-8762-a911c9cd7d02" />
+    <Project Path="phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/EF Core Modeling Drill Pack/EF Core Modeling Drill Pack.csproj" />
   </Folder>
-  <Folder Name="/phase-03-real-backend-data-systems/task-02-requirements-to-erd/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-02-requirements-to-erd/">
+    <File Path="phase-03-real-backend-data-systems/task-02-requirements-to-erd/README.md" />
+  </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/task-02-requirements-to-erd/ERD/">
+    <File Path="phase-03-real-backend-data-systems/task-02-requirements-to-erd/ERD/training-center-erd.pdf" />
+  </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-03-training-center-database-api/">
     <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.Api/TrainingCenter.Api.csproj" Id="5848ed8b-2ec1-43c3-a804-71dd831b28fe" />
+    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.BLL/TrainingCenter.BLL.csproj" Id="d33d8e25-e585-488d-9680-ce76331e6854" />
+    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.DAL/TrainingCenter.DAL.csproj" Id="06b263b2-2131-4b53-a8ca-554320df6f95" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-04-querying-filtering-reporting/" />
   <Folder Name="/phase-03-real-backend-data-systems/task-05-business-rules-data-integrity/" />

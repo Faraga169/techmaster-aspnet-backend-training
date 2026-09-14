@@ -24,6 +24,5 @@ namespace TrainingCenter.DAL.presistent.Models
 
         public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
 
-        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
     }
 }

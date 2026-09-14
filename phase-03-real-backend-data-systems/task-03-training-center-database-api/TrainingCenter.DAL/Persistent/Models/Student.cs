@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.DAL.presistent.Models
 {
@@ -19,5 +20,10 @@ namespace TrainingCenter.DAL.presistent.Models
         public string? PhoneNumber { get; set; }
 
         public bool IsActive{ get; set; }
+
+
+        public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
+
+        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
     }
 }

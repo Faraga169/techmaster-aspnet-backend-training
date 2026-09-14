@@ -22,7 +22,7 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         //GET /api/tracks/{id}/ students
 
 
-        public Task<IEnumerable<Enrollment>> GetAll(string? status,int? trackId,int? StudentId,string? PaymentStatus);
+        public Task<IEnumerable<Enrollment>> GetAll(EnrollmentStatus? status, int? trackId, int? StudentId, PaymentStatus? PaymentStatus);
 
         public Task<Enrollment?> GetById(int id);
 
@@ -32,7 +32,7 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
         public Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(int studentid);
 
-        public Task<IEnumerable<Student>> GetEnrollmentsbyTrackId(int trackid);
+        public Task<IEnumerable<Student>> GetStudentsByTrackId(int trackid);
 
 
 

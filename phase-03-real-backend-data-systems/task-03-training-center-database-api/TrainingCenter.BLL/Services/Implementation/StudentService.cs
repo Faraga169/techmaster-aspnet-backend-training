@@ -79,7 +79,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             await unitOfWork.Repository<Student>().Delete(id);
             await unitOfWork.CompleteChanges();
-
+            return true;
         }
 
         

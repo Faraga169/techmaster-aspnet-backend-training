@@ -11,7 +11,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
-    public class EnrollmentRepository(AppDbContext dbContext) : IEnrollmentRepository
+    public class EnrollmentRepository(AppDbContext dbContext) : GenericRepository<Enrollment>(dbContext),IEnrollmentRepository
     {
 
         public async Task<IEnumerable<Enrollment>> GetAll(EnrollmentStatus? status, int? trackId, int? StudentId, PaymentStatus? PaymentStatus)
@@ -31,36 +31,21 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
         }
 
-
-        public async Task<Enrollment?> GetById(int id)
+        public async Task<Enrollment?> GetByIdWithDetails(int id)
         {
-            var Enrollment = await dbContext.Enrollmets.Include(e=>e.Payments).Include(e=>e.TrainingTrack).Include(e=>e.Student).FirstOrDefaultAsync(e=>e.Id==id);
+            var Enrollment = await dbContext.Enrollmets.AsNoTracking().Include(e=>e.Payments).Include(e=>e.TrainingTrack).Include(e=>e.Student).FirstOrDefaultAsync(e=>e.Id==id);
             return Enrollment;
         }
         
-
-        public async Task<int> Create(Enrollment enrollment)
-        {
-            await dbContext.Enrollmets.AddAsync(enrollment);
-            return await dbContext.SaveChangesAsync();
-        }
-
-        public async Task<int> Update(Enrollment enrollment)
-        {
-            dbContext.Update(enrollment);
-            return await dbContext.SaveChangesAsync();
-        }
-
-
         public async Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(int studentid)
         {
-            var EnrollmentsByStudentId = await dbContext.Enrollmets.Where(e => e.StudentId == studentid).ToListAsync();
+            var EnrollmentsByStudentId = await dbContext.Enrollmets.AsNoTracking().Where(e => e.StudentId == studentid).ToListAsync();
             return EnrollmentsByStudentId;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsEnrollbyTrackId(int trackid)
+        public async Task<IEnumerable<Student>> GetStudentsByTrackId(int trackid)
         {
-            var EnrollmentsByStudentId = await dbContext.Students.Where(s=>s.Enrollments.Any(e=>e.TrainingTrackId==trackid)).ToListAsync();
+            var EnrollmentsByStudentId = await dbContext.Students.AsNoTracking().Where(s=>s.Enrollments.Any(e=>e.TrainingTrackId==trackid)).ToListAsync();
             return EnrollmentsByStudentId;
         }
 

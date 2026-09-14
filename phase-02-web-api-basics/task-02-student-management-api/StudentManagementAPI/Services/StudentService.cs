@@ -59,46 +59,33 @@ namespace StudentManagementAPI.Services
         }
 
         public PagedResultResponse GetAll(string?name,string?email,string?trackName,bool? IsActive,int pagenumber=1,int pagesize=5) {
+            var students= StudentSeeding.Students.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(trackName))
+                 students = students.Where(s => s.TrackName.Equals(trackName, StringComparison.OrdinalIgnoreCase)); 
             
-           
-            var students= StudentSeeding.Students;
-            if (!string.IsNullOrWhiteSpace(trackName)) {
+            if (IsActive is not null) 
+                students = students.Where(s => s.IsActive==IsActive);
 
-                 students = students.Where(s => s.TrackName.Equals(trackName, StringComparison.OrdinalIgnoreCase)).ToList();
-               
-            }
-            if (IsActive is not null) {
-                students = students.Where(s => s.IsActive==IsActive).ToList();
-            }
-            if (!string.IsNullOrWhiteSpace(name)) {
-                students = students.Where(s => s.FullName.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
+            if (!string.IsNullOrWhiteSpace(name)) 
+                students = students.Where(s => s.FullName.Contains(name, StringComparison.OrdinalIgnoreCase));
 
-            if (!string.IsNullOrWhiteSpace(email)) {
-                students = students.Where(s => s.Email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
+            if (!string.IsNullOrWhiteSpace(email)) 
+                students = students.Where(s => s.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
-            if (pagesize <= 0) { 
-            
+            if (pagesize <= 0)
                 throw new BusinessException("Page size must be greater than 0",400);
-            }
 
-            if (pagenumber <= 0) {
-
+            if (pagenumber <= 0) 
                 throw new BusinessException("Page number must be greater than 0", 400);
-
-            }
 
             var TotalCount = students.Count();
             var numberofpages = (int)Math.Ceiling((decimal)TotalCount / pagesize);
-            if (pagenumber > numberofpages && numberofpages>0)
-            {
-                throw new BusinessException($"Page number must be in range between 1 and {numberofpages}", 400);
-            }
 
-               
-                students = students.Skip((pagenumber - 1) * pagesize).Take(pagesize).ToList();
-             
+            if (pagenumber > numberofpages && numberofpages>0)
+                throw new BusinessException($"Page number must be in range between 1 and {numberofpages}", 400);
+            
+                students = students.Skip((pagenumber - 1) * pagesize).Take(pagesize);
 
             var pagedResultDTO = new PagedResultResponse()
             {
@@ -109,6 +96,7 @@ namespace StudentManagementAPI.Services
                 TotalPages = numberofpages,
                 Students = students.ToList(),
             };
+
             return pagedResultDTO;
 
         }

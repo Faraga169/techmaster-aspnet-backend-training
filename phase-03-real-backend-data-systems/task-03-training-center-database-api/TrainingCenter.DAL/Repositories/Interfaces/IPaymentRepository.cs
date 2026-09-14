@@ -11,7 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
 {
-    public interface IPaymentRepository
+    public interface IPaymentRepository:IGenericRepository<Payment>
     {
         //        GET /api/payments Return payments with date range and status filter.
         //POST / api / payments Create payment for enrollment.
@@ -22,13 +22,6 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         Task<IEnumerable<Payment>> GetAll(DateTime? from,DateTime? to,PaymentStatus? paymentStatus);
 
         Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(int enrollmentId);
-
-        public Task<int> Create(Payment payment);
-
-        public Task<int> Update(Payment payment);
-
-
-
 
 
     }

@@ -7,17 +7,16 @@ using TrainingCenter.DAL.presistent.Models;
 
 namespace TrainingCenter.DAL.Repositories.Interfaces
 {
-    public interface IStudentRepository
+    public interface IGenericRepository<TEntity> where TEntity : BaseEntity<int>
     {
-        public  Task<IEnumerable<Student>> GetAll();
+        public Task<IEnumerable<TEntity>> GetAll();
 
-        public Task<Student?> GetById(int id);
+        public Task<TEntity?> GetById(int id);
 
-        public Task<int> Create(Student student);
+        public Task<int> Create(TEntity entity);
 
-        public Task<int> Update(Student student);
+        public Task<int> Update(TEntity entity);
 
         public Task<bool> Delete(int id);
-
     }
 }

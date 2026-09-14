@@ -48,7 +48,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         public async Task<IEnumerable<RevenueByTrackResult>> GetRevenueByTrack()
         {
             return await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid)
-                                      .GroupBy(p => p.Enrollment.TrainingTrackId)
+                                      .GroupBy(p => p.Enrollment!.TrainingTrackId)
                                       .Select(g => 
                                       new RevenueByTrackResult 
                                       { 

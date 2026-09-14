@@ -12,7 +12,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
-    public class PaymentRepository(AppDbContext dbContext) : IPaymentRepository
+    public class PaymentRepository(AppDbContext dbContext) :GenericRepository<Payment>(dbContext) ,IPaymentRepository
     {
 
         public async Task<IEnumerable<Payment>> GetAll(DateTime? from, DateTime? to, PaymentStatus? paymentStatus)
@@ -27,17 +27,6 @@ namespace TrainingCenter.DAL.Repositories.Implementations
                 query = query.Where(p=>p.Status==paymentStatus.Value);
             return await query.ToListAsync();
 
-        }
-        public async Task<int> Create(Payment payment)
-        {
-            await dbContext.Payments.AddAsync(payment);
-            return await dbContext.SaveChangesAsync();
-        }
-
-        public async Task<int> Update(Payment payment)
-        {
-            dbContext.Update(payment);
-            return await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(int enrollmentId)

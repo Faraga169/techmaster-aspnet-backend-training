@@ -11,40 +11,12 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
-    public class InstructorRepository(AppDbContext dbContext) : IInstructorRepository
+    public class InstructorRepository(AppDbContext dbContext) : GenericRepository<Instructor>(dbContext),IInstructorRepository
     {
-
-        public async Task<IEnumerable<Instructor>> GetAll()
-        {
-            var Instructors = await dbContext.Instructors.AsNoTracking().ToListAsync();
-            return Instructors;
-        }
-
-
-
-        public async Task<Instructor?> GetById(int id)
-        {
-            var Instructor = await dbContext.Instructors.FindAsync(id);
-            return Instructor;
-        }
-
-
-        public async Task<int> Create(Instructor instructor)
-        {
-            await dbContext.Instructors.AddAsync(instructor);
-            return await dbContext.SaveChangesAsync();
-        }
-
-
-        public async Task<int> Update(Instructor instructor)
-        {
-            dbContext.Update(instructor);
-            return await dbContext.SaveChangesAsync();
-        }
-
+       
         public async Task<IEnumerable<TrainingTrack>> GetTracksByInstructorId(int id)
         {
-            var TracksByInstructor = await dbContext.TrainingTracks.AsNoTracking().Where(i => i.Id == id).ToListAsync();
+            var TracksByInstructor = await dbContext.TrainingTracks.AsNoTracking().Where(t => t.InstructorId == id).ToListAsync();
             return TracksByInstructor;
         }
     }

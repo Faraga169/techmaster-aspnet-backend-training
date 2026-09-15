@@ -31,7 +31,6 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public TrackLevel Level { get; set; }
 
-        [Range(1,30,ErrorMessage ="The Capacity of Track must between 1 and 30")]
         public int Capacity { get; set; }
 
         public DateTime StartDate { get; set; }

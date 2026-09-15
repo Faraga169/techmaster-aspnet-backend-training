@@ -45,7 +45,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             return EnrollmentDetailsDTO;
         }
 
-        public async Task Create(CreateEnrollDTO enroll)
+        public async Task<EnrollmentDTO> Create(CreateEnrollDTO enroll)
         {
             var studentspec = new StudentByIdSpecification(enroll.StudentId);
             var student = await unitOfWork.Repository<Student>().GetById(studentspec);
@@ -78,10 +78,13 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Enrollment>().Create(enrollment);
 
             await unitOfWork.CompleteChanges();
+
+            return mapper.Map<EnrollmentDTO>(enrollment);
+
         }
 
 
-        public async Task Update(UpdateEnrollDTO enroll)
+        public async Task<EnrollmentDTO> Update(UpdateEnrollDTO enroll)
         {
             var spec = new EnrollByIdSpecification(enroll.Id);
 
@@ -98,6 +101,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Enrollment>().Update(enrollment);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<EnrollmentDTO>(enrollment);
         }
 
         public async Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id)

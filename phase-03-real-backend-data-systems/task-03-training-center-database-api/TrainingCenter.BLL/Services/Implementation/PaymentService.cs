@@ -29,7 +29,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             var PaymentsDTO = mapper.Map<IEnumerable<Payment>, IEnumerable<PaymentDTO>>(GetAllPayments);
             return PaymentsDTO;
         }
-        public async Task Create(CreatePaymentDTO paymentdto)
+        public async Task<PaymentDTO> Create(CreatePaymentDTO paymentdto)
         {
             if(paymentdto.Amount<=0)
                 throw new BusinessException("Amount must be positive", 400);
@@ -50,9 +50,10 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Payment>().Create(payment);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<PaymentDTO>(payment);
         }
 
-        public async Task Update(UpdatePaymentDTO paymentdto)
+        public async Task<PaymentDTO> Update(UpdatePaymentDTO paymentdto)
         {
             var spec = new PaymentByIdSpecification(paymentdto.Id);
 
@@ -70,6 +71,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Payment>().Update(payment);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<PaymentDTO>(payment);
         }
 
         public async Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id)

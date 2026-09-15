@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudentManagementAPI.Exceptions;
+using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Interface;
@@ -39,7 +40,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             return TrackDetailsDTO;
         }
 
-        public async Task Create(CreateTrackDTO trackdto)
+        public async Task<TrackDTO> Create(CreateTrackDTO trackdto)
         {
             if(trackdto.Capacity<1 || trackdto.Capacity>30)
                 throw new BusinessException("Track capacity must in range between 1 to 30", 400);
@@ -53,10 +54,11 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<TrainingTrack>().Create(track);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<TrackDTO>(track);
         }
 
 
-        public async Task Update(UpdateTrackDTO trackdto)
+        public async Task<TrackDTO> Update(UpdateTrackDTO trackdto)
         {
             if (trackdto.Capacity < 1 || trackdto.Capacity > 30)
                 throw new BusinessException("Track capacity must in range between 1 to 30", 400);
@@ -83,8 +85,9 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<TrainingTrack>().Update(track);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<TrackDTO>(track);
 
-           
+
         }
         public async Task<bool> Delete(int id)
         {

@@ -13,7 +13,7 @@ namespace TrainingCenter.BLL.AutoMapper
     {
         public PaymentProfile()
         {
-            CreateMap<Payment, PaymentDTO>();
+            CreateMap<Payment, PaymentDTO>().ReverseMap().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<CreatePaymentDTO, Payment>();
             CreateMap<UpdatePaymentDTO, Payment>();
         }

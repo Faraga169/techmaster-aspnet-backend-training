@@ -21,6 +21,5 @@ namespace TrainingCenter.BLL.DTOS.Student
 
         public bool IsActive { get; set; } = true;
 
-        public DateTime UpdatedAt { get; set; }
     }
 }

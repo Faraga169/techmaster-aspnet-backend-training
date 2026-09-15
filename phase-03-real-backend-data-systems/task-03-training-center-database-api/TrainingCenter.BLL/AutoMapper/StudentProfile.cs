@@ -15,7 +15,7 @@ namespace TrainingCenter.BLL.AutoMapper
     {
         public StudentProfile()
         {
-            CreateMap<Student, StudentDTO>();
+            CreateMap<Student, StudentDTO>().ReverseMap();
             CreateMap<Student, StudentEnrollmentDTO>();
             CreateMap<CreateStudentDTO, Student>();
             CreateMap<UpdateStudentDTO, Student>();

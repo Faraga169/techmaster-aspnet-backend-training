@@ -15,10 +15,15 @@ namespace TrainingCenter.DAL.Repositories.Implementations
     public class GenericRepository<TEntity>(AppDbContext dbContext) : IGenericRepository<TEntity> where TEntity:BaseEntity<int>
     {
 
-        public async Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity> spec)
+        public async Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity>? spec=null)
         {
             var query = dbContext.Set<TEntity>().AsNoTracking();
-            query = SpecificationEvaluator<TEntity>.GetQuery(query, spec);
+            
+            if (spec is not null) {
+
+                query = SpecificationEvaluator<TEntity>.GetQuery(query, spec);
+            }
+           
             return await query.ToListAsync();
         }
 
@@ -54,10 +59,18 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             return true;
         }
 
-        
+        public async Task<int> Count(ISpecification<TEntity> specification)
+        {
+            var query = dbContext.Set<TEntity>().AsNoTracking();
 
-      
+            if (specification.Criteria is not null)
+                query = query.Where(specification.Criteria);
 
-       
+            return await query.CountAsync();
+        }
+
+
+
+
     }
 }

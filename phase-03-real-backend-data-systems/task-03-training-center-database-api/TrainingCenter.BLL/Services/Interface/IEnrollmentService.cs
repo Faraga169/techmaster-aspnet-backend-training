@@ -17,9 +17,9 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<EnrollmentDetailsDTO> GetById(int id);
 
-        public Task Create(CreateEnrollDTO enroll);
+        public Task<EnrollmentDTO> Create(CreateEnrollDTO enroll);
 
-        public Task Update(UpdateEnrollDTO enroll);
+        public Task<EnrollmentDTO> Update(UpdateEnrollDTO enroll);
 
         public Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id);
 

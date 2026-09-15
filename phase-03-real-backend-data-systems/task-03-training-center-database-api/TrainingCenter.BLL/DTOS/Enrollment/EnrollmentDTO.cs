@@ -21,5 +21,8 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
 
 
         public string? FinalResult { get; set; }
+
+        public int StudentId { get; set; }
+        public int TrainingTrackId { get; set; }
     }
 }

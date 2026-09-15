@@ -14,9 +14,9 @@ namespace TrainingCenter.BLL.Services.Interface
         public Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From ,DateTime? To,PaymentStatus? paymentStatus);
 
 
-        public Task Create(CreatePaymentDTO payment);
+        public Task<PaymentDTO> Create(CreatePaymentDTO payment);
 
-        public Task Update(UpdatePaymentDTO payment);
+        public Task<PaymentDTO> Update(UpdatePaymentDTO payment);
 
         public Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id);
 

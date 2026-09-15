@@ -4,12 +4,13 @@ using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Instructor;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
+using TrainingCenter.BLL.Services.Interface;
 
 namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstructorController(InstructorService instructorService) : ControllerBase
+    public class InstructorController(IInstrcutorService instructorService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll()

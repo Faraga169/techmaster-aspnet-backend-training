@@ -15,9 +15,9 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<TrackDetailsDTO> GetById(int id);
 
-        public Task Create(CreateTrackDTO track);
+        public Task<TrackDTO> Create(CreateTrackDTO track);
 
-        public Task Update(UpdateTrackDTO track);
+        public Task<TrackDTO> Update(UpdateTrackDTO track);
 
         public Task<bool> Delete(int id);
     }

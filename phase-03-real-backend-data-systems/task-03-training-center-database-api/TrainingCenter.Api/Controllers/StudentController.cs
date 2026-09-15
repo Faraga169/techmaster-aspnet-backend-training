@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
+using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
+using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 
 namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController(IStudentService studentService) : ControllerBase
+    public class StudentController(IStudentService studentService,IEnrollmentService enrollmentService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll(string? sreachbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5) {
@@ -82,8 +84,7 @@ namespace TrainingCenter.Api.Controllers
         [HttpGet("{id}/enrollments")]
         public async Task<IActionResult> GetEnrollments(int id)
         {
-            var result =
-                await enrollmentService.GetEnrollmentsbyStudentId(id);
+            var result =await enrollmentService.GetEnrollmentsbyStudentId(id);
 
             return Ok(new ApiResponse<IEnumerable<EnrollmentDTO>>
             {

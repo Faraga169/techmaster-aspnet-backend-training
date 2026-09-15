@@ -14,9 +14,9 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<StudentEnrollmentDTO> GetById(int id);
 
-        public Task<CreateStudentDTO> Create(CreateStudentDTO student);
+        public Task<StudentDTO> Create(CreateStudentDTO student);
 
-        public Task<UpdateStudentDTO> Update(UpdateStudentDTO student);
+        public Task<StudentDTO> Update(UpdateStudentDTO student);
 
         public Task<bool> Delete(int id);
     }

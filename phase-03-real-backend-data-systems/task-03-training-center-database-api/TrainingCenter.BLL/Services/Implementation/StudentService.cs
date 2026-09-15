@@ -51,7 +51,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             return StudentEnrollmentDTO;
 
         }
-        public async Task<CreateStudentDTO> Create(CreateStudentDTO dto)
+        public async Task<StudentDTO> Create(CreateStudentDTO dto)
         {
             var spec = new StudentByEmailSpecification(dto.Email);
 
@@ -65,16 +65,12 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Student>().Create(student);
 
             await unitOfWork.CompleteChanges();
-            return new CreatedStudentDTO
-            {
-                StudentId = student.Id,
-                FullName = student.FullName,
-                Email = student.Email
-            };
+
+            return mapper.Map<StudentDTO>(student);
         }
 
 
-        public async Task<UpdateStudentDTO> Update(UpdateStudentDTO dto)
+        public async Task<StudentDTO> Update(UpdateStudentDTO dto)
         {
             var spec = new StudentByIdSpecification(dto.Id);
 
@@ -88,6 +84,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Student>().Update(student);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<StudentDTO>(student);
         }
 
         public async Task<bool> Delete(int id)

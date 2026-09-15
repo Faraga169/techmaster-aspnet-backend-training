@@ -96,12 +96,12 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingEnroll?.Status == EnrollmentStatus.Completed)
                 throw new BusinessException("Enrollment status cannot be changes", 404);
 
-            var enrollment = mapper.Map<Enrollment>(enroll);
+            existingEnroll.Status = enroll.Status;
 
-            await unitOfWork.Repository<Enrollment>().Update(enrollment);
+            await unitOfWork.Repository<Enrollment>().Update(existingEnroll);
 
             await unitOfWork.CompleteChanges();
-            return mapper.Map<EnrollmentDTO>(enrollment);
+            return mapper.Map<EnrollmentDTO>(existingEnroll);
         }
 
         public async Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id)

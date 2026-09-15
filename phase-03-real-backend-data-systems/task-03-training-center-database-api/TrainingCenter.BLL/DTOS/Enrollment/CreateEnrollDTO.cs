@@ -9,7 +9,6 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
 {
     public class CreateEnrollDTO
     {
-        public DateTime EnrollmentDate { get; set; }
 
         public decimal ProgressPercentage { get; set; }
 

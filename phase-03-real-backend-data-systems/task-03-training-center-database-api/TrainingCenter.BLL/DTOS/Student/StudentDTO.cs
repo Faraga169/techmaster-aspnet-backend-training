@@ -10,6 +10,7 @@ namespace TrainingCenter.BLL.DTOS.Student
 {
     public class StudentDTO
     {
+        public int Id { get; set; }
         public string FullName { get; set; } = null!;
 
         [EmailAddress]

@@ -14,10 +14,11 @@ namespace TrainingCenter.BLL.Specifications.EnrollmentSpecification
         public EnrollmentBystatusandtrackidandstudentidandpaymentstatusspecification(EnrollmentStatus? status, int? trackid, int? studentid, PaymentStatus? paymentStatus)
         {
             AddCriteria(e =>
-   (!status.HasValue || e.Status == status.Value) &&
-   (!paymentStatus.HasValue || e.Payments.Any(p => p.Status == paymentStatus.Value) &&
-   (!trackid.HasValue || e.TrainingTrackId == trackid.Value) &&
-   (!studentid.HasValue || e.StudentId == studentid.Value)));
+            (!status.HasValue || e.Status == status.Value) &&
+            (!trackid.HasValue || e.TrainingTrackId == trackid.Value) &&
+            (!studentid.HasValue || e.StudentId == studentid.Value) &&
+            (!paymentStatus.HasValue ||e.Payments.Any(p => p.Status == paymentStatus.Value))
+        );
 
         }
     }

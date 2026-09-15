@@ -16,14 +16,13 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
         private readonly Dictionary<Type, object> _repositories = new();
 
-        public IGenericRepository<TEntity> GenericRepository<TEntity>() where TEntity : BaseEntity<int>
+        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<int>
         {
             var type = typeof(TEntity);
 
             if (!_repositories.TryGetValue(type, out var repository))
             {
                 repository = new GenericRepository<TEntity>(dbContext);
-
                 _repositories.Add(type, repository);
             }
 
@@ -73,11 +72,6 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         }
 
        
-
-        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<int>
-        {
-            throw new NotImplementedException();
-        }
 
         public IReportRepository ReportRepository()
         {

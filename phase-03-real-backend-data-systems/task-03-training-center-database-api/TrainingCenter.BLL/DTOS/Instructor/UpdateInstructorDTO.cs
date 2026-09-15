@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCenter.BLL.DTOS.Instructor
 {
-    internal class UpdateInstructorDTO
+    public class UpdateInstructorDTO
     {
 
         public int Id { get; set; }

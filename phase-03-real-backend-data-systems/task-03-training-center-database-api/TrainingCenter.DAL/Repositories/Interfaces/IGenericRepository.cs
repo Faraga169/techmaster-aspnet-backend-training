@@ -10,9 +10,9 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity<int>
     {
-        public Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity> spec);
+        public Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity>? spec=null);
 
-        public async Task<int> Count(ISpecification<TEntity> specification)
+        public Task<int> Count(ISpecification<TEntity> specification);
 
         public Task<TEntity?> GetById(ISpecification<TEntity> spec);
 

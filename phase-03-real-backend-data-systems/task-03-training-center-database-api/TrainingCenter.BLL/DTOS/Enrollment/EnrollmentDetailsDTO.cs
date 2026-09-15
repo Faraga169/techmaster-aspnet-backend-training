@@ -23,7 +23,7 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
         public string? FinalResult { get; set; }
         public StudentDTO Student { get; set; } = null!;
 
-        public TrackDTO Track { get; set; } = null!;
+        public TrackDTO TrainingTrack { get; set; } = null!;
 
         public List<PaymentDTO> Payments { get; set; } = new List<PaymentDTO>();
     }

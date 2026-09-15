@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
+using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.DTOS.Student;
+using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent.Models;
 
@@ -10,7 +12,7 @@ namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentController(IEnrollmentService enrollmentService) : ControllerBase
+    public class EnrollmentController(IEnrollmentService enrollmentService,IPaymentService paymentService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll(EnrollmentStatus? status,int? trackId, int? studentId, PaymentStatus? paymentStatus)
@@ -67,30 +69,20 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [HttpGet("/api/students/{id}/enrollments")]
-        public async Task<IActionResult> GetStudentEnrollments(int id)
-        {
-            var result =await enrollmentService.GetEnrollmentsbyStudentId(id);
 
-            return Ok(new ApiResponse<IEnumerable<EnrollmentDTO>>
+        [HttpGet("{id}/payments")]
+        public async Task<IActionResult> GetPaymentHistory(int id)
+        {
+            var result =await paymentService.GetPaymentHistory(id);
+
+            return Ok(new ApiResponse<IEnumerable<PaymentDTO>>
             {
                 Success = true,
-                Message = "Student enrollment history retrieved successfully.",
+                Message = "Payment history retrieved successfully.",
                 Data = result
             });
         }
 
-        [HttpGet("/api/tracks/{id}/students")]
-        public async Task<IActionResult> GetTrackStudents(int id)
-        {
-            var result =await enrollmentService.GetStudentsByTrackId(id);
 
-            return Ok(new ApiResponse<IEnumerable<StudentDTO>>
-            {
-                Success = true,
-                Message = "Track students retrieved successfully.",
-                Data = result
-            });
-        }
     }
 }

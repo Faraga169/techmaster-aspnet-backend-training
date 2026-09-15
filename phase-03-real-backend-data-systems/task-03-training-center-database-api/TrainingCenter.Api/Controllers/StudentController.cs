@@ -21,7 +21,7 @@ namespace TrainingCenter.Api.Controllers
             {
 
                 Success = true,
-                Message = "Student is Created Sucessfully!",
+                Message = "Students retrieved successfully.",
                 Data = result
             });
         }
@@ -54,9 +54,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
-     int id,
-     UpdateStudentDTO updateStudentDTO)
+        public async Task<IActionResult> Update(int id,UpdateStudentDTO updateStudentDTO)
         {
             updateStudentDTO.Id = id;
 
@@ -80,6 +78,20 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
+
+        [HttpGet("{id}/enrollments")]
+        public async Task<IActionResult> GetEnrollments(int id)
+        {
+            var result =
+                await enrollmentService.GetEnrollmentsbyStudentId(id);
+
+            return Ok(new ApiResponse<IEnumerable<EnrollmentDTO>>
+            {
+                Success = true,
+                Message = "Student enrollment history retrieved successfully.",
+                Data = result
+            });
+        }
 
 
     }

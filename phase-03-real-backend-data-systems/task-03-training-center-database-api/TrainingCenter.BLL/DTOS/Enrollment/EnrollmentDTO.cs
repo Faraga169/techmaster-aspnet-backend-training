@@ -10,6 +10,7 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
 {
     public class EnrollmentDTO
     {
+        public int Id { get; set; }
         public DateTime EnrollmentDate { get; set; }
 
 

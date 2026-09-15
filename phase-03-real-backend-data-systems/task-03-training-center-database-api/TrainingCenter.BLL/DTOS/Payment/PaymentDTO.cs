@@ -9,6 +9,7 @@ namespace TrainingCenter.BLL.DTOS.Payment
 {
     public class PaymentDTO
     {
+        public int Id { get; set; }
         public decimal Amount { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Student;
@@ -24,5 +25,62 @@ namespace TrainingCenter.Api.Controllers
                 Data = result
             });
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id) {
+
+            var result = await studentService.GetById(id);
+            return Ok(new ApiResponse<StudentEnrollmentDTO>()
+            {
+                Success = true,
+                Message = "Student with Enrollments",
+                Data = result
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateStudentDTO createStudentDTO)
+        {
+            var student=await studentService.Create(createStudentDTO);
+
+            return CreatedAtAction(nameof(GetById), new { id = student.Id }, new ApiResponse<StudentDTO>
+            {
+                Success = true,
+                Message = "Student created successfully.",
+                Data = student
+            });
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+     int id,
+     UpdateStudentDTO updateStudentDTO)
+        {
+            updateStudentDTO.Id = id;
+
+            var student = await studentService.Update(updateStudentDTO);
+
+            return Ok(new ApiResponse<StudentDTO>
+            {
+                Success = true,
+                Message = "Student updated successfully.",
+                Data = student
+            });
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await studentService.Delete(id);
+            return NoContent();
+
+
+        }
+
+
+
     }
 }

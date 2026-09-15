@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Metadata;
 using StudentManagementAPI.Exceptions;
+using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.BLL.Specifications.StudentSpecifications;
@@ -17,12 +18,27 @@ namespace TrainingCenter.BLL.Services.Implementation
     public class StudentService(IUnitOfWork unitOfWork,IMapper mapper) : IStudentService
     {
 
-        public async Task<IEnumerable<StudentDTO>> GetAll(string? searchbyName, bool? IsActive)
+        public async Task<PaginatedResult<StudentDTO>> GetAll(string? searchbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5)
         {
-            var StudentSpecification = new StudentBySearchNameorIsActiveSpecification(searchbyName, IsActive);
+            if (pagenumber < 1)
+                throw new BusinessException("Page number must be greater than 0", 400);
+
+            if (pagesize < 1)
+                throw new BusinessException("Page size must be greater than 0", 400);
+
+            var StudentSpecification = new StudentBySearchNameorIsActiveSpecification(searchbyName, IsActive,pagenumber,pagesize);
+            var totalCount = await unitOfWork.Repository<Student>().Count(StudentSpecification);
             var GetAllStudent = await unitOfWork.Repository<Student>().GetAll(StudentSpecification);
             var StudentsDTO = mapper.Map<IEnumerable<Student>,IEnumerable<StudentDTO>>(GetAllStudent);
-            return StudentsDTO;
+            return new PaginatedResult<StudentDTO>
+            {
+                Items = StudentsDTO,
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(
+            totalCount / (double)pagesize)
+            };
         }
 
         public async Task<StudentEnrollmentDTO> GetById(int id)

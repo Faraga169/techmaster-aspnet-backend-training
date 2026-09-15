@@ -34,6 +34,11 @@ namespace TrainingCenter.DAL.Specifications
                 query = query.OrderByDescending(specification.OrderByDescending);
             }
 
+            if (specification.IsPagingEnabled)
+            {
+                query = query.Skip(specification.Skip!.Value).Take(specification.Take!.Value);
+            }
+
             return query;
         }
     }

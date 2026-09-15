@@ -10,7 +10,7 @@ namespace TrainingCenter.BLL.Specifications.StudentSpecifications
 {
     public class StudentBySearchNameorIsActiveSpecification:BaseSpecification<Student>
     {
-        public StudentBySearchNameorIsActiveSpecification(string?searchByName,bool?isActive)
+        public StudentBySearchNameorIsActiveSpecification(string?searchByName,bool?isActive, int pagenumber = 1, int pagesize = 5)
         {
             if (!string.IsNullOrWhiteSpace(searchByName) && isActive.HasValue)
             {
@@ -24,6 +24,8 @@ namespace TrainingCenter.BLL.Specifications.StudentSpecifications
             {
                 AddCriteria(s =>s.IsActive == isActive.Value);
             }
+
+            ApplyPaging(pagenumber, pagesize);
         }
     }
 }

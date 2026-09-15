@@ -12,6 +12,8 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
     {
         public Task<IEnumerable<TEntity>> GetAll(ISpecification<TEntity> spec);
 
+        public async Task<int> Count(ISpecification<TEntity> specification)
+
         public Task<TEntity?> GetById(ISpecification<TEntity> spec);
 
         public Task Create(TEntity entity);

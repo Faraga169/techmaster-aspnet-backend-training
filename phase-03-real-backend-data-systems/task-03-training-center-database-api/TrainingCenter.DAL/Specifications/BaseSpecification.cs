@@ -19,6 +19,11 @@ namespace TrainingCenter.DAL.Specifications
 
         public Expression<Func<TEntity, object>>? OrderByDescending { get; private set; }
 
+        public int? Skip { get; private set; }
+
+        public int? Take { get; private set; }
+
+        public bool IsPagingEnabled { get; private set; }
 
         protected void AddCriteria(Expression<Func<TEntity, bool>> criteria)
         {
@@ -38,6 +43,13 @@ namespace TrainingCenter.DAL.Specifications
         protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescending)
         {
             OrderByDescending = orderByDescending;
+        }
+
+        protected void ApplyPaging(int pageNumber, int pageSize)
+        {
+            IsPagingEnabled = true;
+            Skip = (pageNumber - 1) * pageSize;
+            Take = pageSize;
         }
     }
 }

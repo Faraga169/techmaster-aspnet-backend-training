@@ -7,7 +7,7 @@ using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.BLL.DTOS.Payment
 {
-    public class PaymentDTO
+    public class CreatePaymentDTO
     {
         public decimal Amount { get; set; }
 
@@ -22,5 +22,6 @@ namespace TrainingCenter.BLL.DTOS.Payment
 
         public string? Notes { get; set; }
 
+        public int EnrollId { get; set; }
     }
 }

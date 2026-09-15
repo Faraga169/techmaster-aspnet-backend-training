@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainingCenter.DAL.presistent.Models;
 
-namespace TrainingCenter.DAL.Repositories.Specifications
+namespace TrainingCenter.DAL.Specifications
 {
     public interface ISpecification<TEntity> where TEntity:BaseEntity<int>
     {

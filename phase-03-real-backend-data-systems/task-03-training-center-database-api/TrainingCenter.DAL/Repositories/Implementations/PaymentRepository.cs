@@ -9,27 +9,27 @@ using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
-using TrainingCenter.DAL.Repositories.Specifications;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
     public class PaymentRepository(AppDbContext dbContext) :GenericRepository<Payment>(dbContext) ,IPaymentRepository
     {
 
-        public async Task<IEnumerable<Payment>> GetAll(ISpecification<Payment> spec)
-        {
-            var query = dbContext.Payments.AsNoTracking();
-            query = SpecificationEvaluator<Payment>.GetQuery(query, spec);
-            return await query.ToListAsync();
-            //if (from is not null )
-            //    query = query.Where(p => p.PaymentDate >=from);
-            //if (to is not null)
-            //    query = query.Where(p=> p.PaymentDate<= to);
-            //if (paymentStatus is not null)
-            //    query = query.Where(p=>p.Status==paymentStatus.Value);
-            //return await query.ToListAsync();
+        //public async Task<IEnumerable<Payment>> GetAll(ISpecification<Payment> spec)
+        //{
+        //    var query = dbContext.Payments.AsNoTracking();
+        //    query = SpecificationEvaluator<Payment>.GetQuery(query, spec);
+        //    return await query.ToListAsync();
+        //    //if (from is not null )
+        //    //    query = query.Where(p => p.PaymentDate >=from);
+        //    //if (to is not null)
+        //    //    query = query.Where(p=> p.PaymentDate<= to);
+        //    //if (paymentStatus is not null)
+        //    //    query = query.Where(p=>p.Status==paymentStatus.Value);
+        //    //return await query.ToListAsync();
 
-        }
+        //}
 
         public async Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(ISpecification<Payment> spec)
         {

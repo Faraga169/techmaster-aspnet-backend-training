@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace TrainingCenter.BLL.DTOS.Student
 {
-    internal class CreateStudentDTO
+    public class CreateStudentDTO
     {
+        public string FullName { get; set; } = null!;
+
+        [EmailAddress]
+        public string Email { get; set; } = null!;
+
+        [Phone]
+        public string? PhoneNumber { get; set; }
+
     }
 }

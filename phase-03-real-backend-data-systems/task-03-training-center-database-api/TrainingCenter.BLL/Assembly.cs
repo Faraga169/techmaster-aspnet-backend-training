@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCenter.BLL
 {
-    internal class Assembly
+    public class Assembly
     {
     }
 }

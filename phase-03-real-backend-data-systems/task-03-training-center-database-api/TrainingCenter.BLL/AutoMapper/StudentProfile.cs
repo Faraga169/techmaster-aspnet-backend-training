@@ -18,6 +18,8 @@ namespace TrainingCenter.BLL.AutoMapper
             CreateMap<Student, StudentDTO>();
             CreateMap<Student, StudentEnrollmentDTO>();
             CreateMap<CreateStudentDTO, Student>();
+            CreateMap<UpdateStudentDTO, Student>();
+
 
 
         }

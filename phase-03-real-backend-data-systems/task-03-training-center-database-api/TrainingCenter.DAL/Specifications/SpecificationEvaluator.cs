@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingCenter.DAL.presistent.Models;
 
-namespace TrainingCenter.DAL.Repositories.Specifications
+namespace TrainingCenter.DAL.Specifications
 {
     public static class SpecificationEvaluator<TEntity> where TEntity:BaseEntity<int>
     {

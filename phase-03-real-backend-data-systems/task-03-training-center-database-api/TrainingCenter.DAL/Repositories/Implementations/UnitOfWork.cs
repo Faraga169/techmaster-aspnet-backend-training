@@ -16,8 +16,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
         private readonly Dictionary<Type, object> _repositories = new();
 
-        public IGenericRepository<TEntity> GenericRepository<TEntity>()
-            where TEntity : BaseEntity<int>
+        public IGenericRepository<TEntity> GenericRepository<TEntity>() where TEntity : BaseEntity<int>
         {
             var type = typeof(TEntity);
 

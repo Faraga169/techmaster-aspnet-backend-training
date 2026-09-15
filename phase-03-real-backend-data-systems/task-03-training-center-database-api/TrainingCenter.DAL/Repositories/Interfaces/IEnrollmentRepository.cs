@@ -22,11 +22,9 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
         //GET / api / students /{ id}/ enrollments Return student enrollment history.
         //GET /api/tracks/{id}/ students
 
-        public Task<Enrollment?> GetByIdWithDetails(ISpecification<Enrollment> spec);
-
         public Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(ISpecification<Enrollment> spec);
 
-        public Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Enrollment> spec);
+        public Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Student> spec);
 
 
 

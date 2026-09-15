@@ -14,6 +14,9 @@ namespace TrainingCenter.BLL.AutoMapper
         public EnrollmentProfile()
         {
             CreateMap<Enrollment, EnrollmentDTO>();
+            CreateMap<Enrollment, EnrollmentDetailsDTO>();
+            CreateMap<CreateEnrollDTO, Enrollment>();
+            CreateMap<UpdateEnrollDTO, Enrollment>();
         }
     }
 }

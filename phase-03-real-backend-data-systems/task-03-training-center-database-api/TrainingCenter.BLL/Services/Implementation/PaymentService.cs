@@ -44,13 +44,16 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (enroll is null)
                 throw new BusinessException("Enrollment not found", 404);
 
-            if(enroll.Status!=EnrollmentStatus.Active)
-                throw new BusinessException("Enrollment Status must be Active", 404);
+         
 
             var payment = mapper.Map<Payment>(paymentdto);
 
             await unitOfWork.Repository<Payment>().Create(payment);
 
+            if (payment.Status == PaymentStatus.Paid)
+            {
+                enroll.Status = EnrollmentStatus.Active;
+            }
             await unitOfWork.CompleteChanges();
             return mapper.Map<PaymentDTO>(payment);
         }

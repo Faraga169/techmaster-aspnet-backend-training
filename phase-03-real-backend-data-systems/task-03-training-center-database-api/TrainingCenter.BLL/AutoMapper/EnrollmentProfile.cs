@@ -13,7 +13,11 @@ namespace TrainingCenter.BLL.AutoMapper
     {
         public EnrollmentProfile()
         {
-            CreateMap<Enrollment, EnrollmentDTO>().ReverseMap().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<Enrollment, EnrollmentDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                                                                .ForMember(dest => dest.TrainingTrackName, opt => opt.MapFrom(src => src.TrainingTrack!.Title))
+                                                                .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName)).ReverseMap();
+            CreateMap<Enrollment, TrackStudentDto>().ForMember(dest => dest.EnrollmentStatus, opt => opt.MapFrom(src => src.Status.ToString()))
+                                                    .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName));
             CreateMap<Enrollment, EnrollmentDetailsDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<CreateEnrollDTO, Enrollment>();
             CreateMap<UpdateEnrollDTO, Enrollment>();

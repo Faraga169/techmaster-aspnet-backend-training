@@ -47,11 +47,15 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<EnrollmentDTO> Create(CreateEnrollDTO enroll)
         {
+            
             var studentspec = new StudentByIdSpecification(enroll.StudentId);
             var student = await unitOfWork.Repository<Student>().GetById(studentspec);
 
             if (student is null)
                 throw new BusinessException("Student not found", 404);
+
+            if(student.IsDeleted||student.IsActive)
+                throw new BusinessException("Student not allow to make enrollment", 404);
 
             var trackSpec = new TrackByIdSpecification(enroll.TrainingTrackId);
 
@@ -120,7 +124,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         }
 
-        public async Task<IEnumerable<StudentDTO>> GetStudentsByTrackId(int id)
+        public async Task<IEnumerable<TrackStudentDto>> GetStudentsByTrackId(int id)
         {
             var spec = new StudentsBYtrackIdSpecification(id);
 
@@ -129,7 +133,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (!existingStudentsbytrack.Any())
                 throw new BusinessException("No Students is enrolled in track", 404);
 
-            var Studentsbytrack = mapper.Map<IEnumerable<Student>, IEnumerable<StudentDTO>>(existingStudentsbytrack);
+            var Studentsbytrack = mapper.Map<IEnumerable<Enrollment>, IEnumerable<TrackStudentDto>>(existingStudentsbytrack);
 
             return Studentsbytrack;
 

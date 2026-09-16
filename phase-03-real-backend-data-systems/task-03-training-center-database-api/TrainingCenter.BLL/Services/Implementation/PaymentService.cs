@@ -24,6 +24,8 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From, DateTime? To, PaymentStatus? paymentStatus)
         {
+            if(From>To)
+                throw new BusinessException("Date From must be equal or less than To",400);
             var PaymentSpecification = new PaymentByDateRangeAndStatus(From,To,paymentStatus);
             var GetAllPayments = await unitOfWork.Repository<Payment>().GetAll(PaymentSpecification);
             var PaymentsDTO = mapper.Map<IEnumerable<Payment>, IEnumerable<PaymentDTO>>(GetAllPayments);

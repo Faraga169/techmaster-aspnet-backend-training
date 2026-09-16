@@ -12,6 +12,8 @@ namespace TrainingCenter.BLL.Specifications.EnrollmentSpecification
     {
         public EnrollmentbyStudentIdSpecification(int studentid)
         {
+            AddInclude(e => e.TrainingTrack!);
+            AddInclude(e => e.Student!);
             AddCriteria(e => e.StudentId == studentid);
         }
     }

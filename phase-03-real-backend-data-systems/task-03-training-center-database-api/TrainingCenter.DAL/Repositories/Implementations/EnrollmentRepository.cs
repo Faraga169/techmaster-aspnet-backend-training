@@ -39,10 +39,10 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Student> spec)
+        public async Task<IEnumerable<Enrollment>> GetStudentsByTrackId(ISpecification<Enrollment> spec)
         {
-            var query = dbContext.Students.AsNoTracking();
-            query = SpecificationEvaluator<Student>.GetQuery(query, spec);
+            var query = dbContext.Enrollmets.AsNoTracking();
+            query = SpecificationEvaluator<Enrollment>.GetQuery(query, spec);
             return await query.ToListAsync();
             //var EnrollmentsByStudentId = await dbContext.Students.AsNoTracking().Where(s=>s.Enrollments.Any(e=>e.TrainingTrackId==trackid)).ToListAsync();
             //return EnrollmentsByStudentId;

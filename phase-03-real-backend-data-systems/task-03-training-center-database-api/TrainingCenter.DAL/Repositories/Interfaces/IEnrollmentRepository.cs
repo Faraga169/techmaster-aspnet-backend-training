@@ -24,7 +24,7 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
         public Task<IEnumerable<Enrollment>> GetEnrollmentsbyStudentId(ISpecification<Enrollment> spec);
 
-        public Task<IEnumerable<Student>> GetStudentsByTrackId(ISpecification<Student> spec);
+        public Task<IEnumerable<Enrollment>> GetStudentsByTrackId(ISpecification<Enrollment> spec);
 
 
 

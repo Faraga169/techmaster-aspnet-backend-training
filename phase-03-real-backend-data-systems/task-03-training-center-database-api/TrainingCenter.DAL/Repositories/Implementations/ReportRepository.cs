@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
 using TrainingCenter.DAL.Repositories.ReportModels;
 
@@ -48,17 +49,70 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         public async Task<IEnumerable<RevenueByTrackResult>> GetRevenueByTrack()
         {
             return await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid)
-                                      .GroupBy(p => p.Enrollment!.TrainingTrackId)
+                                      .GroupBy(p => p.Enrollment!.TrainingTrack!.Title)
                                       .Select(g => 
                                       new RevenueByTrackResult 
                                       { 
-                                          TrackId = g.Key,
+                                          TrackName = g.Key,
                                           TotalRevenue = g.Sum(p => p.Amount), 
                                           PaymentCount = g.Count() })
                                       .AsNoTracking()
                                       .ToListAsync();
         }
-        
+
+
+        public async Task<IEnumerable<TopTrack>> TopTracks()
+        {
+            return await dbContext.Enrollmets
+      .Where(e => e.Status == EnrollmentStatus.Active)
+      .GroupBy(e => e.TrainingTrack!.Title)
+      .Select(g => new TopTrack
+      {
+          TrackName = g.Key,
+          EnrollmentCount = g.Count()
+      })
+      .OrderByDescending(x => x.EnrollmentCount)
+      .Take(5)
+      .AsNoTracking()
+      .ToListAsync();
+        }
+
+
+
+        public async Task<IEnumerable<InstructorWorkload>> GetInstructorWorkload()
+        {
+            return await dbContext.TrainingTracks
+                .GroupBy(t => new
+                {
+                    t.InstructorId,
+                    InstructorName = t.Instructor!.FullName
+                })
+                .Select(g => new InstructorWorkload
+                {
+                    InstructorId = g.Key.InstructorId,
+                    InstructorName = g.Key.InstructorName,
+
+                    TrackCount = g.Count(),
+
+                    ActiveStudentCount = g
+                        .SelectMany(t => t.Enrollments)
+                        .Count(e => e.Status == EnrollmentStatus.Active)
+                })
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+
+
+        public async Task<IEnumerable<Student>> studentswithoutpayments()
+        {
+           return await dbContext.Students
+                .Where(s => s.Enrollments.Any(e => (e.Status == EnrollmentStatus.Active || e.Status == EnrollmentStatus.Pending) && s.Enrollments.Any(e => !e.Payments.Any() || e.Payments.Any(p => p.Status != PaymentStatus.Paid)))).AsNoTracking().ToListAsync();
+
+          
+        }
+
+
 
         public async Task<RevenueSummaryResult> GetRevenueSummary()
         {
@@ -76,7 +130,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         public async Task<IEnumerable<Enrollment>> GetUnpaidOrPartiallyPaid()
         {
             return await dbContext.Enrollmets.Include(e => e.Payments).Include(e => e.Student).Include(e => e.TrainingTrack)
-                .Where(e => !e.Payments.Any() || e.Payments.All(p => p.Status != PaymentStatus.Paid)).AsNoTracking().ToListAsync();
+                .Where(e => !e.Payments.Any() || e.Payments.Any(p => p.Status != PaymentStatus.Paid)).AsNoTracking().ToListAsync();
         }
     }
 }

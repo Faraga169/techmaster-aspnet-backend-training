@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
+using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
@@ -84,7 +85,7 @@ namespace TrainingCenter.Api.Controllers
         {
             var result =await enrollmentService.GetStudentsByTrackId(id);
 
-            return Ok(new ApiResponse<IEnumerable<StudentDTO>>
+            return Ok(new ApiResponse<IEnumerable<TrackStudentDto>>
             {
                 Success = true,
                 Message = "Track students retrieved successfully.",

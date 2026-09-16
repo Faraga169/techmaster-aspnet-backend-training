@@ -97,6 +97,7 @@
     <File Path="phase-03-real-backend-data-systems/task-02-requirements-to-erd/ERD/training-center-erd.pdf" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-03-training-center-database-api/">
+    <File Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/README.md" />
     <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.Api/TrainingCenter.Api.csproj" Id="5848ed8b-2ec1-43c3-a804-71dd831b28fe" />
     <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.BLL/TrainingCenter.BLL.csproj" Id="d33d8e25-e585-488d-9680-ce76331e6854" />
     <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.DAL/TrainingCenter.DAL.csproj" Id="06b263b2-2131-4b53-a8ca-554320df6f95" />

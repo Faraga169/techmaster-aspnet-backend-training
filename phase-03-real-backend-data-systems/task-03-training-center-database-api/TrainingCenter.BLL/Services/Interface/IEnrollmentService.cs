@@ -23,6 +23,6 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id);
 
-        public Task<IEnumerable<StudentDTO>> GetStudentsByTrackId(int id);
+        public Task<IEnumerable<TrackStudentDto>> GetStudentsByTrackId(int id);
     }
 }

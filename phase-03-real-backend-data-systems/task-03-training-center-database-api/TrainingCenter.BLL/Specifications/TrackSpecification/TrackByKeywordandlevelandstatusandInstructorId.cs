@@ -16,7 +16,7 @@ namespace TrainingCenter.BLL.Specifications.TrackSpecification
             AddCriteria(t =>
      (string.IsNullOrWhiteSpace(trackName) || t.Title.Contains(trackName)) &&
      (!trackLevel.HasValue || t.Level == trackLevel.Value) &&
-     (!trackStatus.HasValue || t.Status == trackStatus.Value) &&
+     (trackStatus.HasValue?t.Status == trackStatus.Value:t.Status==TrainingStatus.Active) &&
      (!instructorId.HasValue || t.InstructorId == instructorId.Value)
  );
         }

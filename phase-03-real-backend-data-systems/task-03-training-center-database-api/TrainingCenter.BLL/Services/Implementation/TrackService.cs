@@ -23,6 +23,8 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<TrackDTO>> GetAll(string? trackName, TrackLevel? trackLevel, TrainingStatus? trackStatus, int? instructorId)
         {
+            if (trackLevel.HasValue && Enum.IsDefined(typeof(TrackLevel), trackLevel.Value))
+                throw new BusinessException("Invalid track level.", 400);
             var TrackSpecification = new TrackByKeywordandlevelandstatusandInstructorId(trackName,trackLevel,trackStatus, instructorId);
             var GetAllTracks = await unitOfWork.Repository<TrainingTrack>().GetAll(TrackSpecification);
             var TracksDTO = mapper.Map<IEnumerable<TrainingTrack>, IEnumerable<TrackDTO>>(GetAllTracks);

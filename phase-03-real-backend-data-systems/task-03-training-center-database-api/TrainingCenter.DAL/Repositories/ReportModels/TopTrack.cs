@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TrainingCenter.DAL.Repositories.ReportModels
 {
-    public class RevenueByTrackResult
+    public class TopTrack
     {
         public string TrackName { get; set; } = null!;
-        public decimal TotalRevenue { get; set; }
-        public int PaymentCount { get; set; }
+        public int EnrollmentCount { get; set; }
     }
 }

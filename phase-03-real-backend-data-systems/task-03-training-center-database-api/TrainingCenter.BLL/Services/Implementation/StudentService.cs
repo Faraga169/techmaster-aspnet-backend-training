@@ -96,6 +96,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingStudent is null)
                 throw new BusinessException("Student not found", 404);        
 
+            existingStudent.IsActive= false;
             await unitOfWork.Repository<Student>().Delete(id);
             await unitOfWork.CompleteChanges();
             return true;

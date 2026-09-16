@@ -11,7 +11,7 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
     public class EnrollmentDTO
     {
         public int Id { get; set; }
-        public DateTime EnrollmentDate { get; set; }
+        public DateOnly EnrollmentDate { get; set; }
 
 
         [Range(0, 100, ErrorMessage = "Progress Percentage must between 0 and 100")]

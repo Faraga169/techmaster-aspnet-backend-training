@@ -13,7 +13,9 @@ namespace TrainingCenter.BLL.AutoMapper
     {
         public PaymentProfile()
         {
-            CreateMap<Payment, PaymentDTO>().ReverseMap().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<Payment, PaymentDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.PaymentDate)))
+                .ReverseMap();
             CreateMap<CreatePaymentDTO, Payment>();
             CreateMap<UpdatePaymentDTO, Payment>();
         }

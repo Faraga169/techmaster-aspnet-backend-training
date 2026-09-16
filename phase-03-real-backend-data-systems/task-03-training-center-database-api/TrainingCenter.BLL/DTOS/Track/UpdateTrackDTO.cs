@@ -23,13 +23,14 @@ namespace TrainingCenter.BLL.DTOS.Track
         [Range(1, 30, ErrorMessage = "The Capacity of Track must between 1 and 30")]
         public int Capacity { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateOnly StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateOnly EndDate { get; set; }
 
         public TrainingStatus Status { get; set; }
 
-        public int InstructorId { get; set; }
+        [Required(ErrorMessage ="Instructor is required")]
+        public int? InstructorId { get; set; }
 
     }
 }

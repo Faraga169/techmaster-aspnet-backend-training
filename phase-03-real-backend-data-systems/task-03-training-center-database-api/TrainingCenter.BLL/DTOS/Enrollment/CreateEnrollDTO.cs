@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,12 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
     public class CreateEnrollDTO
     {
 
-        public decimal ProgressPercentage { get; set; }
 
-        public EnrollmentStatus Status { get; set; }
+        [Required(ErrorMessage ="Student is Required")]
+        public int? StudentId { get; set; }
 
-        public string? FinalResult { get; set; }
-
-        public int StudentId { get; set; }
-
-        public int TrainingTrackId { get; set; }
+        [Required(ErrorMessage ="TrainingTrack is Required")]
+        public int? TrainingTrackId { get; set; }
 
     }
 }

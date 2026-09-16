@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,15 +14,15 @@ namespace TrainingCenter.BLL.DTOS.Payment
 
         public PaymentMethod PaymentMethod { get; set; }
 
-        public DateTime PaymentDate { get; set; }
 
-        public PaymentStatus Status { get; set; }
 
 
         public Guid ReferenceNumber { get; set; }
 
         public string? Notes { get; set; }
 
+
+        [Required(ErrorMessage ="Enrollment is Required")]
         public int EnrollId { get; set; }
     }
 }

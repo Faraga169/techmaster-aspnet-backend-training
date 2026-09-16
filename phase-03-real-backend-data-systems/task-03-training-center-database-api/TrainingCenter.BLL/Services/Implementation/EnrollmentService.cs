@@ -48,16 +48,16 @@ namespace TrainingCenter.BLL.Services.Implementation
         public async Task<EnrollmentDTO> Create(CreateEnrollDTO enroll)
         {
             
-            var studentspec = new StudentByIdSpecification(enroll.StudentId);
+            var studentspec = new StudentByIdSpecification(enroll.StudentId!.Value);
             var student = await unitOfWork.Repository<Student>().GetById(studentspec);
 
             if (student is null)
                 throw new BusinessException("Student not found", 404);
 
-            if (student.IsDeleted || student.IsActive)
+            if (student.IsDeleted || !student.IsActive)
                 throw new BusinessException("Student not allow to make enrollment", 404);
 
-            var trackSpec = new TrackByIdSpecification(enroll.TrainingTrackId);
+            var trackSpec = new TrackByIdSpecification(enroll.TrainingTrackId!.Value);
 
             var track = await unitOfWork.Repository<TrainingTrack>().GetById(trackSpec);
 
@@ -67,14 +67,14 @@ namespace TrainingCenter.BLL.Services.Implementation
             if(track.Status==TrainingStatus.Cancelled)
                 throw new BusinessException("Cannot Enroll in Track was cancelled", 400);
 
-            var spec = new CheckduplicateofStudentEnrollment(enroll.StudentId, enroll.TrainingTrackId);
+            var spec = new CheckduplicateofStudentEnrollment(enroll.StudentId.Value, enroll.TrainingTrackId.Value);
 
             var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);
 
             if (existingEnroll is not null)
                 throw new BusinessException("Student already in this track", 409);
 
-            var speccapacity = new TrackCapacitySpecification(enroll.TrainingTrackId);
+            var speccapacity = new TrackCapacitySpecification(enroll.TrainingTrackId.Value);
             var checkcapacity = await unitOfWork.Repository<TrainingTrack>().GetById(speccapacity);
 
             if (checkcapacity is null)
@@ -82,11 +82,17 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             var enrollment = mapper.Map<Enrollment>(enroll);
 
+          
+
             await unitOfWork.Repository<Enrollment>().Create(enrollment);
 
             await unitOfWork.CompleteChanges();
 
-            return mapper.Map<EnrollmentDTO>(enrollment);
+            var enrollspec = new EnrollByIdSpecification(enrollment.Id);
+            var createdEnrollment =await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
+
+
+            return mapper.Map<EnrollmentDTO>(createdEnrollment);
 
         }
 
@@ -103,12 +109,15 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingEnroll?.Status == EnrollmentStatus.Completed)
                 throw new BusinessException("Enrollment status cannot be changes", 404);
 
-            existingEnroll.Status = enroll.Status;
+            existingEnroll!.Status = enroll.Status;
 
             await unitOfWork.Repository<Enrollment>().Update(existingEnroll);
 
             await unitOfWork.CompleteChanges();
-            return mapper.Map<EnrollmentDTO>(existingEnroll);
+            var enrollspec = new EnrollByIdSpecification(existingEnroll.Id);
+            var updateEnrollment = await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
+
+            return mapper.Map<EnrollmentDTO>(updateEnrollment);
         }
 
         public async Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id)

@@ -12,7 +12,7 @@ namespace TrainingCenter.BLL.Specifications.TrackSpecification
     {
         public TrackBYCodeSpecification(string code)
         {
-            AddCriteria(t => t.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
+            AddCriteria(t => t.Code == code);
         }
     }
 }

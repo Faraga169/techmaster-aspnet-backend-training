@@ -24,7 +24,7 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
 
-        public decimal ProgressPercentage { get; set; }
+        public decimal ProgressPercentage { get; set; } = 0m;
 
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Pending;
 

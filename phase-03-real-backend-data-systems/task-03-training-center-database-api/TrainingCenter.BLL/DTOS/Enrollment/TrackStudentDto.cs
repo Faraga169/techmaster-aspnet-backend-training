@@ -11,6 +11,6 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
         public int StudentId { get; set; }
         public string StudentName { get; set; } = null!;
         public string EnrollmentStatus { get; set; } = null!;
-        public DateTime EnrollmentDate { get; set; }
+        public DateOnly EnrollmentDate { get; set; }
     }
 }

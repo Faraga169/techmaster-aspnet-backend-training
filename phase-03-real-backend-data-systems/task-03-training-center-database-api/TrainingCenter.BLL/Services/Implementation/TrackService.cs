@@ -9,6 +9,7 @@ using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Interface;
+using TrainingCenter.BLL.Specifications.InstructorSpecification;
 using TrainingCenter.BLL.Specifications.StudentSpecifications;
 using TrainingCenter.BLL.Specifications.TrackSpecification;
 using TrainingCenter.DAL.Persistent.Models;
@@ -23,7 +24,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<TrackDTO>> GetAll(string? trackName, TrackLevel? trackLevel, TrainingStatus? trackStatus, int? instructorId)
         {
-            if (trackLevel.HasValue && Enum.IsDefined(typeof(TrackLevel), trackLevel.Value))
+            if (trackLevel.HasValue && !Enum.IsDefined(typeof(TrackLevel), trackLevel.Value))
                 throw new BusinessException("Invalid track level.", 400);
             var TrackSpecification = new TrackByKeywordandlevelandstatusandInstructorId(trackName,trackLevel,trackStatus, instructorId);
             var GetAllTracks = await unitOfWork.Repository<TrainingTrack>().GetAll(TrackSpecification);
@@ -44,11 +45,20 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<TrackDTO> Create(CreateTrackDTO trackdto)
         {
+
+
+
+
             var spec = new TrackBYCodeSpecification(trackdto.Code);
             var Codeexist = await unitOfWork.Repository<TrainingTrack>().GetById(spec);
 
             if(Codeexist is not null)
                 throw new BusinessException("TrackCode must be unique", 409);
+
+            var instructor = await unitOfWork.Repository<Instructor>().GetById(new InstructorbyIdspecification(trackdto.InstructorId!.Value));
+
+            if (instructor is null)
+                throw new BusinessException("Instructor not found.", 404);
 
             if (trackdto.Capacity<1 || trackdto.Capacity>30)
                 throw new BusinessException("Track capacity must in range between 1 to 30", 400);
@@ -81,7 +91,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingTrack is null)
                 throw new BusinessException("Track not found", 404);
 
-            var specInsid = new TrackByInstructorIdSpecification(trackdto.InstructorId);
+            var specInsid = new TrackByInstructorIdSpecification(trackdto.InstructorId!.Value);
 
             var existingInstructor = await unitOfWork.Repository<TrainingTrack>().GetById(specInsid);
 

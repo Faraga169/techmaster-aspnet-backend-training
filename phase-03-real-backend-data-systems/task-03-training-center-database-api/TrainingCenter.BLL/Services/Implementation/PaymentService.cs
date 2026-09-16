@@ -74,20 +74,47 @@ namespace TrainingCenter.BLL.Services.Implementation
         {
             var spec = new PaymentByIdSpecification(paymentdto.Id);
 
-            var Updatepayment = await unitOfWork.Repository<Payment>().GetById(spec);
+            var payment = await unitOfWork.Repository<Payment>()
+                .GetById(spec);
 
-            if (Updatepayment is null)
+            if (payment is null)
                 throw new BusinessException("Payment not found", 404);
 
-            if (Updatepayment.Status == PaymentStatus.Paid)
-                
-                throw new BusinessException("Paid payment cannot be updated",400);
+            if (payment.Status == PaymentStatus.Paid)
+                throw new BusinessException("Paid payment cannot be updated", 400);
 
-            var payment = mapper.Map<Payment>(paymentdto);
+            payment.Status = paymentdto.Status;
 
             await unitOfWork.Repository<Payment>().Update(payment);
 
             await unitOfWork.CompleteChanges();
+
+            if (payment.Status == PaymentStatus.Paid)
+            {
+                var enrollSpec = new EnrollByIdSpecification(payment.EnrollId);
+
+                var enroll = await unitOfWork.Repository<Enrollment>()
+                    .GetById(enrollSpec);
+
+                if (enroll is null)
+                    throw new BusinessException("Enrollment not found", 404);
+
+                var paymentSpec =
+                    new PaidPaymentsByEnrollmentSpecification(payment.EnrollId);
+
+                var payments = await unitOfWork.Repository<Payment>()
+                    .GetAll(paymentSpec);
+
+                var totalPaid = payments.Sum(p => p.Amount);
+
+                if (totalPaid >= enroll.TrainingTrack!.Price)
+                {
+                    enroll.Status = EnrollmentStatus.Active;
+                }
+
+                await unitOfWork.CompleteChanges();
+            }
+
             return mapper.Map<PaymentDTO>(payment);
         }
 

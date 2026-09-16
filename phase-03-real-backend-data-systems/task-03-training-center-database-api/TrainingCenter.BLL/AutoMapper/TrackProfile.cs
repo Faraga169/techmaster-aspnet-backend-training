@@ -13,16 +13,23 @@ namespace TrainingCenter.BLL.AutoMapper
     {
         public TrackProfile()
         {
-            CreateMap<TrainingTrack,TrackDTO>().ReverseMap().ForMember(dest=>dest.Level,opt=>opt.MapFrom(src=>src.Level.ToString()))
-                                               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            CreateMap<TrainingTrack,TrackDTO>().ForMember(dest=>dest.Level,opt=>opt.MapFrom(src=>src.Level.ToString()))
+                                               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                                               .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.StartDate)))
+                                               .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.EndDate))).ReverseMap(); 
             
             CreateMap<TrainingTrack, TrackDetailsDTO>().ForMember(dest=>dest.InstructorName,opt=>opt.MapFrom(src=>src.Instructor!.FullName))
                                                         .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level.ToString()))
-                                                         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+                                                         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+                                                         .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.StartDate)))
+                                                         .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.EndDate)));
 
-            CreateMap<CreateTrackDTO, TrainingTrack>();
+            CreateMap<CreateTrackDTO, TrainingTrack>().ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ToDateTime(TimeOnly.MinValue)))
+                                                        .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToDateTime(TimeOnly.MinValue)));
+                                                        
 
-            CreateMap<UpdateTrackDTO, TrainingTrack>();
+            CreateMap<UpdateTrackDTO, TrainingTrack>().ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ToDateTime(TimeOnly.MinValue)))
+                                                        .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToDateTime(TimeOnly.MinValue))); ;
         }
     }
 }

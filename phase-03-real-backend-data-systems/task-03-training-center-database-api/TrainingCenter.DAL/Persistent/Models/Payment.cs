@@ -24,7 +24,7 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
 
-        public PaymentStatus Status{ get; set; }
+        public PaymentStatus Status{ get; set; }=PaymentStatus.Pending;
 
 
         public Guid ReferenceNumber { get; set; } = Guid.NewGuid();

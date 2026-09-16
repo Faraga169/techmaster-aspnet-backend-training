@@ -14,7 +14,7 @@ namespace TrainingCenter.BLL.DTOS.Payment
 
         public PaymentMethod PaymentMethod { get; set; }
 
-        public DateTime PaymentDate { get; set; }
+        public DateOnly PaymentDate { get; set; }
 
         public PaymentStatus Status { get; set; }
 

@@ -127,10 +127,27 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             };
         }
 
-        public async Task<IEnumerable<Enrollment>> GetUnpaidOrPartiallyPaid()
+        public async Task<IEnumerable<GetEnrollmentUnpaidOrPartiallyPaidResult>>
+     GetUnpaidOrPartiallyPaid()
         {
-            return await dbContext.Enrollmets.Include(e => e.Payments).Include(e => e.Student).Include(e => e.TrainingTrack)
-                .Where(e => !e.Payments.Any() || e.Payments.Any(p => p.Status != PaymentStatus.Paid)).AsNoTracking().ToListAsync();
+            return await dbContext.Enrollmets.Where(e =>!e.Payments.Any() ||e.Payments
+                        .Where(p => p.Status == PaymentStatus.Paid)
+                        .Sum(p => p.Amount) < e.TrainingTrack!.Price
+                )
+                .Select(e => new GetEnrollmentUnpaidOrPartiallyPaidResult
+                {
+                    EnrollId = e.Id,
+                    StudentName = e.Student!.FullName,
+                    TrackName = e.TrainingTrack!.Title,
+
+                    RemainingAmount =
+                        e.TrainingTrack.Price -
+                        e.Payments
+                            .Where(p => p.Status == PaymentStatus.Paid)
+                            .Sum(p => p.Amount)
+                })
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

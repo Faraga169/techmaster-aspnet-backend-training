@@ -12,7 +12,7 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
     public interface IReportRepository
     {
         Task<DashboardSummaryResult> GetDashboardSummary(); 
-        Task<IEnumerable<Enrollment>> GetUnpaidOrPartiallyPaid(); 
+        Task<IEnumerable<GetEnrollmentUnpaidOrPartiallyPaidResult>> GetUnpaidOrPartiallyPaid(); 
         Task<IEnumerable<TrackCapacityResult>> GetCapacityByTrack(); 
         Task<RevenueSummaryResult> GetRevenueSummary(); 
         Task<IEnumerable<RevenueByTrackResult>> GetRevenueByTrack();

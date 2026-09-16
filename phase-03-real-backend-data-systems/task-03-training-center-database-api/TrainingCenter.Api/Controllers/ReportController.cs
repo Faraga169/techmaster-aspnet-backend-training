@@ -31,30 +31,11 @@ namespace TrainingCenter.Api.Controllers
         {
             var result = await reportsRepository.GetUnpaidOrPartiallyPaid();
 
-
-
-            var UnpaidOrPartiallyPaidEnrollmentDTO = result.Select(e => new UnpaidOrPartiallyPaidEnrollmentDTO() {
-
-                EnrollmentId = e.Id,
-                Payments = e.Payments.Select(p=>new PaymentDTO() { 
-                Amount = p.Amount,
-                Status= p.Status,
-                PaymentDate=p.PaymentDate,
-                PaymentMethod=p.PaymentMethod,
-                ReferenceNumber=p.ReferenceNumber,
-                Id=p.Id,
-                Notes=p.Notes
-                }).ToList(),
-                StudentName = e.Student!.FullName,
-                TrackName = e.TrainingTrack!.Title
-
-            });
-
-            return Ok(new ApiResponse<IEnumerable<UnpaidOrPartiallyPaidEnrollmentDTO>>
+            return Ok(new ApiResponse<IEnumerable<GetEnrollmentUnpaidOrPartiallyPaidResult>>
             {
                 Success = true,
                 Message = "Unpaid enrollments retrieved successfully.",
-                Data = UnpaidOrPartiallyPaidEnrollmentDTO
+                Data = result
             });
         }
 

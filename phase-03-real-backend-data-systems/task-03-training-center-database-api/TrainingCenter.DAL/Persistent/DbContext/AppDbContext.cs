@@ -40,6 +40,7 @@ namespace TrainingCenter.DAL.Persistent
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(Assembly).Assembly);
             Seeding.Seed(modelBuilder);
+          
 
             base.OnModelCreating(modelBuilder);
         }

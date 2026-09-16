@@ -54,7 +54,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (student is null)
                 throw new BusinessException("Student not found", 404);
 
-            if(student.IsDeleted||student.IsActive)
+            if (student.IsDeleted || student.IsActive)
                 throw new BusinessException("Student not allow to make enrollment", 404);
 
             var trackSpec = new TrackByIdSpecification(enroll.TrainingTrackId);

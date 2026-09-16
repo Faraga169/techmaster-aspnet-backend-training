@@ -33,18 +33,30 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
         public async Task<PaymentDTO> Create(CreatePaymentDTO paymentdto)
         {
+            
             if(paymentdto.Amount<=0)
                 throw new BusinessException("Amount must be positive", 400);
-
+            
            
+
             var enrollSpec = new EnrollByIdSpecification(paymentdto.EnrollId);
 
             var enroll = await unitOfWork.Repository<Enrollment>().GetById(enrollSpec);
 
+            
             if (enroll is null)
                 throw new BusinessException("Enrollment not found", 404);
 
-         
+            var specpayment = new PaidPaymentsByEnrollmentSpecification(paymentdto.EnrollId);
+            var GetAllPayments = await unitOfWork.Repository<Payment>().GetAll(specpayment);
+
+            var paidAmount = GetAllPayments.Sum(p => p.Amount);
+            var Remaining = enroll.TrainingTrack!.Price - paidAmount;
+
+            if(paymentdto.Amount>Remaining)
+                throw new BusinessException("Payment amount cannot exceed the remaining amount.",400);
+
+
 
             var payment = mapper.Map<Payment>(paymentdto);
 

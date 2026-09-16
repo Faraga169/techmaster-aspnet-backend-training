@@ -21,6 +21,8 @@ namespace TrainingCenter.BLL.DTOS.Track
         [Range(1, 30, ErrorMessage = "The Capacity of Track must between 1 and 30")]
         public int Capacity { get; set; }
 
+        public decimal Price { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }

@@ -39,6 +39,8 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public TrainingStatus Status { get; set; } = TrainingStatus.Upcoming;
 
+        public decimal Price { get; set; }
+
         public int InstructorId { get; set; }
 
         public Instructor? Instructor{ get; set; }

@@ -19,6 +19,8 @@ namespace TrainingCenter.DAL.Persistent.Configurations
             builder.HasIndex(s => s.Email).IsUnique();
 
             builder.Property(s => s.IsActive).HasColumnType("bit");
+
+            builder.HasQueryFilter(s => !s.IsDeleted);
         }
     }
 }

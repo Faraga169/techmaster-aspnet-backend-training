@@ -19,7 +19,7 @@ namespace TrainingCenter.BLL.DTOS.Track
 
         public string Level { get; set; } = null!;
 
-        
+        public decimal Price { get; set; }
         public int Capacity { get; set; }
 
         public DateTime StartDate { get; set; }

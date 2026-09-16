@@ -64,6 +64,9 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (track is null)
                 throw new BusinessException("Track not found", 404);
 
+            if(track.Status==TrainingStatus.Cancelled)
+                throw new BusinessException("Cannot Enroll in Track was cancelled", 400);
+
             var spec = new CheckduplicateofStudentEnrollment(enroll.StudentId, enroll.TrainingTrackId);
 
             var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);

@@ -44,7 +44,13 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<TrackDTO> Create(CreateTrackDTO trackdto)
         {
-            if(trackdto.Capacity<1 || trackdto.Capacity>30)
+            var spec = new TrackBYCodeSpecification(trackdto.Code);
+            var Codeexist = await unitOfWork.Repository<TrainingTrack>().GetById(spec);
+
+            if(Codeexist is not null)
+                throw new BusinessException("TrackCode must be unique", 409);
+
+            if (trackdto.Capacity<1 || trackdto.Capacity>30)
                 throw new BusinessException("Track capacity must in range between 1 to 30", 400);
 
             if (trackdto.StartDate >= trackdto.EndDate) 

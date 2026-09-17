@@ -56,13 +56,15 @@ namespace TrainingCenter.BLL.Services.Implementation
             if(paymentdto.Amount>Remaining)
                 throw new BusinessException("Payment amount cannot exceed the remaining amount.",400);
 
-
+           
 
             var payment = mapper.Map<Payment>(paymentdto);
 
             await unitOfWork.Repository<Payment>().Create(payment);
 
-            if (payment.Status == PaymentStatus.Paid)
+
+
+            if (paidAmount + paymentdto.Amount >= enroll.TrainingTrack.Price)
             {
                 enroll.Status = EnrollmentStatus.Active;
             }

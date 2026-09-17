@@ -105,10 +105,10 @@
   <Folder Name="/phase-03-real-backend-data-systems/task-04-querying-filtering-reporting/" />
   <Folder Name="/phase-03-real-backend-data-systems/task-05-business-rules-data-integrity/" />
   <Folder Name="/phase-03-real-backend-data-systems/task-06-production-hosting-remote-database/" />
-  <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/" />
-  <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/">
+  <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/">
     <Project Path="phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/EFCoreRefactoring/EFCoreRefactoring.csproj" Id="b4ff9713-df7a-4260-8472-33f2fd222c45" />
   </Folder>
+  <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

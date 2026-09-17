@@ -29,62 +29,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             return (IGenericRepository<TEntity>)repository;
         }
 
-        public IEnrollmentRepository EnrollmentRepository()
-        {
-            var type = typeof(IEnrollmentRepository);
-
-            if (!_repositories.TryGetValue(type, out var repository))
-            {
-                repository = new EnrollmentRepository(dbContext);
-
-                _repositories.Add(type, repository);
-            }
-
-            return (IEnrollmentRepository)repository;
-        }
-
-        public IInstructorRepository InstructorRepository()
-        {
-            var type = typeof(IInstructorRepository);
-
-            if (!_repositories.TryGetValue(type, out var repository))
-            {
-                repository = new InstructorRepository(dbContext);
-
-                _repositories.Add(type, repository);
-            }
-
-            return (IInstructorRepository)repository;
-        }
-
-        public IPaymentRepository PaymentRepository()
-        {
-            var type = typeof(IPaymentRepository);
-
-            if (!_repositories.TryGetValue(type, out var repository))
-            {
-                repository = new PaymentRepository(dbContext);
-
-                _repositories.Add(type, repository);
-            }
-
-            return (IPaymentRepository)repository;
-        }
-
        
-
-        public IReportRepository ReportRepository()
-        {
-            var type = typeof(IReportRepository);
-
-            if (!_repositories.TryGetValue(type, out var repository))
-            {
-                repository = new ReportRepository(dbContext);
-                _repositories.Add(type, repository);
-            }
-
-            return (IReportRepository)repository;
-        }
 
         public async Task<int> CompleteChanges()
         {

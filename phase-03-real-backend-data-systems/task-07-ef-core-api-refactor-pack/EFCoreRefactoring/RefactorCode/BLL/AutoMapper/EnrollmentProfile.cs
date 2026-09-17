@@ -17,16 +17,9 @@ namespace TrainingCenter.BLL.AutoMapper
                                                                 .ForMember(dest => dest.TrainingTrackName, opt => opt.MapFrom(src => src.TrainingTrack!.Title))
                                                                 .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName))
                                                                  .ForMember(dest => dest.EnrollmentDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.EnrollmentDate))).ReverseMap();
-            
-            CreateMap<Enrollment, TrackStudentDto>().ForMember(dest => dest.EnrollmentStatus, opt => opt.MapFrom(src => src.Status.ToString()))
-                                                    .ForMember(dest => dest.EnrollmentDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.EnrollmentDate)))
-                                                    .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student!.FullName));
-                                                    ;
-
-            CreateMap<Enrollment, EnrollmentDetailsDTO>().ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-                                                          .ForMember(dest => dest.EnrollmentDate, opt => opt.MapFrom(src => DateOnly.FromDateTime(src.EnrollmentDate)));
+                               
             CreateMap<CreateEnrollDTO, Enrollment>();
-            CreateMap<UpdateEnrollDTO, Enrollment>();
+           
         }
     }
 }

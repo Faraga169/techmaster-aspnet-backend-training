@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using StudentManagementAPI.Exceptions;
+using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
@@ -25,24 +26,32 @@ namespace TrainingCenter.BLL.Services.Implementation
     {
 
 
-        public async Task<IEnumerable<EnrollmentDTO>> GetAll(EnrollmentStatus? status, int? trackid, int? studentid, PaymentStatus? paymentStatus)
+        public async Task<PaginatedResult<EnrollmentDTO>> GetAll(EnrollmentStatus? status, int? trackid, int? studentid, PaymentStatus? paymentStatus,int? pagenumber=1,int? pagesize=5)
         {
+
+            if (pagenumber < 1)
+                throw new BusinessException("Page number must be greater than 0", 400);
+
+            if (pagesize < 1)
+                throw new BusinessException("Page size must be greater than 0", 400);
+
             var EnrollSpecification = new EnrollmentBystatusandtrackidandstudentidandpaymentstatusspecification(status, trackid, studentid, paymentStatus);
             var GetAllEnrollments = await unitOfWork.Repository<Enrollment>().GetAll(EnrollSpecification);
             var EnrollmetsDTO = mapper.Map<IEnumerable<Enrollment>, IEnumerable<EnrollmentDTO>>(GetAllEnrollments);
-            return EnrollmetsDTO;
-        }
+            
+            var TotalCount = await unitOfWork.Repository<Enrollment>().Count(EnrollSpecification);
+
+            return new PaginatedResult<EnrollmentDTO>
+            {
+                Items = EnrollmetsDTO,
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                TotalCount = TotalCount,
+                TotalPages = (int)Math.Ceiling(
+            TotalCount / (double)pagesize)
 
 
-        public async Task<EnrollmentDetailsDTO> GetById(int id)
-        {
-
-            var EnrollSpecification = new EnrollByIdSpecification(id);
-            var GetEnrollment = await unitOfWork.Repository<Enrollment>().GetById(EnrollSpecification);
-            if (GetEnrollment is null)
-                throw new BusinessException("Enrollment is not found", 404);
-            var EnrollmentDetailsDTO = mapper.Map<Enrollment, EnrollmentDetailsDTO>(GetEnrollment);
-            return EnrollmentDetailsDTO;
+            };
         }
 
         public async Task<EnrollmentDTO> Create(CreateEnrollDTO enroll)
@@ -97,58 +106,20 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
 
 
-        public async Task<EnrollmentDTO> Update(UpdateEnrollDTO enroll)
+        public async Task<bool> Delete(int id)
         {
-            var spec = new EnrollByIdSpecification(enroll.Id);
+            var spec = new EnrollByIdSpecification(id);
 
-            var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);
+            var existingEnrollment = await unitOfWork.Repository<Enrollment>().GetById(spec);
 
-            if (existingEnroll is null)
-                throw new BusinessException("Enrollment is not found", 404);
+            if (existingEnrollment is null)
+                throw new BusinessException("Enrollment not found", 404);
 
-            if (existingEnroll?.Status == EnrollmentStatus.Completed)
-                throw new BusinessException("Enrollment status cannot be changes", 404);
-
-            existingEnroll!.Status = enroll.Status;
-
-            await unitOfWork.Repository<Enrollment>().Update(existingEnroll);
-
+            existingEnrollment.IsDeleted = true;
+            existingEnrollment.Status = EnrollmentStatus.Cancelled;
+            await unitOfWork.Repository<Student>().Delete(id);
             await unitOfWork.CompleteChanges();
-            var enrollspec = new EnrollByIdSpecification(existingEnroll.Id);
-            var updateEnrollment = await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
-
-            return mapper.Map<EnrollmentDTO>(updateEnrollment);
-        }
-
-        public async Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id)
-        {
-            var spec = new EnrollmentbyStudentIdSpecification(id);
-
-            var existingEnrollmentsbyStudentId = await unitOfWork.EnrollmentRepository().GetEnrollmentsbyStudentId(spec);
-
-            if(!existingEnrollmentsbyStudentId.Any())
-                throw new BusinessException("Student is not found in Enrollments", 404);
-
-            var EnrollmentsofStudent= mapper.Map<IEnumerable<Enrollment>,IEnumerable<EnrollmentDTO>>(existingEnrollmentsbyStudentId);
-
-            return EnrollmentsofStudent;
-
-
-        }
-
-        public async Task<IEnumerable<TrackStudentDto>> GetStudentsByTrackId(int id)
-        {
-            var spec = new StudentsBYtrackIdSpecification(id);
-
-            var existingStudentsbytrack = await unitOfWork.EnrollmentRepository().GetStudentsByTrackId(spec);
-
-            if (!existingStudentsbytrack.Any())
-                throw new BusinessException("No Students is enrolled in track", 404);
-
-            var Studentsbytrack = mapper.Map<IEnumerable<Enrollment>, IEnumerable<TrackStudentDto>>(existingStudentsbytrack);
-
-            return Studentsbytrack;
-
+            return true;
         }
 
 

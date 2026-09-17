@@ -11,14 +11,6 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
     {
         IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<int>;
 
-        IEnrollmentRepository EnrollmentRepository();
-
-        IInstructorRepository InstructorRepository();
-
-        IPaymentRepository PaymentRepository();
-
-        IReportRepository ReportRepository();
-
         Task<int> CompleteChanges();
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.BLL.DTOS.Enrollment
@@ -24,5 +25,7 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
 
         public string StudentName { get; set; } = null!;
         public string TrainingTrackName { get; set; } = null!;
+
+        public List<PaymentDTO> Payments { get; set; } = new List<PaymentDTO>();
     }
 }

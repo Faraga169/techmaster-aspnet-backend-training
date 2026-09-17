@@ -1,14 +1,14 @@
 <Solution>
   <Folder Name="/phase-01-backend-foundations/">
-    <Project Path="phase-01-backend-foundations/task-01-csharp-drills/task-01-csharp-drills.csproj" />
-    <Project Path="phase-01-backend-foundations/task-02-bank-account-system/task-02-bank-account-system.csproj" />
-    <Project Path="phase-01-backend-foundations/task-03-employee-management/task-03-employee-management.csproj" />
-    <Project Path="phase-01-backend-foundations/task-04-product-catalog-linq/task-04-product-catalog-linq.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-01-backend-foundations/task-01-csharp-drills/task-01-csharp-drills.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-01-backend-foundations/task-02-bank-account-system/task-02-bank-account-system.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-01-backend-foundations/task-03-employee-management/task-03-employee-management.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-01-backend-foundations/task-04-product-catalog-linq/task-04-product-catalog-linq.csproj" />
   </Folder>
   <Folder Name="/phase-01-backend-foundations/task-00-setup/" />
   <Folder Name="/phase-01-backend-foundations/task-05-debug-refactor-pack/">
     <File Path="phase-01-backend-foundations/task-05-debug-refactor-pack/README.md" />
-    <Project Path="phase-01-backend-foundations/task-05-debug-refactor-pack/Refactor/Refactor.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-01-backend-foundations/task-05-debug-refactor-pack/Refactor/Refactor.csproj" />
   </Folder>
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/" />
   <Folder Name="/phase-01-backend-foundations/task-06-sql-erd-starter/LibraryManangmentSystemScenario/">
@@ -32,19 +32,19 @@
   <Folder Name="/phase-02-web-api-basics/task-00-api-setup/" />
   <Folder Name="/phase-02-web-api-basics/task-01-rest-routing-drills/">
     <File Path="phase-02-web-api-basics/task-01-rest-routing-drills/README.md" />
-    <Project Path="phase-02-web-api-basics/task-01-rest-routing-drills/ApiRoutingDrills/ApiRoutingDrills.csproj" Id="c5df7872-a705-42ee-bec0-560088c610a3" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-02-web-api-basics/task-01-rest-routing-drills/ApiRoutingDrills/ApiRoutingDrills.csproj" Id="c5df7872-a705-42ee-bec0-560088c610a3" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-02-student-management-api/">
     <File Path="phase-02-web-api-basics/task-02-student-management-api/README.md" />
-    <Project Path="phase-02-web-api-basics/task-02-student-management-api/StudentManagementAPI/StudentManagementAPI.csproj" Id="138ea243-0460-4f67-9467-42687f80bc15" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-02-web-api-basics/task-02-student-management-api/StudentManagementAPI/StudentManagementAPI.csproj" Id="138ea243-0460-4f67-9467-42687f80bc15" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-03-products-categories-api/">
     <File Path="phase-02-web-api-basics/task-03-products-categories-api/README.md" />
-    <Project Path="phase-02-web-api-basics/task-03-products-categories-api/Products&amp;CategoriesAPI/Products&amp;CategoriesAPI.csproj" Id="961c4cde-a2ba-41fa-9104-1ccd2707f30c" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-02-web-api-basics/task-03-products-categories-api/Products&amp;CategoriesAPI/Products&amp;CategoriesAPI.csproj" Id="961c4cde-a2ba-41fa-9104-1ccd2707f30c" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-04-book-store-api/">
     <File Path="phase-02-web-api-basics/task-04-book-store-api/README.md" />
-    <Project Path="phase-02-web-api-basics/task-04-book-store-api/Book Store API/Book Store API.csproj" Id="872288cc-87ce-4705-8a4f-9347b9274499" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-02-web-api-basics/task-04-book-store-api/Book Store API/Book Store API.csproj" Id="872288cc-87ce-4705-8a4f-9347b9274499" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-05-postman-swagger-evidence/">
     <File Path="phase-02-web-api-basics/task-05-postman-swagger-evidence/README.md" />
@@ -78,7 +78,7 @@
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-06-api-standards-refactor-pack/">
     <File Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/README.md" />
-    <Project Path="phase-02-web-api-basics/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack.csproj" Id="f8ba54c4-1787-4b0b-b434-66e0c4521e8d" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-02-web-api-basics/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack/task-06-api-standards-refactor-pack.csproj" Id="f8ba54c4-1787-4b0b-b434-66e0c4521e8d" />
   </Folder>
   <Folder Name="/phase-02-web-api-basics/task-07-interview-answers/">
     <File Path="phase-02-web-api-basics/task-07-interview-answers/README.md" />
@@ -88,7 +88,7 @@
     <File Path="phase-03-real-backend-data-systems/Task 00 - Workspace &amp; Environment Setup/README.md" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/">
-    <Project Path="phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/EF Core Modeling Drill Pack/EF Core Modeling Drill Pack.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-03-real-backend-data-systems/Task-01-ef-core-modeling-drills/EF Core Modeling Drill Pack/EF Core Modeling Drill Pack.csproj" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-02-requirements-to-erd/">
     <File Path="phase-03-real-backend-data-systems/task-02-requirements-to-erd/README.md" />
@@ -98,43 +98,45 @@
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-03-training-center-database-api/">
     <File Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/README.md" />
-    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.Api/TrainingCenter.Api.csproj" Id="5848ed8b-2ec1-43c3-a804-71dd831b28fe" />
-    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.BLL/TrainingCenter.BLL.csproj" Id="d33d8e25-e585-488d-9680-ce76331e6854" />
-    <Project Path="phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.DAL/TrainingCenter.DAL.csproj" Id="06b263b2-2131-4b53-a8ca-554320df6f95" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.Api/TrainingCenter.Api.csproj" Id="5848ed8b-2ec1-43c3-a804-71dd831b28fe" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.BLL/TrainingCenter.BLL.csproj" Id="d33d8e25-e585-488d-9680-ce76331e6854" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-03-real-backend-data-systems/task-03-training-center-database-api/TrainingCenter.DAL/TrainingCenter.DAL.csproj" Id="06b263b2-2131-4b53-a8ca-554320df6f95" />
   </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-04-querying-filtering-reporting/" />
   <Folder Name="/phase-03-real-backend-data-systems/task-05-business-rules-data-integrity/" />
   <Folder Name="/phase-03-real-backend-data-systems/task-06-production-hosting-remote-database/" />
-  <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/">
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/EF Core API Refactor Pack/EF Core API Refactor Pack.csproj" Id="62a79bb4-5647-4cf1-acd5-a476b2106c12" />
+  </Folder>
   <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/" />
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />
-    <Project Path="problem-solving/BaseBall/Solution05/Solution05.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/problem-solving/BaseBall/Solution05/Solution05.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Contains Duplicate/">
     <File Path="problem-solving/Contain Duplicates/README.md" />
-    <Project Path="problem-solving/Contain Duplicates/Solution03/Solution03.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/problem-solving/Contain Duplicates/Solution03/Solution03.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Plus One/">
     <File Path="problem-solving/Plus One/README.md" />
-    <Project Path="problem-solving/Plus One/Solution02/Solution02.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/problem-solving/Plus One/Solution02/Solution02.csproj" />
   </Folder>
   <Folder Name="/problem-solving/RangeSumQuery/">
     <File Path="problem-solving/Range Sum Query/README.md" />
-    <Project Path="Solution06/Solution06.csproj" Id="29fd11f4-a71b-4273-a884-467658949829" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/Solution06/Solution06.csproj" Id="29fd11f4-a71b-4273-a884-467658949829" />
   </Folder>
   <Folder Name="/problem-solving/running-sum-of-1d-array/">
     <File Path="problem-solving/running-sum-of-1d-array/README.md" />
-    <Project Path="problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/problem-solving/running-sum-of-1d-array/Solution01/Solution01.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Two Sum/">
     <File Path="problem-solving/Two Sum/README.md" />
-    <Project Path="problem-solving/Two Sum/Solution04/Solution04.csproj" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/problem-solving/Two Sum/Solution04/Solution04.csproj" />
   </Folder>
   <Folder Name="/problem-solving/Valid Pranthesis/">
     <File Path="problem-solving/Valid Pranthesis/README.md" />
-    <Project Path="Solution07/Solution07.csproj" Id="4d1c56e8-2acf-4f1d-8d23-ecf9c1f0860a" />
+    <Project Path="D:/ITI/techmaster-aspnet-backend-training/Solution07/Solution07.csproj" Id="4d1c56e8-2acf-4f1d-8d23-ecf9c1f0860a" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

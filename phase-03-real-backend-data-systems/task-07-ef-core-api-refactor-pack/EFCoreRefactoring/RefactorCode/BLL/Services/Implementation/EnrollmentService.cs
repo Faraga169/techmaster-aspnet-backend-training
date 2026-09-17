@@ -8,8 +8,6 @@ using AutoMapper;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
-using TrainingCenter.BLL.DTOS.Student;
-using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.BLL.Specifications.EnrollmentSpecification;
 using TrainingCenter.BLL.Specifications.StudentSpecifications;
@@ -26,7 +24,7 @@ namespace TrainingCenter.BLL.Services.Implementation
     {
 
 
-        public async Task<PaginatedResult<EnrollmentDTO>> GetAll(EnrollmentStatus? status, int? trackid, int? studentid, PaymentStatus? paymentStatus,int? pagenumber=1,int? pagesize=5)
+        public async Task<PaginatedResult<EnrollmentDTO>> GetAll(EnrollmentStatus? status, int? trackid, int? studentid, PaymentStatus? paymentStatus,int pagenumber=1,int pagesize=5)
         {
 
             if (pagenumber < 1)
@@ -121,7 +119,6 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.CompleteChanges();
             return true;
         }
-
 
     }
 }

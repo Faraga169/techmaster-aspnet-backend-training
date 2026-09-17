@@ -1,6 +1,8 @@
 
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using StudentManagementAPI.Middleware;
 using TrainingCenter.BLL;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
@@ -29,10 +31,7 @@ namespace EFCoreRefactoring
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<ITrackService, TrackService>();
-            builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
-            builder.Services.AddScoped<IInstrcutorService, InstructorService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddAutoMapper(
     cfg => { }, typeof(AssemblyBLL).Assembly);
@@ -49,6 +48,7 @@ namespace EFCoreRefactoring
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

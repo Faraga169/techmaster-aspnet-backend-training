@@ -4,22 +4,25 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
+using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
 
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IAuthenticationService
+    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
@@ -64,15 +67,17 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException(errors, 400);
             }
 
+            var expiresAt = DateTime.UtcNow.AddHours(1);
             return new AuthResponseDTO()
             {
 
                 Email = user.Email,
                 FullName = user.UserName,
                 Role = registerDTO.Role,
-                Token =await CreateJWT(user),
+                ExpiresAt = expiresAt,
+                AccessToken =await CreateJWT(user,expiresAt),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddHours(1)
+               
             };
 
         }
@@ -95,18 +100,71 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             var roles = await userManager.GetRolesAsync(user);
 
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = await GenerateRefreshToken(),
+                UserId = user.Id,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            };
+
+            dbContext.RefreshTokens.Add(refreshTokenEntity);
+
+            await dbContext.SaveChangesAsync();
+            var expiresAt = DateTime.UtcNow.AddHours(1);
+
             return new AuthResponseDTO
             {
                 Email = user.Email!,
                 FullName = user.UserName!,
                 Role = roles.FirstOrDefault()!,
-                Token = await CreateJWT(user),
+                ExpiresAt = expiresAt,
+                AccessToken = await CreateJWT(user,expiresAt),
+                RefreshToken = await GenerateRefreshToken(),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddHours(1)
+               
             };
         }
 
 
+        public async Task<AuthResponseDTO> RefreshToken(string refreshtoken) {
+
+            var userrefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == refreshtoken);
+            if (userrefreshtoken is null)
+                throw new BusinessException("Refresh Token is invalid", 401);
+
+            if(userrefreshtoken.IsRevoked)
+                throw new BusinessException("Refresh Token is Revoked", 401);
+
+            if(userrefreshtoken.ExpiresAt<DateTime.UtcNow)
+                throw new BusinessException("Refresh Token is expired", 401);
+
+            var user = await userManager.FindByIdAsync(userrefreshtoken.UserId);
+
+            if(user is null)
+                throw new BusinessException("user not found", 404);
+
+            if(!user.IsActive)
+                throw new BusinessException("user is not Active", 403);
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            var expiresAt = DateTime.UtcNow.AddHours(1);
+            return new AuthResponseDTO()
+            {
+
+                Email = user.Email!,
+                FullName = user.UserName!,
+                Role = roles.FirstOrDefault()!,
+                ExpiresAt = expiresAt,
+                AccessToken = await CreateJWT(user,expiresAt),
+                UserId = user.Id,
+              
+
+            };
+
+
+        }
 
         public async Task<AuthResponseDTO> GetCurrentUser() {
 
@@ -155,7 +213,15 @@ namespace TrainingCenter.BLL.Services.Implementation
             return;
 
         }
-        private async Task<string> CreateJWT(ApplicationUser User) {
+
+
+        private async Task<string> GenerateRefreshToken()
+        {
+            var randomBytes = RandomNumberGenerator.GetBytes(64);
+
+            return Convert.ToBase64String(randomBytes);
+        }
+        private async Task<string> CreateJWT(ApplicationUser User,DateTime expireAt) {
 
             var Claims = new List<Claim>() {
 
@@ -179,7 +245,7 @@ namespace TrainingCenter.BLL.Services.Implementation
         issuer: configuration.GetSection("JWT")["Issuer"],
         audience: configuration.GetSection("JWT")["Audience"],
         claims: Claims,
-        expires: DateTime.UtcNow.AddHours(1),
+        expires: expireAt,
         signingCredentials: signcredentials
     );
 

@@ -16,5 +16,7 @@ namespace TrainingCenter.BLL.Services.Interface
         public Task<AuthResponseDTO> GetCurrentUser();
 
         public Task ChangePassword(ChangePasswordDTO changePasswordDTO);
+
+        public Task<AuthResponseDTO> RefreshToken(string refreshtoken);
     }
 }

@@ -62,5 +62,14 @@ namespace TrainingCenter.Api.Controllers
             return NoContent();
         }
 
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<AuthResponseDTO>> RefreshToken(RefreshTokenDTO refreshTokenDTO)
+        {
+            var result = await authenticationService.RefreshToken(refreshTokenDTO);
+
+            return Ok(result);
+        }
+
     }
 }

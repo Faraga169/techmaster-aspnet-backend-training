@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 
@@ -10,19 +11,29 @@ namespace TrainingCenter.Api.Controllers
     public class AuthenticateController(IAuthenticationService authenticationService) : ControllerBase
     {
         [HttpPost("register")]
-        public async Task<ActionResult<AuthResponseDTO>> Register(RegisterDTO registerDTO) { 
+        public async Task<ActionResult<ApiResponse<AuthResponseDTO>>> Register(RegisterDTO registerDTO) { 
         
             var result=await authenticationService.Register(registerDTO);
-            return Ok(result);
+            return Ok(new ApiResponse<AuthResponseDTO>() { 
+                Success=true,
+                Message="User Register successfully",
+                Data=result
+
+            });
         
         }
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthResponseDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<ApiResponse<AuthResponseDTO>>> Login(LoginDTO loginDTO)
         {
             var result = await authenticationService.Login(loginDTO);
-            return Ok(result);
+            return Ok(new ApiResponse<AuthResponseDTO>() {
+
+                Success = true,
+                Message = "User Login successfully",
+                Data = result
+            });
 
         }
 

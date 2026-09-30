@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
@@ -17,7 +19,7 @@ using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration) : IAuthenticationService
+    public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
@@ -105,6 +107,26 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
 
 
+
+        public async Task<AuthResponseDTO> GetCurrentUser() {
+
+            var userId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(userId is null)
+                throw new BusinessException("User not found.", 401);
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null)
+                throw new BusinessException("User not found.", 404);
+
+            var role = await userManager.GetRolesAsync(user);
+            return new AuthResponseDTO
+            {
+                UserId = user.Id,
+                Email = user.Email!,
+                FullName = user.UserName!,
+                Role = role.FirstOrDefault()!
+            };
+        }
         private async Task<string> CreateJWT(ApplicationUser User) {
 
             var Claims = new List<Claim>() {
@@ -135,6 +157,9 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+
 
     }
 }

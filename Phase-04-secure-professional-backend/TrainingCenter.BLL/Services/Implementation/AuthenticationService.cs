@@ -81,9 +81,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (!user.IsActive)
                 throw new BusinessException("User account is inactive.", 403);
 
-            var passwordValid = await userManager.CheckPasswordAsync(
-                user,
-                loginDTO.Password);
+            var passwordValid = await userManager.CheckPasswordAsync(user,loginDTO.Password);
 
             if (!passwordValid)
                 throw new BusinessException("Invalid email or password", 401);

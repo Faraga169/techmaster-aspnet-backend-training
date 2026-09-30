@@ -68,15 +68,12 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException(errors, 400);
             }
 
-            var expiresAt = DateTime.UtcNow.AddHours(1);
             return new AuthResponseDTO()
             {
 
                 Email = user.Email,
                 FullName = user.UserName,
                 Role = registerDTO.Role,
-                ExpiresAt = expiresAt,
-                AccessToken =await CreateJWT(user,expiresAt),
                 UserId = user.Id,
                
             };
@@ -109,11 +106,11 @@ namespace TrainingCenter.BLL.Services.Implementation
                 IsRevoked = false
             };
 
-            var currentactiverefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == user.Id);
-            if (currentactiverefreshtoken is null) {
-                throw new BusinessException("Refresh token not found.", 401);
+            var currentactiverefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == user.Id&&!r.IsRevoked);
+            if (currentactiverefreshtoken is  not null) {
+                currentactiverefreshtoken.IsRevoked = true;
             }
-            currentactiverefreshtoken.IsRevoked = true;
+           
             dbContext.RefreshTokens.Add(refreshTokenEntity);
 
             await dbContext.SaveChangesAsync();
@@ -126,7 +123,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 Role = roles.FirstOrDefault()!,
                 ExpiresAt = expiresAt,
                 AccessToken = await CreateJWT(user,expiresAt),
-                RefreshToken = await GenerateRefreshToken(),
+                RefreshToken = refreshTokenEntity.Token,
                 UserId = user.Id,
                
             };

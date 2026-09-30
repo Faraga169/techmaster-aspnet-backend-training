@@ -66,9 +66,22 @@ namespace TrainingCenter.Api.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<AuthResponseDTO>> RefreshToken(RefreshTokenDTO refreshTokenDTO)
         {
-            var result = await authenticationService.RefreshToken(refreshTokenDTO);
+            var result = await authenticationService.RefreshToken(refreshTokenDTO.RefreshToken);
 
-            return Ok(result);
+            return Ok(new ApiResponse<AuthResponseDTO>()
+            {
+
+                Success = true,
+                Message = "Access Token Generated Successfully",
+                Data = result
+            });
+        }
+
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> LogOut() {
+
+            await authenticationService.LogOut();
+            return NoContent();
         }
 
     }

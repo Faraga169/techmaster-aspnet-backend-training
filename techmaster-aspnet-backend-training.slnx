@@ -108,7 +108,12 @@
   <Folder Name="/phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/">
     <Project Path="phase-03-real-backend-data-systems/task-07-ef-core-api-refactor-pack/EFCoreRefactoring/EFCoreRefactoring.csproj" Id="b4ff9713-df7a-4260-8472-33f2fd222c45" />
   </Folder>
-  <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/" />
+  <Folder Name="/phase-03-real-backend-data-systems/task-08-interview-demo-pack/">
+    <File Path="phase-03-real-backend-data-systems/task-08-interview-demo-pack/README.md" />
+  </Folder>
+  <Folder Name="/Phase-04-secure-professional-backend/">
+    <File Path="Phase-04-secure-professional-backend/README.md" />
+  </Folder>
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

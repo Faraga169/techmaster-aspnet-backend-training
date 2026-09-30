@@ -127,6 +127,34 @@ namespace TrainingCenter.BLL.Services.Implementation
                 Role = role.FirstOrDefault()!
             };
         }
+
+        public async Task ChangePassword(ChangePasswordDTO changePasswordDTO) {
+
+            var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId is null)
+                throw new BusinessException("User not found.", 401);
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user is null)
+                throw new BusinessException("User not found.", 404);
+
+            var userpassword = await userManager.CheckPasswordAsync(user, changePasswordDTO.OldPassword);
+
+            if(!userpassword)
+                throw new BusinessException("Password is invalid", 400);
+
+            var updatepassword = await userManager.ChangePasswordAsync(user, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
+
+            if (!updatepassword.Succeeded) {
+
+                var errors = String.Join(',', updatepassword.Errors.Select(e => e.Description));
+                throw new BusinessException($"{errors}", 400);
+            }
+
+            return;
+
+        }
         private async Task<string> CreateJWT(ApplicationUser User) {
 
             var Claims = new List<Claim>() {

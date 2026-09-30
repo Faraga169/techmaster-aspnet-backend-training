@@ -12,5 +12,7 @@ namespace TrainingCenter.BLL.Services.Interface
         public Task<AuthResponseDTO> Register(RegisterDTO registerDTO);
 
         public Task<AuthResponseDTO> Login(LoginDTO loginDTO);
+
+        public Task<AuthResponseDTO> GetCurrentUser();
     }
 }

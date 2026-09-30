@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.User;
@@ -32,6 +33,21 @@ namespace TrainingCenter.Api.Controllers
 
                 Success = true,
                 Message = "User Login successfully",
+                Data = result
+            });
+
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<ApiResponse<AuthResponseDTO>>> GetCurrentUser()
+        {
+            var result = await authenticationService.GetCurrentUser();
+            return Ok(new ApiResponse<AuthResponseDTO>()
+            {
+
+                Success = true,
+                Message = "Information of current user",
                 Data = result
             });
 

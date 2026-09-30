@@ -22,8 +22,8 @@ namespace TrainingCenter.DAL.Persistent.Models
         public Instructor? Instructor { get; set; }
 
         public Student? Student { get; set; }
-      
 
 
+        public ICollection<RefreshToken> RefreshTokens { get; set; }= new List<RefreshToken>();
     }
 }

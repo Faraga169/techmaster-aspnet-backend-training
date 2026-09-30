@@ -61,6 +61,8 @@ namespace TrainingCenter.DAL.Persistent
 
         public virtual DbSet<Payment> Payments { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
 
     }
 

@@ -44,6 +44,7 @@ namespace TrainingCenter.Api
             builder.Services.AddScoped<IInstrcutorService, InstructorService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IReportRepository,ReportRepository>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddIdentityCore<ApplicationUser>()
                             .AddRoles<IdentityRole>()
                             .AddEntityFrameworkStores<AppDbContext>();

@@ -38,8 +38,8 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
-        [HttpGet("me")]
         [Authorize]
+        [HttpGet("me")]
         public async Task<ActionResult<ApiResponse<AuthResponseDTO>>> GetCurrentUser()
         {
             var result = await authenticationService.GetCurrentUser();
@@ -51,6 +51,15 @@ namespace TrainingCenter.Api.Controllers
                 Data = result
             });
 
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO dto)
+        {
+            await authenticationService.ChangePassword(dto);
+
+            return NoContent();
         }
 
     }

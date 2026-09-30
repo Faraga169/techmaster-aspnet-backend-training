@@ -25,5 +25,8 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public ICollection<TrainingTrack> TrainingTracks { get; set; } = new HashSet<TrainingTrack>();
 
+        public ApplicationUser User { get; set; } = null!;
+        public string? UserId { get; set; };
+
     }
 }

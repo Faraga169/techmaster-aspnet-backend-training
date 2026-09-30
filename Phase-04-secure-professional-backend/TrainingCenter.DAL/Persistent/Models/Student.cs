@@ -22,5 +22,8 @@ namespace TrainingCenter.DAL.presistent.Models
 
         public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
 
+        public ApplicationUser User { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
+
     }
 }

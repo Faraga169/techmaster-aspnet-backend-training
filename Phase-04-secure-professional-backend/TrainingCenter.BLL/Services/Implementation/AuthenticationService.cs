@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
@@ -12,7 +17,7 @@ using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager) : IAuthenticationService
+    public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
@@ -63,9 +68,9 @@ namespace TrainingCenter.BLL.Services.Implementation
                 Email = user.Email,
                 FullName = user.UserName,
                 Role = registerDTO.Role,
-                Token = "Token to do",
+                Token =await CreateJWT(user),
                 UserId = user.Id,
-                ExpiresAt = DateTime.Now
+                ExpiresAt = DateTime.UtcNow.AddHours(1)
             };
 
         }
@@ -93,12 +98,43 @@ namespace TrainingCenter.BLL.Services.Implementation
                 Email = user.Email!,
                 FullName = user.UserName!,
                 Role = roles.FirstOrDefault()!,
-                Token = "Token to do",
+                Token = await CreateJWT(user),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow
+                ExpiresAt = DateTime.UtcNow.AddHours(1)
             };
         }
 
+
+        private async Task<string> CreateJWT(ApplicationUser User) {
+
+            var Claims = new List<Claim>() {
+
+                new Claim(ClaimTypes.Email,User.Email!),
+                new Claim(ClaimTypes.Name,User.UserName!),
+                new Claim(ClaimTypes.NameIdentifier,User.Id)
+            };
+
+            var Roles = await userManager.GetRolesAsync(User);
+            foreach (var role in Roles) {
+
+                Claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var Secretkey = configuration.GetSection("JWT")["Key"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secretkey!));
+
+            var signcredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+        issuer: configuration.GetSection("JWT")["Issuer"],
+        audience: configuration.GetSection("JWT")["Audience"],
+        claims: Claims,
+        expires: DateTime.UtcNow.AddHours(1),
+        signingCredentials: signcredentials
+    );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
     }
 }

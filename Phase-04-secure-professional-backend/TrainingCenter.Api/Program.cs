@@ -1,9 +1,12 @@
 
+using System.Text;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Middleware;
 using TrainingCenter.BLL;
 using TrainingCenter.BLL.AutoMapper;
@@ -37,14 +40,31 @@ namespace TrainingCenter.Api
             builder.Services.AddScoped<ITrackService, TrackService>();
             builder.Services.AddScoped<IStudentService, StudentService>();
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+            builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
             builder.Services.AddScoped<IInstrcutorService, InstructorService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IReportRepository,ReportRepository>();
             builder.Services.AddIdentityCore<ApplicationUser>()
                             .AddRoles<IdentityRole>()
-                            .AddSignInManager<ApplicationUser>()
                             .AddEntityFrameworkStores<AppDbContext>();
-                             
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                          .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
+        };
+    });
+
             builder.Services.AddAutoMapper(
     cfg => { },typeof(AssemblyBLL).Assembly);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

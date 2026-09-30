@@ -18,6 +18,7 @@ using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TrainingCenter.BLL.Services.Implementation
@@ -108,6 +109,11 @@ namespace TrainingCenter.BLL.Services.Implementation
                 IsRevoked = false
             };
 
+            var currentactiverefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == user.Id);
+            if (currentactiverefreshtoken is null) {
+                throw new BusinessException("Refresh token not found.", 401);
+            }
+            currentactiverefreshtoken.IsRevoked = true;
             dbContext.RefreshTokens.Add(refreshTokenEntity);
 
             await dbContext.SaveChangesAsync();
@@ -150,6 +156,22 @@ namespace TrainingCenter.BLL.Services.Implementation
             var roles = await userManager.GetRolesAsync(user);
 
             var expiresAt = DateTime.UtcNow.AddHours(1);
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = await GenerateRefreshToken(),
+                UserId = user.Id,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            };
+
+            userrefreshtoken.IsRevoked = true;
+
+            dbContext.RefreshTokens.Add(refreshTokenEntity);
+
+            await dbContext.SaveChangesAsync();
+
+          
+
             return new AuthResponseDTO()
             {
 
@@ -158,6 +180,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 Role = roles.FirstOrDefault()!,
                 ExpiresAt = expiresAt,
                 AccessToken = await CreateJWT(user,expiresAt),
+                RefreshToken=refreshTokenEntity.Token,
                 UserId = user.Id,
               
 
@@ -206,7 +229,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             if (!updatepassword.Succeeded) {
 
-                var errors = String.Join(',', updatepassword.Errors.Select(e => e.Description));
+                var errors = string.Join(',', updatepassword.Errors.Select(e => e.Description));
                 throw new BusinessException($"{errors}", 400);
             }
 
@@ -214,6 +237,28 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         }
 
+
+        public async Task LogOut() {
+
+            var userid = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(userid is null)
+                throw new BusinessException("User Claims is not found", 401);
+
+            var user = await userManager.FindByIdAsync(userid);
+            if(user is null)
+                throw new BusinessException("User is not Found", 404);
+
+            var currentrefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == user.Id && !r.IsRevoked);
+            if (currentrefreshtoken is null)
+            {
+                throw new BusinessException("Refresh token not found.", 401);
+            }
+
+            currentrefreshtoken.IsRevoked = true;
+            await dbContext.SaveChangesAsync();
+            return;
+
+        }
 
         private async Task<string> GenerateRefreshToken()
         {

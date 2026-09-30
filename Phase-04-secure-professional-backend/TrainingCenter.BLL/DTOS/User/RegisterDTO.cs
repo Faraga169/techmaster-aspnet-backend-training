@@ -15,6 +15,8 @@ namespace TrainingCenter.BLL.DTOS.User
         [EmailAddress]
         [Required(ErrorMessage ="Email is Required")]
         public string Email { get; set; } = null!;
+
+        [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; } = null!;
 
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]

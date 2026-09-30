@@ -42,6 +42,7 @@ namespace TrainingCenter.Api
             builder.Services.AddScoped<IReportRepository,ReportRepository>();
             builder.Services.AddIdentityCore<ApplicationUser>()
                             .AddRoles<IdentityRole>()
+                            .AddSignInManager<ApplicationUser>()
                             .AddEntityFrameworkStores<AppDbContext>();
                              
             builder.Services.AddAutoMapper(

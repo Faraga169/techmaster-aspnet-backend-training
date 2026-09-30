@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TrainingCenter.DAL.Persistent.Dataseeding;
 using TrainingCenter.DAL.Persistent.Models;
@@ -10,7 +12,7 @@ using TrainingCenter.DAL.presistent.Models;
 
 namespace TrainingCenter.DAL.Persistent
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext:IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
@@ -43,6 +45,9 @@ namespace TrainingCenter.DAL.Persistent
           
 
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UsersRoles");
         }
 
 

@@ -113,6 +113,9 @@
   </Folder>
   <Folder Name="/Phase-04-secure-professional-backend/">
     <File Path="Phase-04-secure-professional-backend/README.md" />
+    <Project Path="Phase-04-secure-professional-backend/TrainingCenter.Api/TrainingCenter.Api.csproj" />
+    <Project Path="Phase-04-secure-professional-backend/TrainingCenter.BLL/TrainingCenter.BLL.csproj" />
+    <Project Path="Phase-04-secure-professional-backend/TrainingCenter.DAL/TrainingCenter.DAL.csproj" />
   </Folder>
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">

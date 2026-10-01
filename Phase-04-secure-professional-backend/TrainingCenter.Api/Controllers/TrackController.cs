@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
+using TrainingCenter.BLL.DTOS.Instructor;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
@@ -43,7 +44,18 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/assign-instructor")]
+        public async Task<IActionResult> AssignInstructor(int id, [FromBody] AssignInstructorDTO dto)
+        {
+            await trackService.AssignInstructor(id, dto.InstructorId);
 
+            return Ok(new 
+            {
+                Success = true,
+                message = "Instructor assigned successfully."
+            });
+        }
 
         [Authorize(Roles ="Admin,Instructor")]
         [HttpGet("{id}")]

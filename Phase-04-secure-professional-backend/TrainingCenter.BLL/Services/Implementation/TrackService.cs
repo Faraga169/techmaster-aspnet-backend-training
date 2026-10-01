@@ -98,7 +98,25 @@ namespace TrainingCenter.BLL.Services.Implementation
             return mapper.Map<TrackDTO>(track);
         }
 
+        public async Task AssignInstructor(int trackId, int instructorId)
+        {
+            var track = await unitOfWork.Repository<TrainingTrack>().GetById(new TrackByIdSpecification(trackId));
 
+            if (track is null)
+                throw new BusinessException("Track not found.", 404);
+
+            var instructor = await unitOfWork.Repository<Instructor>().GetById(new InstructorbyIdspecification(instructorId));
+
+            if (instructor is null)
+                throw new BusinessException("Instructor not found.", 404);
+
+            if (!instructor.IsActive)
+                throw new BusinessException("Cannot assign an inactive instructor.", 400);
+
+            track.InstructorId = instructorId;
+
+            await unitOfWork.CompleteChanges();
+        }
         public async Task<TrackDTO> Update(UpdateTrackDTO trackdto)
         {
             var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

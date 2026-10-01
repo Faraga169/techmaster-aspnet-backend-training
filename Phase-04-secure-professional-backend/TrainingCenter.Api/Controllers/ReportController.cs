@@ -117,19 +117,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
-        [Authorize(Roles = "Admin,Instructor")]
-        [HttpGet("track-level-summary/{id}")]
-        public async Task<IActionResult> GetTrackLevelSummary(int id)
-        {
-            var result = await reportService.GetTrackLevelSummary(id);
-
-            return Ok(new ApiResponse<TrackLevelSummary>
-            {
-                Success = true,
-                Message = "Track level summary retrieved successfully.",
-                Data = result
-            });
-        }
+       
 
 
 

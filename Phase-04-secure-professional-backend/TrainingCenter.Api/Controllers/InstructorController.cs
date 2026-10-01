@@ -6,12 +6,13 @@ using TrainingCenter.BLL.DTOS.Instructor;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
+using TrainingCenter.DAL.Repositories.ReportModels;
 
 namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstructorController(IInstrcutorService instructorService) : ControllerBase
+    public class InstructorController(IInstrcutorService instructorService,IReportService reportService) : ControllerBase
     {
         [Authorize(Roles ="Admin")]
         [HttpGet]
@@ -24,6 +25,21 @@ namespace TrainingCenter.Api.Controllers
                 Success = true,
                 Message = "Instructors retrieved successfully.",
                 Data = result
+            });
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/assign-instructor")]
+        public async Task<IActionResult> AssignInstructor(
+    int id,
+    [FromBody] AssignInstructorDTO dto)
+        {
+            await trackService.AssignInstructor(id, dto.InstructorId);
+
+            return Ok(new
+            {
+                message = "Instructor assigned successfully."
             });
         }
 
@@ -71,6 +87,20 @@ namespace TrainingCenter.Api.Controllers
                 Success = true,
                 Message = "Instructor updated successfully.",
                 Data = instructor
+            });
+        }
+
+        [Authorize(Roles = "Admin,Instructor")]
+        [HttpGet("tracks/{id}/progress")]
+        public async Task<IActionResult> GetTrackLevelSummary(int id)
+        {
+            var result = await reportService.GetTrackLevelSummary(id);
+
+            return Ok(new ApiResponse<TrackLevelSummary>
+            {
+                Success = true,
+                Message = "Track level summary retrieved successfully.",
+                Data = result
             });
         }
 

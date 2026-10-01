@@ -29,11 +29,12 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin,Instructor")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await trackService.GetById(id);
+            
 
             return Ok(new ApiResponse<TrackDetailsDTO>
             {
@@ -85,7 +86,7 @@ namespace TrainingCenter.Api.Controllers
             return NoContent();
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin,Instructor")]
         [HttpGet("{id}/students")]
         public async Task<IActionResult> GetStudents(int id)
         {

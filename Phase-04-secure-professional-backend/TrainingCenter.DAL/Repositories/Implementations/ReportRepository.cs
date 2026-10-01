@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
@@ -29,6 +32,43 @@ namespace TrainingCenter.DAL.Repositories.Implementations
                 TotalPayments = await dbContext.Payments.CountAsync() }; 
             return result; 
         
+        }
+
+
+
+        public async Task<TrackLevelSummary> GetTrackLevelSummary(int id)
+        {
+            var track = await dbContext.TrainingTracks.FirstOrDefaultAsync(t => t.Id == id);
+
+
+            var enrollments = dbContext.Enrollmets
+                .Where(e => e.TrainingTrackId == id);
+
+            var total = await enrollments.CountAsync();
+
+            var pendingCount = await enrollments
+                .CountAsync(e => e.Status == EnrollmentStatus.Pending);
+
+            var activeCount = await enrollments
+                .CountAsync(e => e.Status == EnrollmentStatus.Active);
+
+            var cancelledCount = await enrollments
+                .CountAsync(e => e.Status == EnrollmentStatus.Cancelled);
+
+            var completedCount = await enrollments
+                .CountAsync(e => e.Status == EnrollmentStatus.Completed);
+
+            var completionPercentage = total == 0? 0: (double)completedCount / total * 100;
+
+            return new TrackLevelSummary
+            {
+                TrackName = track.Title,
+                ActiveCount = activeCount,
+                PendingCount = pendingCount,
+                CompleteCount = completedCount,
+                CancelledCount = cancelledCount,
+                CompletionPercentage = completionPercentage
+            };
         }
         public async Task<IEnumerable<TrackCapacityResult>> GetCapacityByTrack()
         {
@@ -127,8 +167,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             };
         }
 
-        public async Task<IEnumerable<GetEnrollmentUnpaidOrPartiallyPaidResult>>
-     GetUnpaidOrPartiallyPaid()
+        public async Task<IEnumerable<GetEnrollmentUnpaidOrPartiallyPaidResult>> GetUnpaidOrPartiallyPaid()
         {
             return await dbContext.Enrollmets.Where(e =>!e.Payments.Any() ||e.Payments
                         .Where(p => p.Status == PaymentStatus.Paid)

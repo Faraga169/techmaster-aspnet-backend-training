@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
@@ -21,7 +24,7 @@ using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper) : IEnrollmentService
+    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IEnrollmentService
     {
 
 
@@ -138,12 +141,28 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<TrackStudentDto>> GetStudentsByTrackId(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+            var spectrack = new TrackByIdSpecification(id);
+            var existingtrack=await unitOfWork.Repository<TrainingTrack>().GetById(spectrack);
+
+            if (existingtrack is null)
+                throw new BusinessException("Track not found",404);
+
+            if (existingtrack?.Instructor?.UserId != userId&&!isAdmin)
+                throw new BusinessException("You are not allowed to access Students in this track.", 403);
+
             var spec = new StudentsBYtrackIdSpecification(id);
 
             var existingStudentsbytrack = await unitOfWork.EnrollmentRepository().GetStudentsByTrackId(spec);
 
             if (!existingStudentsbytrack.Any())
                 throw new BusinessException("No Students is enrolled in track", 404);
+
+           
 
             var Studentsbytrack = mapper.Map<IEnumerable<Enrollment>, IEnumerable<TrackStudentDto>>(existingStudentsbytrack);
 

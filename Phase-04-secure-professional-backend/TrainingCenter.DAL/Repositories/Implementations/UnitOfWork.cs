@@ -29,6 +29,20 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             return (IGenericRepository<TEntity>)repository;
         }
 
+
+        public IReportRepository ReportRepository()
+        {
+            var type = typeof(IReportRepository);
+
+            if (!_repositories.TryGetValue(type, out var repository))
+            {
+                repository = new ReportRepository(dbContext);
+
+                _repositories.Add(type, repository);
+            }
+
+            return (IReportRepository)repository;
+        }
         public IEnrollmentRepository EnrollmentRepository()
         {
             var type = typeof(IEnrollmentRepository);
@@ -56,6 +70,8 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
             return (IInstructorRepository)repository;
         }
+
+
 
         public IPaymentRepository PaymentRepository()
         {

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.DTOS.Student;
@@ -19,7 +22,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class TrackService(IUnitOfWork unitOfWork,IMapper mapper) : ITrackService
+    public class TrackService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : ITrackService
     {
 
         public async Task<IEnumerable<TrackDTO>> GetAll(string? trackName, TrackLevel? trackLevel, TrainingStatus? trackStatus, int? instructorId)
@@ -35,10 +38,22 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<TrackDetailsDTO> GetById(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+           
+            
             var TrackSpecification = new TrackByIdSpecification(id);
+
             var GetTrackInstructor = await unitOfWork.Repository<TrainingTrack>().GetById(TrackSpecification);
             if (GetTrackInstructor is null)
                 throw new BusinessException("Track is not found", 404);
+
+            if(!isAdmin && GetTrackInstructor?.Instructor?.UserId!=userId )
+                throw new BusinessException("You are not allowed to access this track.", 403);
+
+
             var TrackDetailsDTO = mapper.Map<TrainingTrack, TrackDetailsDTO>(GetTrackInstructor);
             return TrackDetailsDTO;
         }

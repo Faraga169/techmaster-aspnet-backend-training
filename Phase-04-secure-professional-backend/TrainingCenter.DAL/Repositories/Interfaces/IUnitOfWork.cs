@@ -19,6 +19,7 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
         IReportRepository ReportRepository();
 
+
         Task<int> CompleteChanges();
     }
 }

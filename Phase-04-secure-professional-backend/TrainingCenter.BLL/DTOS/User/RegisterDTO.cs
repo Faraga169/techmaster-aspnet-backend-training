@@ -19,6 +19,9 @@ namespace TrainingCenter.BLL.DTOS.User
         [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; } = null!;
 
+        [Required(ErrorMessage = "Phone Number is Required")]
+        public string PhoneNumber { get; set; } = null!;
+
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = null!;
         public string Role { get; set; } = null!;

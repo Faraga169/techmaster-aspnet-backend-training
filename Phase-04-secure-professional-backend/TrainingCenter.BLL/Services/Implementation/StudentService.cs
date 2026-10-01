@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS;
@@ -13,12 +14,13 @@ using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.BLL.Specifications.StudentSpecifications;
+using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,IAuthenticationService authenticationService) : IStudentService
+    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : IStudentService
     {
 
         public async Task<PaginatedResult<StudentDTO>> GetAll(string? searchbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5)
@@ -74,26 +76,55 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingStudent is not null)
                 throw new BusinessException("Email already exists",400);
 
-            var result=await authenticationService.Register(new RegisterDTO()
+            await unitOfWork.BeginTransactionAsync();
+
+            try
             {
 
-                FullName = dto.FullName,
-                Email = dto.Email,
-                Role = "Student",
-                Password = dto.Password,
-                ConfirmPassword = dto.Password
+                var user = new ApplicationUser()
+                {
 
-            });
+                    Email = dto.Email,
+                    UserName = dto.FullName,
+                    
+                };
 
 
-            var student = mapper.Map<Student>(dto);
-            student.UserId = result.UserId;
 
-            await unitOfWork.Repository<Student>().Create(student);
+                var createUser = await userManager.CreateAsync(user, dto.Password);
+                if (!createUser.Succeeded)
+                {
 
-            await unitOfWork.CompleteChanges();
+                    var errors = string.Join(", ", createUser.Errors.Select(e => e.Description));
+                    throw new BusinessException($"{errors}", 400);
+                }
 
-            return mapper.Map<StudentDTO>(student);
+                var addToRole = await userManager.AddToRoleAsync(user, "Student");
+
+                if (!addToRole.Succeeded)
+                {
+                    var errors = string.Join(", ", addToRole.Errors.Select(e => e.Description));
+
+                    throw new BusinessException(errors, 400);
+                }
+
+                var student = mapper.Map<Student>(dto);
+
+                student.UserId = user.Id;
+
+                await unitOfWork.Repository<Student>().Create(student);
+
+                await unitOfWork.CompleteChanges();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                return mapper.Map<StudentDTO>(student);
+            }
+            catch
+            {
+                await unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
         }
 
 

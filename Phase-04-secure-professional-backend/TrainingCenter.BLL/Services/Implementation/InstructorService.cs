@@ -6,18 +6,22 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Instructor;
+using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
+using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.BLL.Specifications.InstructorSpecification;
 using TrainingCenter.BLL.Specifications.TrackSpecification;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IInstrcutorService
+    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : IInstrcutorService
     {
 
         public async Task<IEnumerable<InstructorDTO>> GetAll()
@@ -49,13 +53,56 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<InstructorDTO> Create(CreateInstructorDTO dto)
         {
+            await unitOfWork.BeginTransactionAsync();
 
-            var instructor = mapper.Map<Instructor>(dto);
+            try
+            {
+                var user = new ApplicationUser()
+                {
 
-            await unitOfWork.Repository<Instructor>().Create(instructor);
-            await unitOfWork.CompleteChanges();
+                    Email = dto.Email,
+                    UserName = dto.FullName,
+                   
 
-            return mapper.Map<InstructorDTO>(instructor);
+                };
+
+
+
+                var createUser = await userManager.CreateAsync(user, dto.Password);
+                if (!createUser.Succeeded)
+                {
+
+                    var errors = string.Join(", ", createUser.Errors.Select(e => e.Description));
+                    throw new BusinessException($"{errors}", 400);
+                }
+
+                var addToRole = await userManager.AddToRoleAsync(user, "Instructor");
+
+                if (!addToRole.Succeeded)
+                {
+                    var errors = string.Join(", ", addToRole.Errors.Select(e => e.Description));
+
+                    throw new BusinessException(errors, 400);
+                }
+
+                var instructor = mapper.Map<Instructor>(dto);
+
+                instructor.UserId = user.Id;
+
+                await unitOfWork.Repository<Instructor>().Create(instructor);
+
+                await unitOfWork.CompleteChanges();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                return mapper.Map<InstructorDTO>(instructor);
+            }
+            catch
+            {
+                await unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
+          
         }
 
         public async Task<InstructorDTO> Update(UpdateInstructorDTO dto)

@@ -14,22 +14,28 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Exceptions;
+using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.presistent.Models;
+using TrainingCenter.DAL.Repositories.Interfaces;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IAuthenticationService
+    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor,IUnitOfWork unitOfWork) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
         {
             if (registerDTO.Role == "Admin")
                 throw new BusinessException("Admin registration is not allowed.",400);
+
+            if (registerDTO.Role == "Instructor")
+                throw new BusinessException("Instructor registration is not allowed.", 400);
 
             if (!await roleManager.RoleExistsAsync(registerDTO.Role))
                 throw new BusinessException("Role does not exist.",400);
@@ -41,42 +47,65 @@ namespace TrainingCenter.BLL.Services.Implementation
 
 
 
+            await unitOfWork.BeginTransactionAsync();
 
-            var user = new ApplicationUser()
+            try
             {
+                var user = new ApplicationUser
+                {
+                    Email = registerDTO.Email,
+                    UserName = registerDTO.FullName,
+                    IsActive = true
+                };
 
-                Email = registerDTO.Email,
-                UserName = registerDTO.FullName,
-                IsActive=true
-            };
+                var createUser = await userManager.CreateAsync(user,registerDTO.Password);
 
-          
+                if (!createUser.Succeeded)
+                {
+                    var errors = string.Join( ", ",createUser.Errors.Select(e => e.Description));
 
-            var createUser = await userManager.CreateAsync(user,registerDTO.Password);
-            if (!createUser.Succeeded) {
+                    throw new BusinessException(errors, 400);
+                }
 
-                var errors = string.Join(", ",createUser.Errors.Select(e => e.Description));
-                throw new BusinessException($"{errors}",400);
-            }
+                var addToRole = await userManager.AddToRoleAsync(user,registerDTO.Role);
 
-            var addToRole = await userManager.AddToRoleAsync(user,registerDTO.Role);
+                if (!addToRole.Succeeded)
+                {
+                    var errors = string.Join(", ",addToRole.Errors.Select(e => e.Description));
 
-            if (!addToRole.Succeeded)
-            {
-                var errors = string.Join(", ", addToRole.Errors.Select(e => e.Description));
+                    throw new BusinessException(errors, 400);
+                }
 
-                throw new BusinessException(errors, 400);
-            }
-
-            return new AuthResponseDTO()
-            {
-
-                Email = user.Email,
-                FullName = user.UserName,
-                Role = registerDTO.Role,
-                UserId = user.Id,
+                
+                
+                    await unitOfWork.Repository<Student>().Create(new Student
+                    {
+                        FullName = registerDTO.FullName,
+                        Email = registerDTO.Email,
+                        IsActive = true,
+                        PhoneNumber = registerDTO.PhoneNumber,
+                        UserId = user.Id
+                    });
+                
                
-            };
+
+                await unitOfWork.CompleteChanges();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                return new AuthResponseDTO
+                {
+                    Email = user.Email,
+                    FullName = user.UserName,
+                    Role = registerDTO.Role,
+                    UserId = user.Id
+                };
+            }
+            catch
+            {
+                await unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
 
         }
 

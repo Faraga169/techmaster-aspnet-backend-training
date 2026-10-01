@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Instructor;
@@ -12,6 +13,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class InstructorController(IInstrcutorService instructorService) : ControllerBase
     {
+        [Authorize("Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -25,6 +27,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -38,6 +41,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateInstructorDTO dto)
         {
@@ -54,6 +58,7 @@ namespace TrainingCenter.Api.Controllers
                 });
         }
 
+        [Authorize("Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update( int id, UpdateInstructorDTO dto)
         {
@@ -69,6 +74,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("{id}/tracks")]
         public async Task<IActionResult> GetTracksByInstructorId(int id)
         {

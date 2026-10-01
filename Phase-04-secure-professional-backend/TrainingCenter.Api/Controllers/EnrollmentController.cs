@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
@@ -14,6 +15,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class EnrollmentController(IEnrollmentService enrollmentService,IPaymentService paymentService) : ControllerBase
     {
+        [Authorize("Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(EnrollmentStatus? status,int? trackId, int? studentId, PaymentStatus? paymentStatus)
         {

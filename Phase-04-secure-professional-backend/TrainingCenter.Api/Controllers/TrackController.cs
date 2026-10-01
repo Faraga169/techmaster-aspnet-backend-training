@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
@@ -14,6 +15,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class TrackController(ITrackService trackService,IEnrollmentService enrollmentService) : ControllerBase
     {
+        [Authorize("Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(string? keyword,TrackLevel? level,TrainingStatus? status,int? instructorId)
         {
@@ -27,6 +29,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,6 +43,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateTrackDTO dto)
         {
@@ -56,6 +60,7 @@ namespace TrainingCenter.Api.Controllers
                 });
         }
 
+        [Authorize("Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateTrackDTO dto)
         {
@@ -71,6 +76,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -79,7 +85,7 @@ namespace TrainingCenter.Api.Controllers
             return NoContent();
         }
 
-
+        [Authorize("Admin")]
         [HttpGet("{id}/students")]
         public async Task<IActionResult> GetStudents(int id)
         {

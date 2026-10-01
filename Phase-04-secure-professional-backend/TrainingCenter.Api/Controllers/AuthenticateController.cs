@@ -64,7 +64,7 @@ namespace TrainingCenter.Api.Controllers
 
 
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<AuthResponseDTO>> RefreshToken(RefreshTokenDTO refreshTokenDTO)
+        public async Task<ActionResult<ApiResponse<AuthResponseDTO>>> RefreshToken(RefreshTokenDTO refreshTokenDTO)
         {
             var result = await authenticationService.RefreshToken(refreshTokenDTO.RefreshToken);
 
@@ -77,7 +77,8 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [HttpPost("LogOut")]
+        [Authorize]
+        [HttpPost("logout")]
         public async Task<IActionResult> LogOut() {
 
             await authenticationService.LogOut();

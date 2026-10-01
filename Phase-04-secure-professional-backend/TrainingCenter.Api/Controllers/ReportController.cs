@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Payment;
@@ -11,8 +12,10 @@ namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class ReportController(IReportRepository reportsRepository) : ControllerBase
     {
+        [Authorize("Admin")]
         [HttpGet("dashboard-summary")]
         public async Task<IActionResult> GetDashboardSummary()
         {
@@ -26,6 +29,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("unpaid-enrollments")]
         public async Task<IActionResult> GetUnpaidEnrollments()
         {
@@ -39,6 +43,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("track-capacity")]
         public async Task<IActionResult> GetTrackCapacity()
         {
@@ -52,6 +57,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("revenue-summary")]
         public async Task<IActionResult> GetRevenueSummary()
         {
@@ -65,6 +71,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpGet("revenue-by-track")]
         public async Task<IActionResult> GetRevenueByTrack()
         {
@@ -79,7 +86,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-
+        [Authorize("Admin")]
         [HttpGet("top-tracks")]
         public async Task<IActionResult> GetTopTracks()
         {
@@ -94,6 +101,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
+        [Authorize("Admin")]
         [HttpGet("instructor-workload")]
         public async Task<IActionResult> GetInstrucorWorkload()
         {
@@ -108,7 +116,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
-
+        [Authorize("Admin")]
         [HttpGet("students-without-payments")]
        
         public async Task<IActionResult> GetStudentswithoutpayments()

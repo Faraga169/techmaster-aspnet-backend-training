@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Payment;
@@ -40,8 +41,8 @@ namespace TrainingCenter.Api.Controllers
                 });
         }
 
-       
 
+        [Authorize("Admin")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id,UpdatePaymentDTO dto)
         {

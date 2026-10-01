@@ -1,4 +1,5 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class StudentController(IStudentService studentService,IEnrollmentService enrollmentService) : ControllerBase
     {
+        [Authorize("Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(string? sreachbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5) {
 
@@ -28,7 +30,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-
+        [Authorize("Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
 
@@ -41,6 +43,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateStudentDTO createStudentDTO)
         {
@@ -55,6 +58,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
+        [Authorize("Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,UpdateStudentDTO updateStudentDTO)
         {
@@ -71,6 +75,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
+        [Authorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

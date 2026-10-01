@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS;
@@ -15,7 +17,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper) : IStudentService
+    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor) : IStudentService
     {
 
         public async Task<PaginatedResult<StudentDTO>> GetAll(string? searchbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5)
@@ -43,10 +45,19 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<StudentEnrollmentDTO> GetById(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
             var StudentSpecification = new StudentByIdSpecification(id);
             var GetStudentEnrollment = await unitOfWork.Repository<Student>().GetById(StudentSpecification);
             if (GetStudentEnrollment is null)
                 throw new BusinessException("Student is not found", 404);
+
+            if(!isAdmin&&GetStudentEnrollment.UserId!=userId)
+                throw new BusinessException("You are not allowed to see this profile", 403);
+
             var StudentEnrollmentDTO = mapper.Map<Student,StudentEnrollmentDTO>(GetStudentEnrollment);
             return StudentEnrollmentDTO;
 

@@ -128,6 +128,25 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
 
 
+        public async Task<StudentDTO> GetMyProfile()
+        {
+            var userId = contextAccessor.HttpContext?.User
+                .FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User claims not found.", 401);
+
+            var spec = new StudentByUserIdSpecification(userId);
+
+            var student = await unitOfWork
+                .Repository<Student>()
+                .GetById(spec);
+
+            if (student is null)
+                throw new BusinessException("Student profile not found.", 404);
+
+            return mapper.Map<StudentDTO>(student);
+        }
         public async Task<StudentDTO> Update(UpdateStudentDTO dto)
         {
             
@@ -138,8 +157,11 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
 
+            if(existingStudent is null)
+                throw new BusinessException("Student not found", 404);
+
             if (!isAdmin && dto.IsActive != existingStudent.IsActive)
-                throw new BusinessException("You are not allowed to change in IsActice Field", 403);
+                throw new BusinessException("You are not allowed to change in IsActive Field", 403);
 
             if (existingStudent is  null)
                 throw new BusinessException("Student not found", 404);
@@ -149,6 +171,34 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Student>().Update(student);
 
             await unitOfWork.CompleteChanges();
+            return mapper.Map<StudentDTO>(student);
+        }
+
+
+        public async Task<StudentDTO> UpdateMyProfile(UpdateStudentDTO dto)
+        {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+            var spec = new StudentByUserIdSpecification(userId);
+
+            var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
+
+            if (existingStudent is null)
+                throw new BusinessException("Student not found", 404);
+
+            // Student cannot change protected fields
+            dto.Id = existingStudent.Id;
+            dto.IsActive = existingStudent.IsActive;
+
+            var student = mapper.Map(dto, existingStudent);
+
+            await unitOfWork.Repository<Student>().Update(student);
+
+            await unitOfWork.CompleteChanges();
+
             return mapper.Map<StudentDTO>(student);
         }
 

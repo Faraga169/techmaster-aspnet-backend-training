@@ -40,6 +40,13 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             //return GetPaymentsByEnrollId;
         }
 
-       
+        public async Task<IEnumerable<Payment>> GetPaymentsByStudentId(ISpecification<Payment> spec)
+        {
+            var query = dbContext.Payments.AsNoTracking();
+            query = SpecificationEvaluator<Payment>.GetQuery(query, spec);
+            return await query.ToListAsync();
+        }
+
+
     }
 }

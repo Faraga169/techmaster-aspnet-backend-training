@@ -29,22 +29,10 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
-        [HttpPut("{id}/assign-instructor")]
-        public async Task<IActionResult> AssignInstructor(
-    int id,
-    [FromBody] AssignInstructorDTO dto)
-        {
-            await trackService.AssignInstructor(id, dto.InstructorId);
-
-            return Ok(new
-            {
-                message = "Instructor assigned successfully."
-            });
-        }
+        
 
         [Authorize(Roles ="Admin,Instructor")]
-        [HttpGet("{id}")]
+        [HttpGet("tracks/{id}/students")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await instructorService.GetById(id);
@@ -100,6 +88,20 @@ namespace TrainingCenter.Api.Controllers
             {
                 Success = true,
                 Message = "Track level summary retrieved successfully.",
+                Data = result
+            });
+        }
+
+        [Authorize(Roles = "Instructor")]
+        [HttpGet("my-tracks")]
+        public async Task<IActionResult> GetMyTracks()
+        {
+            var result = await instructorService.GetMyTracks();
+
+            return Ok(new ApiResponse<IEnumerable<TrackDTO>>
+            {
+                Success = true,
+                Message = "Your tracks retrieved successfully.",
                 Data = result
             });
         }

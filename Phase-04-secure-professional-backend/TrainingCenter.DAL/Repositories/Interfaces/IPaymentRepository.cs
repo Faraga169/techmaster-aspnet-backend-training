@@ -23,6 +23,9 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
         Task<IEnumerable<Payment>> GetPaymentsByEnrollmentId(ISpecification<Payment> spec);
 
+        Task<IEnumerable<Payment>> GetPaymentsByStudentId(ISpecification<Payment> spec);
+
+
 
     }
 }

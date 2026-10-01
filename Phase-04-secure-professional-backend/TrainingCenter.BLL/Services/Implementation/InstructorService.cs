@@ -33,25 +33,8 @@ namespace TrainingCenter.BLL.Services.Implementation
 
 
 
-        public async Task AssignInstructor(int trackId, int instructorId)
-        {
-            var track = await unitOfWork.Repository<TrainingTrack>().GetById(new TrackByIdSpecification(trackId));
+        
 
-            if (track is null)
-                throw new BusinessException("Track not found.", 404);
-
-            var instructor = await unitOfWork.Repository<Instructor>().GetById(new InstructorbyIdspecification(instructorId));
-
-            if (instructor is null)
-                throw new BusinessException("Instructor not found.", 404);
-
-            if (!instructor.IsActive)
-                throw new BusinessException("Cannot assign an inactive instructor.",400);
-
-            track.InstructorId = instructorId;
-
-            await unitOfWork.CompleteChanges();
-        }
         public async Task<InstructorDetailsDTO> GetById(int id)
         {
             var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -158,7 +141,26 @@ namespace TrainingCenter.BLL.Services.Implementation
             return mapper.Map<IEnumerable<TrackDTO>>(tracks);
         }
 
+        public async Task<IEnumerable<TrackDTO>> GetMyTracks()
+        {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (userId is null)
+                throw new BusinessException("User claims not found.", 401);
+
+            var instructorSpec = new InstructorByUserIdSpecification(userId);
+
+            var instructor = await unitOfWork.Repository<Instructor>().GetById(instructorSpec);
+
+            if (instructor is null)
+                throw new BusinessException("Instructor profile not found.", 404);
+
+            var trackSpec = new TrackByInstructorIdSpecification(instructor.Id);
+
+            var tracks = await unitOfWork.InstructorRepository().GetTracksByInstructorId(trackSpec);
+
+            return mapper.Map<IEnumerable<TrackDTO>>(tracks);
+        }
 
     }
 }

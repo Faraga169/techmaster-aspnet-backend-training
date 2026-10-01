@@ -18,6 +18,7 @@ using TrainingCenter.BLL.Specifications.TrackSpecification;
 using TrainingCenter.DAL.Persistent.Models;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
@@ -122,6 +123,8 @@ namespace TrainingCenter.BLL.Services.Implementation
             return mapper.Map<PaymentDTO>(payment);
         }
 
+
+
         public async Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id)
         {
             var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -136,7 +139,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("Enrollment not found", 404);
 
             if (!isAdmin && enroll?.Student?.UserId != userId)
-                throw new BusinessException("You are not allowed to see these enrollments.", 403);
+                throw new BusinessException("You are not allowed to see these payments.", 403);
 
             var spec = new PaymentbyEnrollIdSpecification(id);
             var GetPaymentHistory = await unitOfWork.PaymentRepository().GetPaymentsByEnrollmentId(spec);
@@ -148,6 +151,27 @@ namespace TrainingCenter.BLL.Services.Implementation
             return GetPaymentHistoryDTO;
         }
 
-        
+        public async Task<IEnumerable<PaymentDTO>> GetMyPayments()
+        {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+            var studentSpec = new StudentByUserIdSpecification(userId);
+
+            var student = await unitOfWork.Repository<Student>().GetById(studentSpec);
+
+            if (student is null)
+                throw new BusinessException("Student profile not found", 404);
+
+            var spec = new PaymentByStudentIdSpecification(student.Id);
+
+            var payments = await unitOfWork.PaymentRepository().GetPaymentsByStudentId(spec);
+
+            return mapper.Map<IEnumerable<Payment>, IEnumerable<PaymentDTO>>(payments);
+        }
+
+       
     }
 }

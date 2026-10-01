@@ -15,7 +15,7 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<InstructorDetailsDTO> GetById(int id);
 
-        public  Task AssignInstructor(int trackId, int instructorId);
+        public Task<IEnumerable<TrackDTO>> GetMyTracks();
 
         public Task<InstructorDTO> Create(CreateInstructorDTO instructor);
 

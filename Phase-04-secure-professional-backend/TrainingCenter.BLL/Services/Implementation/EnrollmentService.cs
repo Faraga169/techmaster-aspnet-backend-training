@@ -176,6 +176,21 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         }
 
+        public async Task<IEnumerable<EnrollmentDTO>> GetMyEnrollments()
+        {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User claims not found.", 401);
+
+            var student = await unitOfWork.Repository<Student>().GetById(new StudentByUserIdSpecification(userId));
+
+            if (student is null)
+                throw new BusinessException("Student profile not found.", 404);
+
+            return await GetEnrollmentsbyStudentId(student.Id);
+        }
+
         public async Task<IEnumerable<TrackStudentDto>> GetStudentsByTrackId(int id)
         {
             var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

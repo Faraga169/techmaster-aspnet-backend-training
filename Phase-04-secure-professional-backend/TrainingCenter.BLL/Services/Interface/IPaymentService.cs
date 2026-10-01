@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Interface
 {
@@ -13,13 +14,14 @@ namespace TrainingCenter.BLL.Services.Interface
     {
         public Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From ,DateTime? To,PaymentStatus? paymentStatus);
 
-
+        public Task<IEnumerable<PaymentDTO>> GetMyPayments();
         public Task<PaymentDTO> Create(CreatePaymentDTO payment);
 
         public Task<PaymentDTO> Update(UpdatePaymentDTO payment);
 
         public Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id);
 
+        
 
     }
 }

@@ -125,14 +125,30 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<EnrollmentDTO>> GetEnrollmentsbyStudentId(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+            var StudentSpecification = new StudentByIdSpecification(id);
+            var Student = await unitOfWork.Repository<Student>().GetById(StudentSpecification);
+
+            if (Student is null)
+                throw new BusinessException("Student is not found", 404);
+
+            if (!isAdmin && Student.UserId != userId)
+                throw new BusinessException("You are not allowed to see these enrollments.", 403);
+
             var spec = new EnrollmentbyStudentIdSpecification(id);
 
-            var existingEnrollmentsbyStudentId = await unitOfWork.EnrollmentRepository().GetEnrollmentsbyStudentId(spec);
+            var Enrollments = await unitOfWork.EnrollmentRepository().GetEnrollmentsbyStudentId(spec);
 
-            if(!existingEnrollmentsbyStudentId.Any())
+            if(!Enrollments.Any())
                 throw new BusinessException("Student is not found in Enrollments", 404);
 
-            var EnrollmentsofStudent= mapper.Map<IEnumerable<Enrollment>,IEnumerable<EnrollmentDTO>>(existingEnrollmentsbyStudentId);
+          
+
+            var EnrollmentsofStudent= mapper.Map<IEnumerable<Enrollment>,IEnumerable<EnrollmentDTO>>(Enrollments);
 
             return EnrollmentsofStudent;
 

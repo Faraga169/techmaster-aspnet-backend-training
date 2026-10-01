@@ -35,6 +35,14 @@ namespace TrainingCenter.BLL.Services.Implementation
             return TracksDTO;
         }
 
+        public async Task<IEnumerable<TrackDTO>> GetAvailableTracks()
+        {
+            var specification = new AvailableTracksSpecification();
+
+            var tracks = await unitOfWork.Repository<TrainingTrack>().GetAll(specification);
+
+            return mapper.Map<IEnumerable<TrackDTO>>(tracks);
+        }
 
         public async Task<TrackDetailsDTO> GetById(int id)
         {

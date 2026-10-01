@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
+using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 
@@ -15,7 +16,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class StudentController(IStudentService studentService,IEnrollmentService enrollmentService) : ControllerBase
     {
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(string? sreachbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5) {
 
@@ -30,7 +31,9 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize("Admin")]
+
+        
+        [Authorize(Roles ="Admin,Student")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
 
@@ -58,7 +61,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,UpdateStudentDTO updateStudentDTO)
         {
@@ -75,7 +78,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -85,7 +88,7 @@ namespace TrainingCenter.Api.Controllers
 
         }
 
-
+        [Authorize(Roles = "Admin,Student")]
         [HttpGet("{id}/enrollments")]
         public async Task<IActionResult> GetEnrollments(int id)
         {

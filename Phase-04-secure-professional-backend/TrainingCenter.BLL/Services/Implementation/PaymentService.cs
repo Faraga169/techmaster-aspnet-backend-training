@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Payment;
@@ -19,7 +21,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper) : IPaymentService
+    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IPaymentService
     {
 
         public async Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From, DateTime? To, PaymentStatus? paymentStatus)
@@ -122,8 +124,24 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+            var studentspec = new EnrollByIdSpecification(id);
+            var enroll=await unitOfWork.Repository<Enrollment>().GetById(studentspec);
+
+            if (enroll is null)
+                throw new BusinessException("Enrollment not found", 404);
+
+            if (!isAdmin && enroll?.Student?.UserId != userId)
+                throw new BusinessException("You are not allowed to see these enrollments.", 403);
+
             var spec = new PaymentbyEnrollIdSpecification(id);
             var GetPaymentHistory = await unitOfWork.PaymentRepository().GetPaymentsByEnrollmentId(spec);
+
+          
             if (!GetPaymentHistory.Any())
                 throw new BusinessException("No payment history found for this enrollment", 404);
             var GetPaymentHistoryDTO = mapper.Map<IEnumerable<Payment>,IEnumerable<PaymentDTO>>(GetPaymentHistory);

@@ -15,7 +15,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class TrackController(ITrackService trackService,IEnrollmentService enrollmentService) : ControllerBase
     {
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(string? keyword,TrackLevel? level,TrainingStatus? status,int? instructorId)
         {
@@ -28,6 +28,22 @@ namespace TrainingCenter.Api.Controllers
                 Data = result
             });
         }
+
+        [Authorize(Roles = "Student")]
+        [HttpGet("available")]
+        public async Task<IActionResult> GetAvailableTracks()
+        {
+            var result = await trackService.GetAvailableTracks();
+
+            return Ok(new ApiResponse<IEnumerable<TrackDTO>>
+            {
+                Success = true,
+                Message = "Available tracks retrieved successfully.",
+                Data = result
+            });
+        }
+
+
 
         [Authorize(Roles ="Admin,Instructor")]
         [HttpGet("{id}")]
@@ -44,7 +60,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateTrackDTO dto)
         {
@@ -61,7 +77,7 @@ namespace TrainingCenter.Api.Controllers
                 });
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateTrackDTO dto)
         {

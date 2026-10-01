@@ -42,7 +42,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id,UpdatePaymentDTO dto)
         {

@@ -15,7 +15,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class EnrollmentController(IEnrollmentService enrollmentService,IPaymentService paymentService) : ControllerBase
     {
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(EnrollmentStatus? status,int? trackId, int? studentId, PaymentStatus? paymentStatus)
         {
@@ -72,7 +72,9 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
+        [Authorize(Roles ="Student")]
         [HttpGet("{id}/payments")]
+
         public async Task<IActionResult> GetPaymentHistory(int id)
         {
             var result =await paymentService.GetPaymentHistory(id);

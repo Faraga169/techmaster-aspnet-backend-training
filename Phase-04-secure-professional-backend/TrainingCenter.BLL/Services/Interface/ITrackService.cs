@@ -15,6 +15,8 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<TrackDetailsDTO> GetById(int id);
 
+        public Task<IEnumerable<TrackDTO>> GetAvailableTracks();
+
         public Task<TrackDTO> Create(CreateTrackDTO track);
 
         public Task<TrackDTO> Update(UpdateTrackDTO track);

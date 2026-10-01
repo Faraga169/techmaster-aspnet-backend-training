@@ -27,7 +27,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin,Instructor")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

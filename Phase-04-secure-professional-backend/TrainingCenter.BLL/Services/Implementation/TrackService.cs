@@ -101,35 +101,54 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<TrackDTO> Update(UpdateTrackDTO trackdto)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
             if (trackdto.Capacity < 1 || trackdto.Capacity > 30)
-                throw new BusinessException("Track capacity must in range between 1 to 30", 400);
+                throw new BusinessException("Track capacity must be in range between 1 and 30", 400);
 
             if (trackdto.StartDate >= trackdto.EndDate)
                 throw new BusinessException("Track StartDate must be less than EndDate", 400);
 
+            // 1. Get the actual track
             var specId = new TrackByIdSpecification(trackdto.Id);
 
-            var existingTrack = await unitOfWork.Repository<TrainingTrack>().GetById(specId);
+            var existingTrack =await unitOfWork.Repository<TrainingTrack>().GetById(specId);
 
             if (existingTrack is null)
                 throw new BusinessException("Track not found", 404);
 
-            var specInsid = new TrackByInstructorIdSpecification(trackdto.InstructorId!.Value);
+            // 2. Check ownership of the EXISTING track
+            if (!isAdmin && existingTrack.Instructor?.UserId != userId)
+                throw new BusinessException("You are not allowed to update this track.", 403);
 
-            var existingInstructor = await unitOfWork.Repository<TrainingTrack>().GetById(specInsid);
+            // 3. Check the NEW instructor
+            var instructorSpec =new InstructorbyIdspecification(trackdto.InstructorId!.Value);
+
+            var existingInstructor =
+                await unitOfWork.Repository<Instructor>().GetById(instructorSpec);
 
             if (existingInstructor is null)
                 throw new BusinessException("Instructor not found", 404);
 
-            var track = mapper.Map<TrainingTrack>(trackdto);
+            // 4. Instructor cannot transfer the track to another instructor
+            if (!isAdmin &&(trackdto.InstructorId != existingTrack.InstructorId||trackdto.Code!=existingTrack.Code||trackdto.Price!=existingTrack.Price||trackdto.Status!=existingTrack.Status))
+                throw new BusinessException("You are not allowed to change the instructor or price or code or status of this track.",403);
 
-            await unitOfWork.Repository<TrainingTrack>().Update(track);
+            // 5. Update the existing entity
+            mapper.Map(trackdto, existingTrack);
+
+            await unitOfWork.Repository<TrainingTrack>().Update(existingTrack);
 
             await unitOfWork.CompleteChanges();
-            return mapper.Map<TrackDTO>(track);
 
-
+            return mapper.Map<TrackDTO>(existingTrack);
         }
+
         public async Task<bool> Delete(int id)
         {
             var spec = new TrackByIdSpecification(id);

@@ -12,6 +12,7 @@ namespace TrainingCenter.Api.Controllers
     [ApiController]
     public class PaymentController(IPaymentService paymentService) : ControllerBase
     {
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll(DateTime? from,DateTime? to,PaymentStatus? status)
         {
@@ -25,6 +26,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreatePaymentDTO dto)
         {

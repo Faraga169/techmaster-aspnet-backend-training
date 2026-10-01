@@ -29,6 +29,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -42,6 +43,8 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateEnrollDTO dto)
         {
@@ -56,6 +59,8 @@ namespace TrainingCenter.Api.Controllers
                 });
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> ChangeStatus(int id,UpdateEnrollDTO dto)
         {
@@ -72,7 +77,7 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize(Roles ="Student")]
+        [Authorize(Roles ="Student,Admin")]
         [HttpGet("{id}/payments")]
 
         public async Task<IActionResult> GetPaymentHistory(int id)

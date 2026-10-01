@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Instructor;
 using TrainingCenter.BLL.DTOS.Track;
@@ -15,7 +17,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper) : IInstrcutorService
+    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IInstrcutorService
     {
 
         public async Task<IEnumerable<InstructorDTO>> GetAll()
@@ -27,12 +29,20 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<InstructorDetailsDTO> GetById(int id)
         {
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
             var spec = new InstructorbyIdspecification(id);
 
             var instructor =await unitOfWork.Repository<Instructor>().GetById(spec);
 
             if (instructor is null)
                 throw new BusinessException("Instructor not found", 404);
+
+            if (!isAdmin && instructor.UserId != userId)
+                throw new BusinessException("You are not allowed to see this profile", 403);
 
             return mapper.Map<InstructorDetailsDTO>(instructor);
         }

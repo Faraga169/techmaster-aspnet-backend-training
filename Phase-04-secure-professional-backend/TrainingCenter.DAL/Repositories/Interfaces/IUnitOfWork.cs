@@ -21,5 +21,12 @@ namespace TrainingCenter.DAL.Repositories.Interfaces
 
 
         Task<int> CompleteChanges();
+
+
+        Task BeginTransactionAsync();
+
+        Task CommitTransactionAsync();
+
+        Task RollbackTransactionAsync();
     }
 }

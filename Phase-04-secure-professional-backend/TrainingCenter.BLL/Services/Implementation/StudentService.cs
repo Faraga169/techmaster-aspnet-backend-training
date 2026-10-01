@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Student;
+using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.BLL.Specifications.StudentSpecifications;
 using TrainingCenter.DAL.presistent.Models;
@@ -17,7 +18,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor) : IStudentService
+    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,IAuthenticationService authenticationService) : IStudentService
     {
 
         public async Task<PaginatedResult<StudentDTO>> GetAll(string? searchbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5)
@@ -64,6 +65,8 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
         public async Task<StudentDTO> Create(CreateStudentDTO dto)
         {
+            
+
             var spec = new StudentByEmailSpecification(dto.Email);
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
@@ -71,7 +74,20 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingStudent is not null)
                 throw new BusinessException("Email already exists",400);
 
+            var result=await authenticationService.Register(new RegisterDTO()
+            {
+
+                FullName = dto.FullName,
+                Email = dto.Email,
+                Role = "Student",
+                Password = dto.Password,
+                ConfirmPassword = dto.Password
+
+            });
+
+
             var student = mapper.Map<Student>(dto);
+            student.UserId = result.UserId;
 
             await unitOfWork.Repository<Student>().Create(student);
 
@@ -83,9 +99,16 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<StudentDTO> Update(UpdateStudentDTO dto)
         {
+            
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            
+
             var spec = new StudentByIdSpecification(dto.Id);
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
+
+            if (!isAdmin && dto.IsActive != existingStudent.IsActive)
+                throw new BusinessException("You are not allowed to change in IsActice Field", 403);
 
             if (existingStudent is  null)
                 throw new BusinessException("Student not found", 404);

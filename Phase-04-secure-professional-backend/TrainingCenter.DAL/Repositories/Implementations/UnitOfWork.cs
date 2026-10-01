@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using TrainingCenter.DAL.Persistent;
 using TrainingCenter.DAL.presistent.Models;
 using TrainingCenter.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TrainingCenter.DAL.Repositories.Implementations
 {
@@ -15,6 +16,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
 
         private readonly Dictionary<Type, object> _repositories = new();
+        private IDbContextTransaction? _transaction;
 
         public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity<int>
         {
@@ -89,18 +91,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
 
        
 
-        public IReportRepository ReportRepository()
-        {
-            var type = typeof(IReportRepository);
-
-            if (!_repositories.TryGetValue(type, out var repository))
-            {
-                repository = new ReportRepository(dbContext);
-                _repositories.Add(type, repository);
-            }
-
-            return (IReportRepository)repository;
-        }
+       
 
         public async Task<int> CompleteChanges()
         {
@@ -110,6 +101,33 @@ namespace TrainingCenter.DAL.Repositories.Implementations
         public void Dispose()
         {
             dbContext.Dispose();
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            _transaction = await dbContext.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            if (_transaction is null)
+                return;
+
+            await _transaction.CommitAsync();
+            await _transaction.DisposeAsync();
+
+            _transaction = null;
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            if (_transaction is null)
+                return;
+
+            await _transaction.RollbackAsync();
+            await _transaction.DisposeAsync();
+
+            _transaction = null;
         }
     }
 }

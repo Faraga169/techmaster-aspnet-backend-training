@@ -50,15 +50,32 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<EnrollmentDTO> Create(CreateEnrollDTO enroll)
         {
-            
+            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+
+            var currentuser = new GetStudentbyCurrentUserIdSpecification(userId);
+            var userspec = await unitOfWork.Repository<Student>().GetById(currentuser);
+            if (userspec is null)
+                throw new BusinessException("Student not found", 404);
+
+            if (!isAdmin && enroll.StudentId != userspec.Id)
+                throw new BusinessException("You have not access to assign another student", 403);
+
             var studentspec = new StudentByIdSpecification(enroll.StudentId!.Value);
             var student = await unitOfWork.Repository<Student>().GetById(studentspec);
+
+           
 
             if (student is null)
                 throw new BusinessException("Student not found", 404);
 
             if (student.IsDeleted || !student.IsActive)
                 throw new BusinessException("Student not allow to make enrollment", 404);
+
+           
 
             var trackSpec = new TrackByIdSpecification(enroll.TrainingTrackId!.Value);
 
@@ -67,12 +84,14 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (track is null)
                 throw new BusinessException("Track not found", 404);
 
-            if(track.Status==TrainingStatus.Cancelled)
-                throw new BusinessException("Cannot Enroll in Track was cancelled", 400);
+            if(track.Status==TrainingStatus.Cancelled|| track.Status == TrainingStatus.Completed)
+                throw new BusinessException("Cannot Enroll in Track was cancelled or completed", 400);
 
             var spec = new CheckduplicateofStudentEnrollment(enroll.StudentId.Value, enroll.TrainingTrackId.Value);
 
             var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);
+
+
 
             if (existingEnroll is not null)
                 throw new BusinessException("Student already in this track", 409);
@@ -82,6 +101,8 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             if (checkcapacity is null)
                 throw new BusinessException("The Active Capacity is Full", 400);
+
+        
 
             var enrollment = mapper.Map<Enrollment>(enroll);
 

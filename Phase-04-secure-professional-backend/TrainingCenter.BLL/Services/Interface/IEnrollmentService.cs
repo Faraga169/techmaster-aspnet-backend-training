@@ -15,7 +15,7 @@ namespace TrainingCenter.BLL.Services.Interface
     {
         public Task<IEnumerable<EnrollmentDTO>> GetAll(EnrollmentStatus? status,int? trackid,int? studentid,PaymentStatus? paymentStatus);
 
-        public  Task<IEnumerable<EnrollmentDTO>> GetMyEnrollments()
+        public Task<IEnumerable<EnrollmentDTO>> GetMyEnrollments();
 
         public Task<EnrollmentDetailsDTO> GetById(int id);
 

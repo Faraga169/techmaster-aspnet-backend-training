@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingCenter.DAL.Persistent;
 
@@ -11,9 +12,11 @@ using TrainingCenter.DAL.Persistent;
 namespace TrainingCenter.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261002083141_AddTrackSessionModel")]
+    partial class AddTrackSessionModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,7 +297,7 @@ namespace TrainingCenter.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(338),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9121),
                             EnrollmentDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             ProgressPercentage = 25m,
@@ -305,7 +308,7 @@ namespace TrainingCenter.DAL.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(342),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9124),
                             EnrollmentDate = new DateTime(2026, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsDeleted = false,
                             ProgressPercentage = 10m,
@@ -436,7 +439,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 1,
                             Bio = "Senior .NET Backend Instructor",
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(92),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(8931),
                             Email = "ahmed.hassan@example.com",
                             FullName = "Ahmed Hassan",
                             IsActive = true,
@@ -447,7 +450,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 2,
                             Bio = "Angular Instructor",
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(96),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(8934),
                             Email = "sara@example.com",
                             FullName = "Sara Mohamed",
                             IsActive = true,
@@ -576,7 +579,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 1,
                             Amount = 5000m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(493),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9185),
                             EnrollId = 1,
                             IsDeleted = false,
                             Notes = "First payment",
@@ -589,7 +592,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 2,
                             Amount = 3000m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(510),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9196),
                             EnrollId = 1,
                             IsDeleted = false,
                             Notes = "Second payment",
@@ -602,7 +605,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 3,
                             Amount = 4000m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(515),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9200),
                             EnrollId = 2,
                             IsDeleted = false,
                             Notes = "First payment",
@@ -615,7 +618,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 4,
                             Amount = 2500m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(519),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9202),
                             EnrollId = 3,
                             IsDeleted = false,
                             Notes = "First payment",
@@ -628,7 +631,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 5,
                             Amount = 3000m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(523),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9205),
                             EnrollId = 4,
                             IsDeleted = false,
                             Notes = "First payment",
@@ -641,7 +644,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 6,
                             Amount = 2000m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(528),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9213),
                             EnrollId = 5,
                             IsDeleted = false,
                             Notes = "Payment pending",
@@ -654,7 +657,7 @@ namespace TrainingCenter.DAL.Migrations
                         {
                             Id = 7,
                             Amount = 3500m,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(532),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9216),
                             EnrollId = 6,
                             IsDeleted = false,
                             Notes = "First payment",
@@ -729,6 +732,7 @@ namespace TrainingCenter.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MeetingLink")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SessionDate")
@@ -838,7 +842,7 @@ namespace TrainingCenter.DAL.Migrations
                             Id = 1,
                             Capacity = 30,
                             Code = "DOTNET-BACKEND",
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(253),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9069),
                             Description = "Backend development using ASP.NET Core",
                             EndDate = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InstructorId = 1,
@@ -854,7 +858,7 @@ namespace TrainingCenter.DAL.Migrations
                             Id = 2,
                             Capacity = 25,
                             Code = "ANGULAR-FE",
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 304, DateTimeKind.Utc).AddTicks(257),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(9071),
                             Description = "Frontend development using Angular",
                             EndDate = new DateTime(2027, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InstructorId = 2,
@@ -1008,7 +1012,7 @@ namespace TrainingCenter.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 303, DateTimeKind.Utc).AddTicks(9671),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(8756),
                             Email = "ahmed@example.com",
                             FullName = "Ahmed Farag",
                             IsActive = true,
@@ -1018,7 +1022,7 @@ namespace TrainingCenter.DAL.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 10, 2, 8, 41, 20, 303, DateTimeKind.Utc).AddTicks(9675),
+                            CreatedAt = new DateTime(2026, 10, 2, 8, 31, 40, 413, DateTimeKind.Utc).AddTicks(8759),
                             Email = "mohamed@example.com",
                             FullName = "Mohamed Ali",
                             IsActive = true,

@@ -47,6 +47,8 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public ICollection<Enrollment> Enrollments { get; set; } = new HashSet<Enrollment>();
 
+        public ICollection<TrackSession> TrackSessions { get; set; } = new HashSet<TrackSession>();
+
 
 
     }

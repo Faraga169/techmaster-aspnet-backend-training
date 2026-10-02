@@ -63,6 +63,8 @@ namespace TrainingCenter.DAL.Persistent
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+        public DbSet<TrackSession> TrackSessions { get; set; }
+
 
     }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Instructor;
+using TrainingCenter.BLL.DTOS.Session;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
@@ -12,7 +13,7 @@ namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstructorController(IInstrcutorService instructorService,IReportService reportService) : ControllerBase
+    public class InstructorController(IInstrcutorService instructorService,IReportService reportService,ITrackSession trackSession) : ControllerBase
     {
         [Authorize(Roles ="Admin")]
         [HttpGet]
@@ -118,6 +119,69 @@ namespace TrainingCenter.Api.Controllers
                 Message = "Instructor tracks retrieved successfully.",
                 Data = result
             });
+        }
+
+        [Authorize(Roles = "Instructor")]                               //   /api/instructor/tracks/{id}/sessions
+        [HttpPost("tracks/{id}/sessions")]
+        public async Task<ActionResult<ApiResponse<TrackSessionDTO>>> CreateSessionsbytrackid(int id,CreateSessionDTO createSessionDTO) {
+
+            var result = await trackSession.Create(id, createSessionDTO);
+            return Ok(new ApiResponse<TrackSessionDTO>()
+            {
+
+                Success = true,
+                Message = "Instructor Create Track Session Successfully",
+                Data = result
+            });
+        
+        }
+
+        [Authorize(Roles = "Instructor")]                               //   /api/instructor/tracks/{id}/sessions
+        [HttpPut("sessions/{id}")]
+        public async Task<ActionResult<ApiResponse<TrackSessionDTO>>> updateSessionbyid(int id, UpdateTrackSessionDTO updateSessionDTO)
+        {
+
+            var result = await trackSession.Update(id, updateSessionDTO);
+            return Ok(new ApiResponse<TrackSessionDTO>()
+            {
+
+                Success = true,
+                Message = "Instructor update Track Session Successfully",
+                Data = result
+            });
+
+        }
+
+        [Authorize(Roles = "Instructor")]                               //   /api/instructor/tracks/{id}/sessions
+        [HttpPut("sessions/{id}/complete")]
+        public async Task<ActionResult<ApiResponse<TrackSessionDTO>>> updateSessionstatus(int id)
+        {
+
+            var result = await trackSession.Complete(id);
+            return Ok(new ApiResponse<TrackSessionDTO>()
+            {
+
+                Success = true,
+                Message = "Instructor Update Status Track Session Successfully",
+                Data = result
+            });
+
+        }
+
+        [Authorize(Roles = "Instructor")]                               //   /api/instructor/tracks/{id}/sessions
+        [HttpGet("my-sessions")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<TrackSessionDTO>>>> GetMySessions()
+        {
+
+            var result = await trackSession.GetAll();
+            return Ok(new ApiResponse<IEnumerable<TrackSessionDTO>>()
+            {
+
+                Success = true,
+                Message = "Instructor Track Sessions Retrieve Successfully",
+                Data = result
+            });
+
         }
     }
 }

@@ -6,16 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Payment;
+using TrainingCenter.BLL.DTOS.Session;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
+using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController(IStudentService studentService,IEnrollmentService enrollmentService,IPaymentService paymentService) : ControllerBase
+    public class StudentController(IStudentService studentService,IEnrollmentService enrollmentService,IPaymentService paymentService,ITrackSession trackSession) : ControllerBase
     {
         [Authorize(Roles ="Admin")]
         [HttpGet]
@@ -172,5 +174,20 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
+        [Authorize(Roles = "Student")]                               
+        [HttpGet("my-sessions")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<TrackSessionDTO>>>> GetMySessions()
+        {
+
+            var result = await trackSession.GetMyStudentSessions();
+            return Ok(new ApiResponse<IEnumerable<TrackSessionDTO>>()
+            {
+
+                Success = true,
+                Message = "Student Tracks Sessions Retrieve Successfully",
+                Data = result
+            });
+
+        }
     }
 }

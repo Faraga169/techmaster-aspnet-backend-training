@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text.Json;
 using StudentManagementAPI.Exceptions;
 
 namespace StudentManagementAPI.Middleware
@@ -7,10 +6,14 @@ namespace StudentManagementAPI.Middleware
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        public ExceptionHandlingMiddleware(
+            RequestDelegate next,
+            ILogger<ExceptionHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -19,28 +22,43 @@ namespace StudentManagementAPI.Middleware
             {
                 await _next(context);
             }
-
             catch (BusinessException ex)
             {
+                _logger.LogWarning(
+                    ex,
+                    "Business exception occurred. StatusCode: {StatusCode}",
+                    ex.StatusCode);
+
                 context.Response.StatusCode = ex.StatusCode;
                 context.Response.ContentType = "application/json";
 
                 var response = new
                 {
-                    message = ex.Message
+                    Success = false,
+                    Message = ex.Message,
+                    StatusCode = ex.StatusCode
                 };
 
                 await context.Response.WriteAsJsonAsync(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                _logger.LogError(
+                    ex,
+                    "Unhandled exception occurred while processing {Method} {Path}",
+                    context.Request.Method,
+                    context.Request.Path);
+
+                context.Response.StatusCode =
+                    (int)HttpStatusCode.InternalServerError;
+
                 context.Response.ContentType = "application/json";
 
                 var response = new
                 {
-                    message = "An unexpected error occurred."
+                    Success = false,
+                    Message = "An unexpected error occurred.",
+                    StatusCode = (int)HttpStatusCode.InternalServerError
                 };
 
                 await context.Response.WriteAsJsonAsync(response);

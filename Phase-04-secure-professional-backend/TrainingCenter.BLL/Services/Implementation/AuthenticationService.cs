@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Exceptions;
@@ -26,7 +27,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor,IUnitOfWork unitOfWork) : IAuthenticationService
+    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor,IUnitOfWork unitOfWork, ILogger<AuthenticationService> logger) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
@@ -93,6 +94,8 @@ namespace TrainingCenter.BLL.Services.Implementation
 
                 await unitOfWork.CommitTransactionAsync();
 
+                logger.LogInformation("User {UserId} registered successfully with role {Role}.",user.Id,registerDTO.Role);
+
                 return new AuthResponseDTO
                 {
                     Email = user.Email,
@@ -114,16 +117,29 @@ namespace TrainingCenter.BLL.Services.Implementation
         {
             var user = await userManager.FindByEmailAsync(loginDTO.Email);
 
-            if (user is null)
+            if (user is null) {
+
+                logger.LogWarning("Failed login attempt for email {Email}.",loginDTO.Email);
+
                 throw new BusinessException("Invalid email or password", 401);
+            }
+
 
             if (!user.IsActive)
+            {
+                logger.LogWarning("Login attempt for inactive user {UserId}.",user.Id);
+
                 throw new BusinessException("User account is inactive.", 403);
+            }
 
             var passwordValid = await userManager.CheckPasswordAsync(user,loginDTO.Password);
 
             if (!passwordValid)
+            {
+                logger.LogWarning("Failed login attempt for user {UserId}.",user.Id);
+
                 throw new BusinessException("Invalid email or password", 401);
+            }
 
             var roles = await userManager.GetRolesAsync(user);
 
@@ -146,6 +162,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             await dbContext.SaveChangesAsync();
             var expiresAt = DateTime.UtcNow.AddHours(1);
 
+            logger.LogInformation("User {UserId} logged in successfully with role {Role}.",user.Id,roles.FirstOrDefault());
             return new AuthResponseDTO
             {
                 Email = user.Email!,
@@ -261,6 +278,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException($"{errors}", 400);
             }
 
+            logger.LogInformation("User {UserId} changed their password successfully.",user.Id);
             return;
 
         }
@@ -284,6 +302,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             currentrefreshtoken.IsRevoked = true;
             await dbContext.SaveChangesAsync();
+            logger.LogInformation("User {UserId} logged out successfully.",user.Id);
             return;
 
         }

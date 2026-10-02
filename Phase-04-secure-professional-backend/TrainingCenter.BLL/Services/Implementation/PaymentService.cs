@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Payment;
@@ -22,7 +23,7 @@ using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IPaymentService
+    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<PaymentService> logger) : IPaymentService
     {
 
         public async Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From, DateTime? To, PaymentStatus? paymentStatus)
@@ -36,8 +37,13 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
         public async Task<PaymentDTO> Create(CreatePaymentDTO paymentdto)
         {
-            
-            if(paymentdto.Amount<=0)
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+
+            if (paymentdto.Amount<=0)
                 throw new BusinessException("Amount must be positive", 400);
             
            
@@ -72,11 +78,21 @@ namespace TrainingCenter.BLL.Services.Implementation
                 enroll.Status = EnrollmentStatus.Active;
             }
             await unitOfWork.CompleteChanges();
+            logger.LogInformation("Payment {PaymentId} created for Enrollment {EnrollmentId} by User {UserId}.",
+     payment.Id,
+     payment.EnrollId,
+     userId);
             return mapper.Map<PaymentDTO>(payment);
         }
 
         public async Task<PaymentDTO> Update(UpdatePaymentDTO paymentdto)
         {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+           
             var spec = new PaymentByIdSpecification(paymentdto.Id);
 
             var payment = await unitOfWork.Repository<Payment>()
@@ -87,12 +103,19 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             if (payment.Status == PaymentStatus.Paid)
                 throw new BusinessException("Paid payment cannot be updated", 400);
+            var oldStatus = payment.Status;
 
             payment.Status = paymentdto.Status;
 
             await unitOfWork.Repository<Payment>().Update(payment);
 
             await unitOfWork.CompleteChanges();
+
+            logger.LogInformation("Payment {PaymentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
+    payment.Id,
+    oldStatus,
+    payment.Status,
+    userId);
 
             if (payment.Status == PaymentStatus.Paid)
             {

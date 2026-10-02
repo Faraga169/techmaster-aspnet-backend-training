@@ -67,8 +67,14 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             if(Track is null)
                 throw new BusinessException("Track not found", 404);
-
-            if(Instructor.Id!=Track.InstructorId)
+            
+            if (createSessionDTO.SessionDate < DateTime.UtcNow)
+            {
+                throw new BusinessException(
+                    "Session date cannot be in the past.",
+                    400);
+            }
+            if (Instructor.Id!=Track.InstructorId)
                 throw new BusinessException("You are not assigned to this track.",403);
 
             var tracksession=mapper.Map<CreateSessionDTO, TrackSession>(createSessionDTO);
@@ -103,6 +109,12 @@ namespace TrainingCenter.BLL.Services.Implementation
             if(session is null)
                 throw new BusinessException("Session not found", 404);
 
+            if (updateSessionDTO.SessionDate < DateTime.UtcNow)
+            {
+                throw new BusinessException(
+                    "Session date cannot be in the past.",
+                    400);
+            }
             if (session.CreatedByInstructorId != Instructor.Id)
                 throw new BusinessException("You are not allowed to update this session.",403);
 

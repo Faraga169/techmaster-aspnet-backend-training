@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 using StudentManagementAPI.Exceptions;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Student;
@@ -24,7 +25,7 @@ using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor) : IEnrollmentService
+    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<EnrollmentService> logger) : IEnrollmentService
     {
 
 
@@ -111,6 +112,11 @@ namespace TrainingCenter.BLL.Services.Implementation
             await unitOfWork.Repository<Enrollment>().Create(enrollment);
 
             await unitOfWork.CompleteChanges();
+            logger.LogInformation("Enrollment {EnrollmentId} created for Student {StudentId} in Track {TrackId} by User {UserId}.",
+    enrollment.Id,
+    enrollment.StudentId,
+    enrollment.TrainingTrackId,
+    userId);
 
             var enrollspec = new EnrollByIdSpecification(enrollment.Id);
             var createdEnrollment =await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
@@ -123,6 +129,12 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<EnrollmentDTO> Update(UpdateEnrollDTO enroll)
         {
+            var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                throw new BusinessException("User Claims not found", 401);
+
+
             var spec = new EnrollByIdSpecification(enroll.Id);
 
             var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);
@@ -133,11 +145,17 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingEnroll?.Status == EnrollmentStatus.Completed)
                 throw new BusinessException("Enrollment status cannot be changes", 404);
 
-            existingEnroll!.Status = enroll.Status;
+            var oldStatus = existingEnroll!.Status;
 
+            existingEnroll.Status = enroll.Status;
             await unitOfWork.Repository<Enrollment>().Update(existingEnroll);
 
             await unitOfWork.CompleteChanges();
+            logger.LogInformation("Enrollment {EnrollmentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
+    existingEnroll.Id,
+    oldStatus,
+    existingEnroll.Status,
+    userId);
             var enrollspec = new EnrollByIdSpecification(existingEnroll.Id);
             var updateEnrollment = await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
 

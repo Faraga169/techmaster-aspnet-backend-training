@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagementAPI.Middleware;
+using TrainingCenter.Api.Extensions;
 using TrainingCenter.BLL;
 using TrainingCenter.BLL.AutoMapper;
 using TrainingCenter.BLL.Services.Implementation;
@@ -34,47 +35,22 @@ namespace TrainingCenter.Api
       options.JsonSerializerOptions.Converters.Add(
           new JsonStringEnumConverter());
   });
+           
+            // Application Services
+            builder.Services.AddApplicationServices( builder.Configuration);
 
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<ITrackService, TrackService>();
-            builder.Services.AddScoped<IStudentService, StudentService>();
-            builder.Services.AddScoped<IReportService, ReportService>();
-            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
-            builder.Services.AddScoped<IAuthenticationService,AuthenticationService>();
-            builder.Services.AddScoped<IInstrcutorService, InstructorService>();
-            builder.Services.AddScoped<IPaymentService, PaymentService>();
-            builder.Services.AddScoped<IReportRepository,ReportRepository>();
-            builder.Services.AddHttpContextAccessor();
-            builder.Services.AddIdentityCore<ApplicationUser>()
-                            .AddRoles<IdentityRole>()
-                            .AddEntityFrameworkStores<AppDbContext>();
+            // Authentication & Authorization
+            builder.Services.AddAuthenticationServices(builder.Configuration);
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                          .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
 
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidAudience = builder.Configuration["JWT:Audience"],
-
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
-        };
-    });
-
-            builder.Services.AddAutoMapper(
-    cfg => { },typeof(AssemblyBLL).Assembly);
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
+
+            // Identity Seeding
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;

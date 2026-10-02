@@ -140,6 +140,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 currentactiverefreshtoken.IsRevoked = true;
             }
            
+            user.LastLoginAt = DateTime.UtcNow;
             dbContext.RefreshTokens.Add(refreshTokenEntity);
 
             await dbContext.SaveChangesAsync();
@@ -149,6 +150,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             {
                 Email = user.Email!,
                 FullName = user.UserName!,
+                
                 Role = roles.FirstOrDefault()!,
                 ExpiresAt = expiresAt,
                 AccessToken = await CreateJWT(user,expiresAt),

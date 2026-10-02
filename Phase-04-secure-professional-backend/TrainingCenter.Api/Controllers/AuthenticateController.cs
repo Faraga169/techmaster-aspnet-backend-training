@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TrainingCenter.BLL.DTOS;
+using TrainingCenter.BLL.Common;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;
 

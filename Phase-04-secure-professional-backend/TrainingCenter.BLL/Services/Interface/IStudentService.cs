@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TrainingCenter.BLL.DTOS;
+using TrainingCenter.BLL.Common;
 using TrainingCenter.BLL.DTOS.Student;
 
 namespace TrainingCenter.BLL.Services.Interface

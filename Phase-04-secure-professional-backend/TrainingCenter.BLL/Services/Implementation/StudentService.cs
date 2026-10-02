@@ -182,6 +182,13 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (userId is null)
                 throw new BusinessException("User Claims not found", 401);
 
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user is null)
+                throw new BusinessException("User not found", 404);
+
+            
+
             var spec = new StudentByUserIdSpecification(userId);
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
@@ -193,13 +200,20 @@ namespace TrainingCenter.BLL.Services.Implementation
             dto.Id = existingStudent.Id;
             dto.IsActive = existingStudent.IsActive;
 
-            var student = mapper.Map(dto, existingStudent);
+           mapper.Map(dto, existingStudent);
 
-            await unitOfWork.Repository<Student>().Update(student);
+            user.UpdateAt = DateTime.UtcNow;
+            user.Email = existingStudent.Email;
+            user.PhoneNumber = existingStudent.PhoneNumber;
+            user.UserName = existingStudent.FullName;
+
+           
+
+            await unitOfWork.Repository<Student>().Update(existingStudent);
 
             await unitOfWork.CompleteChanges();
 
-            return mapper.Map<StudentDTO>(student);
+            return mapper.Map<StudentDTO>(existingStudent);
         }
 
         public async Task<bool> Delete(int id)

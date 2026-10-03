@@ -32,14 +32,9 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
         {
-            if (registerDTO.Role == "Admin")
-                throw new BusinessException("Admin registration is not allowed.",400);
+            
 
-            if (registerDTO.Role == "Instructor")
-                throw new BusinessException("Instructor registration is not allowed.", 400);
-
-            if (!await roleManager.RoleExistsAsync(registerDTO.Role))
-                throw new BusinessException("Role does not exist.",400);
+            
 
             var userexist=await userManager.FindByEmailAsync(registerDTO.Email);
 
@@ -68,7 +63,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                     throw new BusinessException(errors, 400);
                 }
 
-                var addToRole = await userManager.AddToRoleAsync(user,registerDTO.Role);
+                var addToRole = await userManager.AddToRoleAsync(user,"Student");
 
                 if (!addToRole.Succeeded)
                 {
@@ -105,14 +100,13 @@ namespace TrainingCenter.BLL.Services.Implementation
 
                 await unitOfWork.CommitTransactionAsync();
 
-                logger.LogInformation("User {UserId} registered successfully with role {Role}.",user.Id,registerDTO.Role);
+                logger.LogInformation("User {UserId} registered successfully with role Student.",user.Id);
 
 
                 return new AuthResponseDTO
                 {
                     Email = user.Email,
                     FullName = user.UserName,
-                    Role = registerDTO.Role,
                     UserId = user.Id
                 };
             }

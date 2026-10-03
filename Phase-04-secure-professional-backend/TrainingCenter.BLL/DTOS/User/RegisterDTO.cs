@@ -24,6 +24,5 @@ namespace TrainingCenter.BLL.DTOS.User
 
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = null!;
-        public string Role { get; set; } = null!;
     }
 }

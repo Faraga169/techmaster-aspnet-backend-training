@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.Common;
-using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent.Models;
 
@@ -9,8 +8,10 @@ namespace TrainingCenter.Api.Controllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ActivityLogsController(IActivityLogService activityLogService) : ControllerBase
     {
+      
         [HttpGet]
         public async Task<ActionResult<ApiResponse<PaginatedResult<ActivityLog>>>> GetAll(
             [FromQuery] string? userId,

@@ -1,26 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.Common;
-using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
-using TrainingCenter.BLL.DTOS.Payment;
-using TrainingCenter.BLL.DTOS.Student;
-using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/enrollment")]
     [ApiController]
-    public class EnrollmentController(IEnrollmentService enrollmentService,IPaymentService paymentService) : ControllerBase
+    [Authorize(Roles ="Admin")]
+    public class AdminEnrollmentsController(IEnrollmentService enrollmentService) : ControllerBase
     {
-        [Authorize(Roles ="Admin")]
+        
         [HttpGet]
-        public async Task<IActionResult> GetAll(EnrollmentStatus? status,int? trackId, int? studentId, PaymentStatus? paymentStatus)
+        public async Task<IActionResult> GetAll(EnrollmentStatus? status, int? trackId, int? studentId, PaymentStatus? paymentStatus)
         {
-            var result = await enrollmentService.GetAll(status,trackId,studentId,paymentStatus);
+            var result = await enrollmentService.GetAll(status, trackId, studentId, paymentStatus);
 
             return Ok(new ApiResponse<IEnumerable<EnrollmentDTO>>
             {
@@ -30,7 +26,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -45,13 +41,13 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost]
         public async Task<IActionResult> Create(CreateEnrollDTO dto)
         {
             var enrollment = await enrollmentService.Create(dto);
 
-            return CreatedAtAction(nameof(GetById),new { id = enrollment.Id },
+            return CreatedAtAction(nameof(GetById), new { id = enrollment.Id },
                 new ApiResponse<EnrollmentDTO>
                 {
                     Success = true,
@@ -61,13 +57,13 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> ChangeStatus(int id,UpdateEnrollDTO dto)
+        public async Task<IActionResult> ChangeStatus(int id, UpdateEnrollDTO dto)
         {
             dto.Id = id;
 
-            var enrollment =await enrollmentService.Update(dto);
+            var enrollment = await enrollmentService.Update(dto);
 
             return Ok(new ApiResponse<EnrollmentDTO>
             {
@@ -76,23 +72,5 @@ namespace TrainingCenter.Api.Controllers
                 Data = enrollment
             });
         }
-
-
-        [Authorize(Roles ="Student,Admin")]
-        [HttpGet("{id}/payments")]
-
-        public async Task<IActionResult> GetPaymentHistory(int id)
-        {
-            var result =await paymentService.GetPaymentHistory(id);
-
-            return Ok(new ApiResponse<IEnumerable<PaymentDTO>>
-            {
-                Success = true,
-                Message = "Payment history retrieved successfully.",
-                Data = result
-            });
-        }
-
-
     }
 }

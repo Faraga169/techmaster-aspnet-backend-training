@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.Common;
-using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PaymentController(IPaymentService paymentService) : ControllerBase
+    [Route("api/admin/payments")]
+    [ApiController]   
+    [Authorize(Roles = "Admin")]
+    public class AdminPaymentsController(IPaymentService paymentService) : ControllerBase
     {
-        [Authorize(Roles = "Admin")]
+       
         [HttpGet]
-        public async Task<IActionResult> GetAll(DateTime? from,DateTime? to,PaymentStatus? status)
+        public async Task<IActionResult> GetAll(DateTime? from, DateTime? to, PaymentStatus? status)
         {
-            var result = await paymentService.GetAll(from, to,status);
+            var result = await paymentService.GetAll(from, to, status);
 
             return Ok(new ApiResponse<IEnumerable<PaymentDTO>>
             {
@@ -27,7 +26,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpPost]
         public async Task<IActionResult> Create(CreatePaymentDTO dto)
         {
@@ -45,9 +44,9 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [Authorize(Roles ="Admin")]
+       
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(int id,UpdatePaymentDTO dto)
+        public async Task<IActionResult> UpdateStatus(int id, UpdatePaymentDTO dto)
         {
             dto.Id = id;
 
@@ -58,6 +57,21 @@ namespace TrainingCenter.Api.Controllers
                 Success = true,
                 Message = "Payment status updated successfully.",
                 Data = payment
+            });
+        }
+
+
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetPaymentHistory(int id)
+        {
+            var result = await paymentService.GetPaymentHistory(id);
+
+            return Ok(new ApiResponse<IEnumerable<PaymentDTO>>
+            {
+                Success = true,
+                Message = "Payment history retrieved successfully.",
+                Data = result
             });
         }
     }

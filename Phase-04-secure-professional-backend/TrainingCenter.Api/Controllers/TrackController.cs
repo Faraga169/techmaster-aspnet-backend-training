@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrainingCenter.BLL.Common;
-using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Enrollment;
 using TrainingCenter.BLL.DTOS.Instructor;
-using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.Track;
-using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
 using TrainingCenter.DAL.Persistent.Models;
+using TrainingCenter.DAL.Repositories.ReportModels;
 
 namespace TrainingCenter.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TrackController(ITrackService trackService,IEnrollmentService enrollmentService) : ControllerBase
+    public class TrackController(ITrackService trackService,IEnrollmentService enrollmentService,IReportService reportService) : ControllerBase
     {
         [Authorize(Roles ="Admin")]
         [HttpGet]
@@ -106,7 +103,7 @@ namespace TrainingCenter.Api.Controllers
             });
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -125,6 +122,21 @@ namespace TrainingCenter.Api.Controllers
             {
                 Success = true,
                 Message = "Track students retrieved successfully.",
+                Data = result
+            });
+        }
+
+
+        [Authorize(Roles = "Admin,Instructor")]
+        [HttpGet("{id}/progress")]
+        public async Task<IActionResult> GetTrackLevelSummary(int id)
+        {
+            var result = await reportService.GetTrackLevelSummary(id);
+
+            return Ok(new ApiResponse<TrackLevelSummary>
+            {
+                Success = true,
+                Message = "Track level summary retrieved successfully.",
                 Data = result
             });
         }

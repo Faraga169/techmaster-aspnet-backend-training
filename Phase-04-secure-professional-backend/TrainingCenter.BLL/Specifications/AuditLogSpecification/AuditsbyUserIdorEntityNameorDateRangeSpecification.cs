@@ -19,7 +19,10 @@ namespace TrainingCenter.BLL.Specifications.AuditLogSpecification
              (!To.HasValue || a.CreatedAt <= To.Value)
          );
 
+            AddOrderByDescending(x => x.CreatedAt);
             ApplyPaging(pagenumber, pagesize);
+
+
         }
     }
 }

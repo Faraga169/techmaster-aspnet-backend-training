@@ -21,7 +21,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : IInstrcutorService
+    public class InstructorService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IActivityLogService activityLogService) : IInstrcutorService
     {
 
         public async Task<IEnumerable<InstructorDTO>> GetAll()
@@ -94,6 +94,15 @@ namespace TrainingCenter.BLL.Services.Implementation
                 instructor.UserId = user.Id;
 
                 await unitOfWork.Repository<Instructor>().Create(instructor);
+                await activityLogService.LogAsync(new ActivityLog()
+                {
+                    Action = "InstructorCreate",
+                    EntityName = "Instructor",
+                    EntityId = instructor.Id.ToString(),
+                    Description =
+                                  $"Instructor {instructor.FullName} Created Successfully"
+
+                });
 
                 await unitOfWork.CompleteChanges();
 

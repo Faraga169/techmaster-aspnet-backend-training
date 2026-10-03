@@ -119,7 +119,7 @@ namespace TrainingCenter.BLL.Services.Implementation
        EntityName = "Enrollment",
        EntityId = enrollment.Id.ToString(),
        Description =
-           $"Student {enrollment.StudentId} requested enrollment in track {enrollment.TrainingTrack.Id}"
+           $"Student {enrollment.StudentId} requested enrollment in track {enrollment.TrainingTrackId}"
    });
 
             await unitOfWork.CompleteChanges();

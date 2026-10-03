@@ -20,7 +20,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : IStudentService
+    public class StudentService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager,IActivityLogService activityLogService) : IStudentService
     {
 
         public async Task<PaginatedResult<StudentDTO>> GetAll(string? searchbyName, bool? IsActive, int pagenumber = 1, int pagesize = 5)
@@ -48,18 +48,12 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<StudentEnrollmentDTO> GetById(int id)
         {
-            var userId = contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
-            if (userId is null)
-                throw new BusinessException("User Claims not found", 401);
-
+           
             var StudentSpecification = new StudentByIdSpecification(id);
             var GetStudentEnrollment = await unitOfWork.Repository<Student>().GetById(StudentSpecification);
             if (GetStudentEnrollment is null)
                 throw new BusinessException("Student is not found", 404);
 
-            if(!isAdmin&&GetStudentEnrollment.UserId!=userId)
-                throw new BusinessException("You are not allowed to see this profile", 403);
 
             var StudentEnrollmentDTO = mapper.Map<Student,StudentEnrollmentDTO>(GetStudentEnrollment);
             return StudentEnrollmentDTO;
@@ -113,6 +107,15 @@ namespace TrainingCenter.BLL.Services.Implementation
                 student.UserId = user.Id;
 
                 await unitOfWork.Repository<Student>().Create(student);
+                await activityLogService.LogAsync(new ActivityLog()
+                {
+                    Action = "StudentCreate",
+                    EntityName = "Student",
+                    EntityId = student.Id.ToString(),
+                    Description =
+                                 $"Student {student.FullName} Created Successfully"
+
+                });
 
                 await unitOfWork.CompleteChanges();
 
@@ -150,18 +153,12 @@ namespace TrainingCenter.BLL.Services.Implementation
         public async Task<StudentDTO> Update(UpdateStudentDTO dto)
         {
             
-            var isAdmin = contextAccessor.HttpContext.User.IsInRole("Admin");
-            
-
             var spec = new StudentByIdSpecification(dto.Id);
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
 
             if(existingStudent is null)
                 throw new BusinessException("Student not found", 404);
-
-            if (!isAdmin && dto.IsActive != existingStudent.IsActive)
-                throw new BusinessException("You are not allowed to change in IsActive Field", 403);
 
             if (existingStudent is  null)
                 throw new BusinessException("Student not found", 404);

@@ -78,11 +78,28 @@ namespace TrainingCenter.BLL.Services.Implementation
             {
                 enroll.Status = EnrollmentStatus.Active;
             }
-            await unitOfWork.CompleteChanges();
+
+            await activityLogService.LogAsync(
+    new ActivityLog
+    {
+        Action = "PaymentCreated",
+        EntityName = "Payment",
+        EntityId = payment.Id.ToString(),
+        Description =
+            $"Payment of {payment.Amount} was created for enrollment {payment.EnrollId}.",
+        Metadata = JsonSerializer.Serialize(new
+        {
+            Amount = payment.Amount,
+            EnrollmentId = payment.EnrollId
+        })
+    });
+
             logger.LogInformation("Payment {PaymentId} created for Enrollment {EnrollmentId} by User {UserId}.",
-     payment.Id,
-     payment.EnrollId,
-     userId);
+   payment.Id,
+   payment.EnrollId,
+   userId);
+            await unitOfWork.CompleteChanges();
+          
             return mapper.Map<PaymentDTO>(payment);
         }
 
@@ -109,27 +126,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             payment.Status = paymentdto.Status;
 
             await unitOfWork.Repository<Payment>().Update(payment);
-            await activityLogService.LogAsync(
-  new ActivityLog
-  {
-      Action = "PaymentStatusUpdated",
-      EntityName = "Payment",
-      EntityId = payment.Id.ToString(),
-      Description = $"Payment status changed from {oldStatus} to {payment.Status}",
-      Metadata = JsonSerializer.Serialize(new
-      {
-          OldStatus = oldStatus,
-          NewStatus = payment.Status,
-          Amount = payment.Amount
-      })
-  });
-            await unitOfWork.CompleteChanges();
-
-            logger.LogInformation("Payment {PaymentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
-    payment.Id,
-    oldStatus,
-    payment.Status,
-    userId);
+      
 
 
           
@@ -157,8 +154,31 @@ namespace TrainingCenter.BLL.Services.Implementation
                     enroll.Status = EnrollmentStatus.Active;
                 }
 
-                await unitOfWork.CompleteChanges();
             }
+
+            await activityLogService.LogAsync(
+new ActivityLog
+{
+Action = "PaymentStatusUpdated",
+EntityName = "Payment",
+EntityId = payment.Id.ToString(),
+Description = $"Payment status changed from {oldStatus} to {payment.Status}",
+Metadata = JsonSerializer.Serialize(new
+{
+    OldStatus = oldStatus,
+    NewStatus = payment.Status,
+    Amount = payment.Amount
+})
+});
+            await unitOfWork.CompleteChanges();
+
+            logger.LogInformation("Payment {PaymentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
+    payment.Id,
+    oldStatus,
+    payment.Status,
+    userId);
+
+            await unitOfWork.CompleteChanges();
 
             return mapper.Map<PaymentDTO>(payment);
         }

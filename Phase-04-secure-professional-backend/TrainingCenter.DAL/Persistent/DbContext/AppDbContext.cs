@@ -65,6 +65,8 @@ namespace TrainingCenter.DAL.Persistent
 
         public DbSet<TrackSession> TrackSessions { get; set; }
 
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
+
 
     }
 

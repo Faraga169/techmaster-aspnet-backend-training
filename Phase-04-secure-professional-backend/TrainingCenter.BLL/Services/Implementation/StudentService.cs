@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
 using StudentManagementAPI.Exceptions;
-using TrainingCenter.BLL.DTOS;
+using TrainingCenter.BLL.Common;
 using TrainingCenter.BLL.DTOS.Student;
 using TrainingCenter.BLL.DTOS.User;
 using TrainingCenter.BLL.Services.Interface;

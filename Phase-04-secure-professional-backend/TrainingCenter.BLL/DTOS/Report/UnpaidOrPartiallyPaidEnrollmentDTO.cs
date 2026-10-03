@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainingCenter.BLL.DTOS.Payment;
 
-namespace TrainingCenter.BLL.DTOS
+namespace TrainingCenter.BLL.DTOS.Report
 {
     public class UnpaidOrPartiallyPaidEnrollmentDTO
     {

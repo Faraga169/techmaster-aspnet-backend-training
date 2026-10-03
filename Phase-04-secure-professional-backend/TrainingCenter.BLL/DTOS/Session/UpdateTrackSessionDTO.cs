@@ -22,6 +22,6 @@ namespace TrainingCenter.BLL.DTOS.Session
 
 
         [Required(ErrorMessage = "Session Date is Required")]
-        public DateTime? SessionDate { get; set; }
+        public DateTime SessionDate { get; set; }
     }
 }

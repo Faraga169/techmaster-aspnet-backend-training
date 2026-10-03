@@ -35,7 +35,8 @@ namespace TrainingCenter.Api
       options.JsonSerializerOptions.Converters.Add(
           new JsonStringEnumConverter());
   });
-           
+            // Custom Validation 
+            builder.Services.AddCustomValidation();
             // Application Services
             builder.Services.AddApplicationServices( builder.Configuration);
 

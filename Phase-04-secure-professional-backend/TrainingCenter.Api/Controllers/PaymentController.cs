@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrainingCenter.BLL.Common;
 using TrainingCenter.BLL.DTOS;
 using TrainingCenter.BLL.DTOS.Payment;
 using TrainingCenter.BLL.Services.Interface;

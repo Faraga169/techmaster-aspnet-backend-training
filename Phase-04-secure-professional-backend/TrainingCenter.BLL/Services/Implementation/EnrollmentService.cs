@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<EnrollmentService> logger) : IEnrollmentService
+    public class EnrollmentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<EnrollmentService> logger,IActivityLogService activityLogService) : IEnrollmentService
     {
 
 
@@ -111,12 +112,26 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             await unitOfWork.Repository<Enrollment>().Create(enrollment);
 
+            await activityLogService.LogAsync(
+   new ActivityLog
+   {
+       Action = "EnrollmentRequested",
+       EntityName = "Enrollment",
+       EntityId = enrollment.Id.ToString(),
+       Description =
+           $"Student {enrollment.StudentId} requested enrollment in track {enrollment.TrainingTrack.Id}"
+   });
+
             await unitOfWork.CompleteChanges();
             logger.LogInformation("Enrollment {EnrollmentId} created for Student {StudentId} in Track {TrackId} by User {UserId}.",
     enrollment.Id,
     enrollment.StudentId,
     enrollment.TrainingTrackId,
     userId);
+
+           
+
+           
 
             var enrollspec = new EnrollByIdSpecification(enrollment.Id);
             var createdEnrollment =await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
@@ -149,13 +164,26 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             existingEnroll.Status = enroll.Status;
             await unitOfWork.Repository<Enrollment>().Update(existingEnroll);
-
+            await activityLogService.LogAsync(
+   new ActivityLog
+   {
+       Action = "EnrollmentStatusUpdated",
+       EntityName = "Enrollment",
+       EntityId = existingEnroll.Id.ToString(),
+       Description = $"Enrollment status changed from {oldStatus} to {existingEnroll.Status}",
+       Metadata = JsonSerializer.Serialize(new
+       {
+           OldStatus = oldStatus,
+           NewStatus = existingEnroll.Status
+       })
+   });
             await unitOfWork.CompleteChanges();
             logger.LogInformation("Enrollment {EnrollmentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
     existingEnroll.Id,
     oldStatus,
     existingEnroll.Status,
     userId);
+
             var enrollspec = new EnrollByIdSpecification(existingEnroll.Id);
             var updateEnrollment = await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
 

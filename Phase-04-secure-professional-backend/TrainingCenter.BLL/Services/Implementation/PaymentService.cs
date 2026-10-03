@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ using TrainingCenter.DAL.Specifications;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<PaymentService> logger) : IPaymentService
+    public class PaymentService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor contextAccessor, ILogger<PaymentService> logger,IActivityLogService activityLogService) : IPaymentService
     {
 
         public async Task<IEnumerable<PaymentDTO>> GetAll(DateTime? From, DateTime? To, PaymentStatus? paymentStatus)
@@ -108,7 +109,20 @@ namespace TrainingCenter.BLL.Services.Implementation
             payment.Status = paymentdto.Status;
 
             await unitOfWork.Repository<Payment>().Update(payment);
-
+            await activityLogService.LogAsync(
+  new ActivityLog
+  {
+      Action = "PaymentStatusUpdated",
+      EntityName = "Payment",
+      EntityId = payment.Id.ToString(),
+      Description = $"Payment status changed from {oldStatus} to {payment.Status}",
+      Metadata = JsonSerializer.Serialize(new
+      {
+          OldStatus = oldStatus,
+          NewStatus = payment.Status,
+          Amount = payment.Amount
+      })
+  });
             await unitOfWork.CompleteChanges();
 
             logger.LogInformation("Payment {PaymentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
@@ -116,6 +130,9 @@ namespace TrainingCenter.BLL.Services.Implementation
     oldStatus,
     payment.Status,
     userId);
+
+
+          
 
             if (payment.Status == PaymentStatus.Paid)
             {

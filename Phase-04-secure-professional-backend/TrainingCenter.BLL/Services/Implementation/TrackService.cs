@@ -22,7 +22,7 @@ using TrainingCenter.DAL.Repositories.Interfaces;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class TrackService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager) : ITrackService
+    public class TrackService(IUnitOfWork unitOfWork,IMapper mapper,IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager,IActivityLogService activityLogService) : ITrackService
     {
 
         public async Task<IEnumerable<TrackDTO>> GetAll(string? trackName, TrackLevel? trackLevel, TrainingStatus? trackStatus, int? instructorId)
@@ -94,7 +94,18 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             await unitOfWork.Repository<TrainingTrack>().Create(track);
 
+            await activityLogService.LogAsync(
+      new ActivityLog
+      {
+          Action = "TrackCreated",
+          EntityName = "Track",
+          EntityId = track.Id.ToString(),
+          Description = $"Track '{track.Title}' was created"
+      });
+
             await unitOfWork.CompleteChanges();
+
+           
             return mapper.Map<TrackDTO>(track);
         }
 

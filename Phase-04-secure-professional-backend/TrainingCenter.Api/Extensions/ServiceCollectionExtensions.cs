@@ -23,6 +23,7 @@ namespace TrainingCenter.Api.Extensions
 
             // Application Services
             services.AddScoped<ITrackService, TrackService>();
+            services.AddScoped<IActivityLogService, ActivityLogService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IEnrollmentService, EnrollmentService>();

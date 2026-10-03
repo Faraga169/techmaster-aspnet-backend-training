@@ -27,7 +27,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor,IUnitOfWork unitOfWork, ILogger<AuthenticationService> logger) : IAuthenticationService
+    public class AuthenticationService(AppDbContext dbContext,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor,IUnitOfWork unitOfWork, ILogger<AuthenticationService> logger,IActivityLogService activityLogService) : IAuthenticationService
     {
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
@@ -87,14 +87,26 @@ namespace TrainingCenter.BLL.Services.Implementation
                         PhoneNumber = registerDTO.PhoneNumber,
                         UserId = user.Id
                     });
-                
-               
+
+
+                await activityLogService.LogAsync(new ActivityLog()
+                {
+
+                    EntityId = user.Id,
+                    Action = "UserRegistered",
+                    EntityName = "User",
+                    Description = $"{user.UserName} registered successfully"
+
+
+                }, user.Id,
+                "Student");
 
                 await unitOfWork.CompleteChanges();
 
                 await unitOfWork.CommitTransactionAsync();
 
                 logger.LogInformation("User {UserId} registered successfully with role {Role}.",user.Id,registerDTO.Role);
+
 
                 return new AuthResponseDTO
                 {
@@ -163,11 +175,20 @@ namespace TrainingCenter.BLL.Services.Implementation
             var expiresAt = DateTime.UtcNow.AddHours(1);
 
             logger.LogInformation("User {UserId} logged in successfully with role {Role}.",user.Id,roles.FirstOrDefault());
+            await activityLogService.LogAsync(
+    new ActivityLog
+    {
+        EntityId = user.Id,
+        Action = "UserLoggedIn",
+        EntityName = "User",
+        Description = $"{user.UserName} logged in successfully"
+    });
+
+            await unitOfWork.CompleteChanges();
             return new AuthResponseDTO
             {
                 Email = user.Email!,
-                FullName = user.UserName!,
-                
+                FullName = user.UserName!,              
                 Role = roles.FirstOrDefault()!,
                 ExpiresAt = expiresAt,
                 AccessToken = await CreateJWT(user,expiresAt),

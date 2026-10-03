@@ -15,7 +15,7 @@ using TrainingCenter.DAL.Repositories.ReportModels;
 
 namespace TrainingCenter.BLL.Services.Implementation
 {
-    public class ReportService(IHttpContextAccessor contextAccessor,IUnitOfWork unitOfWork):IReportService
+    public class ReportService(IHttpContextAccessor contextAccessor,IUnitOfWork unitOfWork,IActivityLogService activityLogService):IReportService
     {
         public async Task<TrackLevelSummary> GetTrackLevelSummary(int id)
         {
@@ -39,7 +39,20 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("You are not allowed to access this track.",403);
 
             var result = await unitOfWork.ReportRepository().GetTrackLevelSummary(id);
+            if (result is null)
+                throw new BusinessException(
+                    "Report data not found.", 404);
+            await activityLogService.LogAsync(
+               new ActivityLog
+               {
+                   Action = "ReportViewed",
+                   EntityName = "TrackReport",
+                   EntityId = id.ToString(),
+                   Description =
+                       $"Track level summary report for track {id} was viewed."
+               });
 
+            await unitOfWork.CompleteChanges();
             return result!;
         }
     }

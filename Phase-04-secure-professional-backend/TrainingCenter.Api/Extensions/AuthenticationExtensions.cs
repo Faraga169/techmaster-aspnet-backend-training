@@ -12,7 +12,11 @@ namespace TrainingCenter.Api.Extensions
     {
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddIdentityCore<ApplicationUser>()
+            services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+            })
                                .AddRoles<IdentityRole>()
                                .AddEntityFrameworkStores<AppDbContext>();
 

@@ -165,7 +165,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             dbContext.RefreshTokens.Add(refreshTokenEntity);
 
             await dbContext.SaveChangesAsync();
-            var expiresAt = DateTime.UtcNow.AddHours(7);
+            var expiresAt = DateTime.UtcNow.AddDays(7);
 
             logger.LogInformation("User {UserId} logged in successfully with role {Role}.",user.Id,roles.FirstOrDefault());
             await activityLogService.LogAsync(

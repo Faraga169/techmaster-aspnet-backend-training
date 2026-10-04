@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using TrainingCenter.BLL;
 using TrainingCenter.BLL.Services.Implementation;
 using TrainingCenter.BLL.Services.Interface;
@@ -16,6 +17,23 @@ namespace TrainingCenter.Api.Extensions
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter: Bearer {token}"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+       {
+           { new OpenApiSecurityScheme { Reference = new OpenApiReference
+               { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
+       });
+            });
 
             services.AddCors(options =>
             {

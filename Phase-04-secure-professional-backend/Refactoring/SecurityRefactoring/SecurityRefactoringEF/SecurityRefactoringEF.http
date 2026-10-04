@@ -1,0 +1,6 @@
+@SecurityRefactoringEF_HostAddress = http://localhost:5160
+
+GET {{SecurityRefactoringEF_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

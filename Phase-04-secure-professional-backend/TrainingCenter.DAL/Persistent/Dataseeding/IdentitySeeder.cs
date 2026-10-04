@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using TrainingCenter.DAL.Persistent.Models;
 
 namespace TrainingCenter.DAL.Persistent.Dataseeding
 {
     public class IdentitySeeder
     {
-        public static async Task SeedAsync( UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration)
         {
-            
             string[] roles =
             {
                 "Admin",
@@ -29,31 +27,26 @@ namespace TrainingCenter.DAL.Persistent.Dataseeding
             }
 
             // Admin
-            await CreateUserAsync(
-                userManager,
-                "admin@techmaster.com",
-                "Admin123!",
-                "Admin"
-            );
+            var adminEmail = configuration["SeedAdmin:Email"];
+            var adminPassword = configuration["SeedAdmin:Password"];
 
-            // Instructor
-            await CreateUserAsync(
-                userManager,
-                "instructor@techmaster.com",
-                "Instructor123!",
-                "Instructor"
-            );
-
-            // Student
-            await CreateUserAsync(
-                userManager,
-                "student@techmaster.com",
-                "Student123!",
-                "Student"
-            );
+            if (!string.IsNullOrWhiteSpace(adminEmail) &&
+                !string.IsNullOrWhiteSpace(adminPassword))
+            {
+                await CreateUserAsync(
+                    userManager,
+                    adminEmail,
+                    adminPassword,
+                    "Admin"
+                );
+            }
         }
 
-        private static async Task CreateUserAsync(UserManager<ApplicationUser> userManager,string email,string password,string role)
+        private static async Task CreateUserAsync(
+            UserManager<ApplicationUser> userManager,
+            string email,
+            string password,
+            string role)
         {
             var user = await userManager.FindByEmailAsync(email);
 

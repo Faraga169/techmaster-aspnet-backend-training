@@ -62,7 +62,7 @@ namespace TrainingCenter.Api
                 var roleManager =
                     services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                await IdentitySeeder.SeedAsync(userManager, roleManager);
+                await IdentitySeeder.SeedAsync(userManager,roleManager,app.Configuration);
             }
 
             // Configure the HTTP request pipeline.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrainingCenter.BLL.DTOS
+namespace TrainingCenter.BLL.Common
 {
     public  class ApiResponse<T>
     {

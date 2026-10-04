@@ -13,7 +13,7 @@ namespace SecurityRefactoringEF
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -96,23 +96,10 @@ namespace SecurityRefactoringEF
 
             builder.Services.AddAuthorization();
 
-            
 
             var app = builder.Build();
 
-            // Identity Seeding
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                var userManager =
-                    services.GetRequiredService<UserManager<ApplicationUser>>();
-
-                var roleManager =
-                    services.GetRequiredService<RoleManager<IdentityRole>>();
-
-                await IdentitySeeder.SeedAsync(userManager, roleManager, app.Configuration);
-            }
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

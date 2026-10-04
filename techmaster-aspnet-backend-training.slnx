@@ -112,6 +112,9 @@
     <Project Path="Phase-04-secure-professional-backend/TrainingCenter.BLL/TrainingCenter.BLL.csproj" />
     <Project Path="Phase-04-secure-professional-backend/TrainingCenter.DAL/TrainingCenter.DAL.csproj" />
   </Folder>
+  <Folder Name="/Phase-04-secure-professional-backend/RefactoringCode/">
+    <Project Path="Phase-04-secure-professional-backend/Refactoring/SecurityRefactoring/SecurityRefactoringEF/SecurityRefactoringEF.csproj" Id="e5dba2c3-849c-4499-9bfb-23b46e10b9e5" />
+  </Folder>
   <Folder Name="/problem-solving/" />
   <Folder Name="/problem-solving/Baseball Game/">
     <File Path="problem-solving/BaseBall/README.md" />

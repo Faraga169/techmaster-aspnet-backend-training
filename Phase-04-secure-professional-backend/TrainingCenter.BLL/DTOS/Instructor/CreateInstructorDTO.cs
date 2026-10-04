@@ -9,17 +9,31 @@ namespace TrainingCenter.BLL.DTOS.Instructor
 {
     public class CreateInstructorDTO
     {
+        [Required(ErrorMessage = "Full name is required.")]
+        [StringLength(100, MinimumLength = 3,ErrorMessage = "Full name must be between 3 and 100 characters.")]
         public string FullName { get; set; } = null!;
 
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; } = null!;
 
+
+        [Required(ErrorMessage = "Specialization is required.")]
+        [StringLength(100, MinimumLength = 2,ErrorMessage = "Specialization must be between 2 and 100 characters.")]
         public string Specialization { get; set; } = null!;
 
+
+        [StringLength(500,ErrorMessage = "Bio cannot exceed 500 characters.")]
         public string? Bio { get; set; }
 
+
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(8,ErrorMessage = "Password must be at least 8 characters.")]
         public string Password { get; set; } = null!;
 
-        [Phone]
+
+        [Phone(ErrorMessage = "Invalid phone number.")]
         public string? PhoneNumber { get; set; }
     }
 }

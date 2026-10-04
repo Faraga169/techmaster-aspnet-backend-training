@@ -163,7 +163,7 @@ namespace TrainingCenter.BLL.Services.Implementation
         }
 
 
-        public async Task<EnrollmentDTO> Update(UpdateEnrollDTO enroll)
+        public async Task<EnrollmentDTO> Update(int id,UpdateEnrollDTO enroll)
         {
             var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -171,7 +171,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("User Claims not found", 401);
 
 
-            var spec = new EnrollByIdSpecification(enroll.Id);
+            var spec = new EnrollByIdSpecification(id);
 
             var existingEnroll = await unitOfWork.Repository<Enrollment>().GetById(spec);
 
@@ -194,15 +194,15 @@ namespace TrainingCenter.BLL.Services.Implementation
        Description = $"Enrollment status changed from {oldStatus} to {existingEnroll.Status}",
        Metadata = JsonSerializer.Serialize(new
        {
-           OldStatus = oldStatus,
-           NewStatus = existingEnroll.Status
+           OldStatus = oldStatus.ToString(),
+           NewStatus = existingEnroll.Status.ToString()
        })
    });
             await unitOfWork.CompleteChanges();
             logger.LogInformation("Enrollment {EnrollmentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
     existingEnroll.Id,
-    oldStatus,
-    existingEnroll.Status,
+    oldStatus.ToString(),
+    existingEnroll.Status.ToString(),
     userId);
 
             var enrollspec = new EnrollByIdSpecification(existingEnroll.Id);
@@ -230,10 +230,6 @@ namespace TrainingCenter.BLL.Services.Implementation
             var spec = new EnrollmentbyStudentIdSpecification(id);
 
             var Enrollments = await unitOfWork.EnrollmentRepository().GetEnrollmentsbyStudentId(spec);
-
-          
-
-          
 
             var EnrollmentsofStudent= mapper.Map<IEnumerable<Enrollment>,IEnumerable<EnrollmentDTO>>(Enrollments);
 
@@ -276,10 +272,6 @@ namespace TrainingCenter.BLL.Services.Implementation
             var spec = new StudentsBYtrackIdSpecification(id);
 
             var existingStudentsbytrack = await unitOfWork.EnrollmentRepository().GetStudentsByTrackId(spec);
-
-           
-
-           
 
             var Studentsbytrack = mapper.Map<IEnumerable<Enrollment>, IEnumerable<TrackStudentDto>>(existingStudentsbytrack);
 

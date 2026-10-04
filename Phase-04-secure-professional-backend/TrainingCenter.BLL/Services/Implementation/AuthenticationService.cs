@@ -32,9 +32,6 @@ namespace TrainingCenter.BLL.Services.Implementation
 
         public async Task<AuthResponseDTO> Register(RegisterDTO registerDTO)
         {
-            
-
-            
 
             var userexist=await userManager.FindByEmailAsync(registerDTO.Email);
 
@@ -159,6 +156,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             };
 
             var currentactiverefreshtoken = await dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.UserId == user.Id&&!r.IsRevoked);
+            
             if (currentactiverefreshtoken is  not null) {
                 currentactiverefreshtoken.IsRevoked = true;
             }

@@ -9,7 +9,6 @@ namespace TrainingCenter.BLL.DTOS.Payment
 {
     public class UpdatePaymentDTO
     {
-        public int Id { get; set; }
 
         public PaymentStatus Status { get; set; }
     }

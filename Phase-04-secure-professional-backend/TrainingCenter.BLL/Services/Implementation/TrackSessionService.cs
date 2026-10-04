@@ -113,8 +113,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (updateSessionDTO.SessionDate < DateTime.UtcNow)
             {
                 throw new BusinessException(
-                    "Session date cannot be in the past.",
-                    400);
+                    "Session date cannot be in the past.",400);
             }
             if (session.CreatedByInstructorId != Instructor.Id)
                 throw new BusinessException("You are not allowed to update this session.",403);

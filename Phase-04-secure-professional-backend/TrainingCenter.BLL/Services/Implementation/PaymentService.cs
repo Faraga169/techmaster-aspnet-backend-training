@@ -184,8 +184,8 @@ EntityId = payment.Id.ToString(),
 Description = $"Payment status changed from {oldStatus} to {payment.Status}",
 Metadata = JsonSerializer.Serialize(new
 {
-    OldStatus = oldStatus,
-    NewStatus = payment.Status,
+    OldStatus = oldStatus.ToString(),
+    NewStatus = payment.Status.ToString(),
     Amount = payment.Amount
 })
 });
@@ -193,8 +193,8 @@ Metadata = JsonSerializer.Serialize(new
 
             logger.LogInformation("Payment {PaymentId} status changed from {OldStatus} to {NewStatus} by User {UserId}.",
     payment.Id,
-    oldStatus,
-    payment.Status,
+    oldStatus.ToString(),
+    payment.Status.ToString(),
     userId);
 
             await unitOfWork.CompleteChanges();

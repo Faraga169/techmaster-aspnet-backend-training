@@ -71,7 +71,6 @@ namespace TrainingCenter.BLL.Services.Implementation
                 };
 
 
-
                 var createUser = await userManager.CreateAsync(user, dto.Password);
                 if (!createUser.Succeeded)
                 {
@@ -101,8 +100,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                     Action = "InstructorCreate",
                     EntityName = "Instructor",
                     EntityId = instructor.Id.ToString(),
-                    Description =
-                                  $"Instructor {instructor.FullName} Created Successfully"
+                    Description =$"Instructor {instructor.FullName} Created Successfully"
 
                 });
 

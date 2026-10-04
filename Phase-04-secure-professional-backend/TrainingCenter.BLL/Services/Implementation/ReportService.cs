@@ -48,8 +48,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                    Action = "ReportViewed",
                    EntityName = "TrackReport",
                    EntityId = id.ToString(),
-                   Description =
-                       $"Track level summary report for track {id} was viewed."
+                   Description = $"Track level summary report for track {id} was viewed."
                });
 
             await unitOfWork.CompleteChanges();

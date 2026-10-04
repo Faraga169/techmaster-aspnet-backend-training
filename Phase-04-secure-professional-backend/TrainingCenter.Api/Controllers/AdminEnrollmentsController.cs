@@ -62,7 +62,7 @@ namespace TrainingCenter.Api.Controllers
         public async Task<IActionResult> ChangeStatus(int id, UpdateEnrollDTO dto)
         {
 
-            var enrollment = await enrollmentService.Update(dto);
+            var enrollment = await enrollmentService.Update(id,dto);
 
             return Ok(new ApiResponse<EnrollmentDTO>
             {

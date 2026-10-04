@@ -20,6 +20,7 @@ namespace TrainingCenter.BLL.DTOS.User
         public string Password { get; set; } = null!;
 
         [Required(ErrorMessage = "Phone Number is Required")]
+        [Phone(ErrorMessage = "Please enter a valid phone number.")]
         public string PhoneNumber { get; set; } = null!;
 
         [Compare(nameof(Password), ErrorMessage = "Passwords do not match.")]

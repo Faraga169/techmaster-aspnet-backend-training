@@ -17,7 +17,7 @@ namespace TrainingCenter.DAL.Persistent.Models
 
         public string Email { get; set; } = null!;
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public string Specialization { get; set; } = null!;
 

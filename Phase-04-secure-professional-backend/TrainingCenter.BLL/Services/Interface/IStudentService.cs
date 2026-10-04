@@ -20,7 +20,7 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<StudentDTO> GetMyProfile();
 
-        public Task<StudentDTO> Update(UpdateStudentDTO student);
+        public Task<StudentDTO> Update(int id,UpdateStudentDTO student);
 
         public Task<bool> Delete(int id);
     }

@@ -91,9 +91,8 @@ namespace TrainingCenter.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateTrackDTO dto)
         {
-            dto.Id = id;
 
-            var track = await trackService.Update(dto);
+            var track = await trackService.Update(id,dto);
 
             return Ok(new ApiResponse<TrackDTO>
             {

@@ -63,9 +63,9 @@ namespace TrainingCenter.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdateStudentDTO updateStudentDTO)
         {
-            updateStudentDTO.Id = id;
+            
 
-            var student = await studentService.Update(updateStudentDTO);
+            var student = await studentService.Update(id,updateStudentDTO);
 
             return Ok(new ApiResponse<StudentDTO>
             {

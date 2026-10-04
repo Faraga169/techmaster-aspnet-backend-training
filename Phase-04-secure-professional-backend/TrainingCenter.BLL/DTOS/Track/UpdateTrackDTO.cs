@@ -10,7 +10,6 @@ namespace TrainingCenter.BLL.DTOS.Track
 {
     public class UpdateTrackDTO
     {
-        public int Id { get; set; }
         public string Title { get; set; } = null!;
 
         public string Code { get; set; } = null!;
@@ -30,7 +29,7 @@ namespace TrainingCenter.BLL.DTOS.Track
         public TrainingStatus Status { get; set; }
 
         [Required(ErrorMessage ="Instructor is required")]
-        public int? InstructorId { get; set; }
+        public int InstructorId { get; set; }
 
     }
 }

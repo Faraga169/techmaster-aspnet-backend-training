@@ -48,9 +48,8 @@ namespace TrainingCenter.Api.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, UpdatePaymentDTO dto)
         {
-            dto.Id = id;
 
-            var payment = await paymentService.Update(dto);
+            var payment = await paymentService.Update(id,dto);
 
             return Ok(new ApiResponse<PaymentDTO>
             {
@@ -61,11 +60,11 @@ namespace TrainingCenter.Api.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{enrollid}")]
 
-        public async Task<IActionResult> GetPaymentHistory(int id)
+        public async Task<IActionResult> GetPaymentHistory(int enrollid)
         {
-            var result = await paymentService.GetPaymentHistory(id);
+            var result = await paymentService.GetPaymentHistory(enrollid);
 
             return Ok(new ApiResponse<IEnumerable<PaymentDTO>>
             {

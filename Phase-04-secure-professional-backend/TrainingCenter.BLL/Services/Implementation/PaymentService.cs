@@ -68,42 +68,61 @@ namespace TrainingCenter.BLL.Services.Implementation
 
            
 
-            var payment = mapper.Map<Payment>(paymentdto);
+           
+                   await unitOfWork.BeginTransactionAsync();
 
-            await unitOfWork.Repository<Payment>().Create(payment);
-
-
-
-            if (paidAmount + paymentdto.Amount >= enroll.TrainingTrack.Price)
+            try
             {
-                enroll.Status = EnrollmentStatus.Active;
+                var payment = mapper.Map<Payment>(paymentdto);
+
+                await unitOfWork.Repository<Payment>().Create(payment);
+
+               
+                await unitOfWork.CompleteChanges();
+
+                if (paidAmount + paymentdto.Amount >= enroll.TrainingTrack.Price)
+                {
+                    enroll.Status = EnrollmentStatus.Active;
+
+                    await unitOfWork.Repository<Enrollment>().Update(enroll);
+                }
+
+                await activityLogService.LogAsync(
+                    new ActivityLog
+                    {
+                        Action = "PaymentCreated",
+                        EntityName = "Payment",
+                        EntityId = payment.Id.ToString(),
+                        Description =
+                            $"Payment of {payment.Amount} was created for enrollment {payment.EnrollId}.",
+                        Metadata = JsonSerializer.Serialize(new
+                        {
+                            Amount = payment.Amount,
+                            EnrollmentId = payment.EnrollId
+                        })
+                    });
+
+                await unitOfWork.CompleteChanges();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                logger.LogInformation(
+                    "Payment {PaymentId} created for Enrollment {EnrollmentId} by User {UserId}.",
+                    payment.Id,
+                    payment.EnrollId,
+                    userId);
+
+                return mapper.Map<PaymentDTO>(payment);
+            }
+            catch
+            {
+                await unitOfWork.RollbackTransactionAsync();
+                throw;
             }
 
-            await activityLogService.LogAsync(
-    new ActivityLog
-    {
-        Action = "PaymentCreated",
-        EntityName = "Payment",
-        EntityId = payment.Id.ToString(),
-        Description =
-            $"Payment of {payment.Amount} was created for enrollment {payment.EnrollId}.",
-        Metadata = JsonSerializer.Serialize(new
-        {
-            Amount = payment.Amount,
-            EnrollmentId = payment.EnrollId
-        })
-    });
-
-            logger.LogInformation("Payment {PaymentId} created for Enrollment {EnrollmentId} by User {UserId}.",
-   payment.Id,
-   payment.EnrollId,
-   userId);
-            await unitOfWork.CompleteChanges();
-          
-            return mapper.Map<PaymentDTO>(payment);
         }
 
-        public async Task<PaymentDTO> Update(UpdatePaymentDTO paymentdto)
+        public async Task<PaymentDTO> Update(int id,UpdatePaymentDTO paymentdto)
         {
             var userId = contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -111,7 +130,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("User Claims not found", 401);
 
            
-            var spec = new PaymentByIdSpecification(paymentdto.Id);
+            var spec = new PaymentByIdSpecification(id);
 
             var payment = await unitOfWork.Repository<Payment>()
                 .GetById(spec);

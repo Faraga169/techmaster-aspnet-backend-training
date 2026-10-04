@@ -9,7 +9,6 @@ namespace TrainingCenter.BLL.DTOS.Enrollment
 {
     public class UpdateEnrollDTO
     {
-        public int Id { get; set; }
        
        public EnrollmentStatus Status { get; set; }
 

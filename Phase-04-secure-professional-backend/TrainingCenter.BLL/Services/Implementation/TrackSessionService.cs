@@ -81,6 +81,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             tracksession.TrackId = trackId;
             tracksession.CreatedByInstructorId = Instructor.Id;
             tracksession.IsCompleted = false;
+            tracksession.TrainingTrack = Track;
 
             await unitOfWork.Repository<TrackSession>().Create(tracksession);
             await unitOfWork.CompleteChanges();
@@ -117,6 +118,9 @@ namespace TrainingCenter.BLL.Services.Implementation
             }
             if (session.CreatedByInstructorId != Instructor.Id)
                 throw new BusinessException("You are not allowed to update this session.",403);
+
+            if(session.IsCompleted)
+                throw new BusinessException("You are not allowed to update this session. Because this Session is Completed", 400);
 
             mapper.Map(updateSessionDTO,session);
 

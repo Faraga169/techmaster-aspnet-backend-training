@@ -61,7 +61,6 @@ namespace TrainingCenter.Api.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> ChangeStatus(int id, UpdateEnrollDTO dto)
         {
-            dto.Id = id;
 
             var enrollment = await enrollmentService.Update(dto);
 

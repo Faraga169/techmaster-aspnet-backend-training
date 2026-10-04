@@ -94,6 +94,8 @@ namespace TrainingCenter.BLL.Services.Implementation
                 instructor.UserId = user.Id;
 
                 await unitOfWork.Repository<Instructor>().Create(instructor);
+                await unitOfWork.CompleteChanges();
+
                 await activityLogService.LogAsync(new ActivityLog()
                 {
                     Action = "InstructorCreate",
@@ -118,9 +120,9 @@ namespace TrainingCenter.BLL.Services.Implementation
           
         }
 
-        public async Task<InstructorDTO> Update(UpdateInstructorDTO dto)
+        public async Task<InstructorDTO> Update(int id,UpdateInstructorDTO dto)
         {
-            var spec = new InstructorbyIdspecification(dto.Id);
+            var spec = new InstructorbyIdspecification(id);
 
             var existingInstructor =await unitOfWork.Repository<Instructor>().GetById(spec);
 

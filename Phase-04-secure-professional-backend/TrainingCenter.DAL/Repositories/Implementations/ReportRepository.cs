@@ -63,6 +63,7 @@ namespace TrainingCenter.DAL.Repositories.Implementations
             return new TrackLevelSummary
             {
                 TrackName = track.Title,
+                TotalEnrollments=total,
                 ActiveCount = activeCount,
                 PendingCount = pendingCount,
                 CompleteCount = completedCount,

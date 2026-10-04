@@ -19,7 +19,7 @@ namespace TrainingCenter.BLL.Services.Interface
 
         public Task<InstructorDTO> Create(CreateInstructorDTO instructor);
 
-        public Task<InstructorDTO> Update(UpdateInstructorDTO instructor);
+        public Task<InstructorDTO> Update(int id,UpdateInstructorDTO instructor);
 
         public Task<IEnumerable<TrackDTO>> GetTracksByInstructorId(int id);
     }

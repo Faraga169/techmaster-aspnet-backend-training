@@ -9,7 +9,6 @@ namespace TrainingCenter.BLL.DTOS.Student
 {
     public class UpdateStudentDTO
     {
-        public int Id { get; set; }
 
         public string FullName { get; set; } = null!;
 
@@ -19,7 +18,7 @@ namespace TrainingCenter.BLL.DTOS.Student
         [Phone]
         public string? PhoneNumber { get; set; }
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } 
 
     }
 }

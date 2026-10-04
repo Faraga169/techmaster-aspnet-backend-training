@@ -68,13 +68,13 @@ namespace TrainingCenter.Api.Controllers
         {
             var enrollment = await enrollmentService.Create(dto);
 
-            return CreatedAtAction(nameof(AdminStudentsController.GetById), new { id = enrollment.Id },
-                new ApiResponse<EnrollmentDTO>
-                {
-                    Success = true,
-                    Message = "Student enrolled successfully.",
-                    Data = enrollment
-                });
+            return StatusCode(StatusCodes.Status201Created,
+       new ApiResponse<EnrollmentDTO>
+       {
+           Success = true,
+           Message = "Student enrolled successfully.",
+           Data = enrollment
+       });
         }
 
 

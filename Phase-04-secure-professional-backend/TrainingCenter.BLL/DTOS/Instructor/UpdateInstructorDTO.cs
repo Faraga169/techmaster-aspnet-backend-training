@@ -9,7 +9,6 @@ namespace TrainingCenter.BLL.DTOS.Instructor
     public class UpdateInstructorDTO
     {
 
-        public int Id { get; set; }
         public string FullName { get; set; } = null!;
 
         public string Email { get; set; } = null!;

@@ -107,7 +107,8 @@ namespace TrainingCenter.BLL.Services.Implementation
                 {
                     Email = user.Email,
                     FullName = user.UserName,
-                    UserId = user.Id
+                    UserId = user.Id,
+                    Role="Student"
                 };
             }
             catch
@@ -166,7 +167,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             dbContext.RefreshTokens.Add(refreshTokenEntity);
 
             await dbContext.SaveChangesAsync();
-            var expiresAt = DateTime.UtcNow.AddHours(1);
+            var expiresAt = DateTime.UtcNow.AddHours(7);
 
             logger.LogInformation("User {UserId} logged in successfully with role {Role}.",user.Id,roles.FirstOrDefault());
             await activityLogService.LogAsync(
@@ -176,7 +177,7 @@ namespace TrainingCenter.BLL.Services.Implementation
         Action = "UserLoggedIn",
         EntityName = "User",
         Description = $"{user.UserName} logged in successfully"
-    });
+    },user.Id,roles.FirstOrDefault());
 
             await unitOfWork.CompleteChanges();
             return new AuthResponseDTO

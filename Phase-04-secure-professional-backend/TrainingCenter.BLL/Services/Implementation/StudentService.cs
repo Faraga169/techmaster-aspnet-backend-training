@@ -107,6 +107,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 student.UserId = user.Id;
 
                 await unitOfWork.Repository<Student>().Create(student);
+                await unitOfWork.CompleteChanges();
                 await activityLogService.LogAsync(new ActivityLog()
                 {
                     Action = "StudentCreate",
@@ -150,10 +151,10 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             return mapper.Map<StudentDTO>(student);
         }
-        public async Task<StudentDTO> Update(UpdateStudentDTO dto)
+        public async Task<StudentDTO> Update(int id,UpdateStudentDTO dto)
         {
             
-            var spec = new StudentByIdSpecification(dto.Id);
+            var spec = new StudentByIdSpecification(id);
 
             var existingStudent = await unitOfWork.Repository<Student>().GetById(spec);
 
@@ -193,9 +194,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (existingStudent is null)
                 throw new BusinessException("Student not found", 404);
 
-            // Student cannot change protected fields
-            dto.Id = existingStudent.Id;
-            dto.IsActive = existingStudent.IsActive;
+
 
            mapper.Map(dto, existingStudent);
 

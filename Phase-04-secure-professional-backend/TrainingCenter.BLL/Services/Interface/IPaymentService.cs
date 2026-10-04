@@ -17,7 +17,7 @@ namespace TrainingCenter.BLL.Services.Interface
         public Task<IEnumerable<PaymentDTO>> GetMyPayments();
         public Task<PaymentDTO> Create(CreatePaymentDTO payment);
 
-        public Task<PaymentDTO> Update(UpdatePaymentDTO payment);
+        public Task<PaymentDTO> Update(int id,UpdatePaymentDTO payment);
 
         public Task<IEnumerable<PaymentDTO>> GetPaymentHistory(int id);
 

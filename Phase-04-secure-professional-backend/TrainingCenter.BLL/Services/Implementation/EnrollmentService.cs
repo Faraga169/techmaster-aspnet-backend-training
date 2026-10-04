@@ -35,6 +35,7 @@ namespace TrainingCenter.BLL.Services.Implementation
             var EnrollSpecification = new EnrollmentBystatusandtrackidandstudentidandpaymentstatusspecification(status, trackid, studentid, paymentStatus);
             var GetAllEnrollments = await unitOfWork.Repository<Enrollment>().GetAll(EnrollSpecification);
             var EnrollmetsDTO = mapper.Map<IEnumerable<Enrollment>, IEnumerable<EnrollmentDTO>>(GetAllEnrollments);
+           
             return EnrollmetsDTO;
         }
 
@@ -58,13 +59,24 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("User Claims not found", 401);
 
 
-            var currentuser = new GetStudentbyCurrentUserIdSpecification(userId);
-            var userspec = await unitOfWork.Repository<Student>().GetById(currentuser);
-            if (userspec is null)
-                throw new BusinessException("Student not found", 404);
+            if (!isAdmin)
+            {
+                var currentuser = new GetStudentbyCurrentUserIdSpecification(userId);
 
-            if (!isAdmin && enroll.StudentId != userspec.Id)
-                throw new BusinessException("You have not access to assign another student", 403);
+                var userspec = await unitOfWork.Repository<Student>()
+                    .GetById(currentuser);
+
+                if (userspec is null)
+                    throw new BusinessException("Student not found", 404);
+
+                if (enroll.StudentId != userspec.Id)
+                    throw new BusinessException(
+                        "You have not access to assign another student",
+                        403);
+            }
+           
+
+
 
             var studentspec = new StudentByIdSpecification(enroll.StudentId!.Value);
             var student = await unitOfWork.Repository<Student>().GetById(studentspec);
@@ -104,40 +116,49 @@ namespace TrainingCenter.BLL.Services.Implementation
             if (checkcapacity is null)
                 throw new BusinessException("The Active Capacity is Full", 400);
 
-        
-
-            var enrollment = mapper.Map<Enrollment>(enroll);
-
-          
-
-            await unitOfWork.Repository<Enrollment>().Create(enrollment);
-
-            await activityLogService.LogAsync(
-   new ActivityLog
-   {
-       Action = "EnrollmentRequested",
-       EntityName = "Enrollment",
-       EntityId = enrollment.Id.ToString(),
-       Description =
-           $"Student {enrollment.StudentId} requested enrollment in track {enrollment.TrainingTrackId}"
-   });
-
-            await unitOfWork.CompleteChanges();
-            logger.LogInformation("Enrollment {EnrollmentId} created for Student {StudentId} in Track {TrackId} by User {UserId}.",
-    enrollment.Id,
-    enrollment.StudentId,
-    enrollment.TrainingTrackId,
-    userId);
-
-           
-
-           
-
-            var enrollspec = new EnrollByIdSpecification(enrollment.Id);
-            var createdEnrollment =await unitOfWork.Repository<Enrollment>().GetById(enrollspec);
 
 
-            return mapper.Map<EnrollmentDTO>(createdEnrollment);
+            await unitOfWork.BeginTransactionAsync();
+
+            try
+            {
+                var enrollment = mapper.Map<Enrollment>(enroll);
+
+                await unitOfWork.Repository<Enrollment>()
+                    .Create(enrollment);
+
+               
+                await unitOfWork.CompleteChanges();
+
+              
+                await activityLogService.LogAsync(
+                    new ActivityLog
+                    {
+                        Action = "EnrollmentRequested",
+                        EntityName = "Enrollment",
+                        EntityId = enrollment.Id.ToString(),
+                        Description =
+                            $"Student {enrollment.StudentId} requested enrollment in track {enrollment.TrainingTrackId}"
+                    });
+
+                await unitOfWork.CompleteChanges();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                var enrollSpec =
+                    new EnrollByIdSpecification(enrollment.Id);
+
+                var createdEnrollment =
+                    await unitOfWork.Repository<Enrollment>()
+                        .GetById(enrollSpec);
+
+                return mapper.Map<EnrollmentDTO>(createdEnrollment);
+            }
+            catch
+            {
+                await unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
 
         }
 
@@ -158,7 +179,7 @@ namespace TrainingCenter.BLL.Services.Implementation
                 throw new BusinessException("Enrollment is not found", 404);
 
             if (existingEnroll?.Status == EnrollmentStatus.Completed)
-                throw new BusinessException("Enrollment status cannot be changes", 404);
+                throw new BusinessException("Enrollment status cannot be changed after completion.",400);
 
             var oldStatus = existingEnroll!.Status;
 
@@ -210,8 +231,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             var Enrollments = await unitOfWork.EnrollmentRepository().GetEnrollmentsbyStudentId(spec);
 
-            if(!Enrollments.Any())
-                throw new BusinessException("Student is not found in Enrollments", 404);
+          
 
           
 
@@ -257,8 +277,7 @@ namespace TrainingCenter.BLL.Services.Implementation
 
             var existingStudentsbytrack = await unitOfWork.EnrollmentRepository().GetStudentsByTrackId(spec);
 
-            if (!existingStudentsbytrack.Any())
-                throw new BusinessException("No Students is enrolled in track", 404);
+           
 
            
 

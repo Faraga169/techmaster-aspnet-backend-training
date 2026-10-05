@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Text.Json;
-using StudentManagementAPI.Exceptions;
+using SecurityRefactoringEF.Exceptions;
 
-namespace StudentManagementAPI.Middleware
+namespace SecurityRefactoringEF.Middleware
 {
     public class ExceptionHandlingMiddleware
     {

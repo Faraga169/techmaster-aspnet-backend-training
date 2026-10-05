@@ -1,4 +1,4 @@
-﻿namespace StudentManagementAPI.Exceptions
+﻿namespace SecurityRefactoringEF.Exceptions
 {
     public class BusinessException:Exception
     {

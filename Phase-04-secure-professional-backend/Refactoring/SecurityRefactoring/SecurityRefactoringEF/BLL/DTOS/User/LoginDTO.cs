@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrainingCenter.BLL.DTOS.User
+namespace SecurityRefactoringEF.BLL.DTOS.User
 {
     public class LoginDTO
     {

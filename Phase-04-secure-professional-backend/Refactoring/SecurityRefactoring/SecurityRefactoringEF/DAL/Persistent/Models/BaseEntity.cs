@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrainingCenter.DAL.presistent.Models
+namespace SecurityRefactoringEF.DAL.presistent.Models
 {
     public class BaseEntity<Tkey>
     {

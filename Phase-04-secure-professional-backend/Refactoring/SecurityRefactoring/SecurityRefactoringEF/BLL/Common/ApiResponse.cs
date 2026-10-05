@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrainingCenter.BLL.Common
+namespace SecurityRefactoringEF.BLL.Common
 {
     public  class ApiResponse<T>
     {

@@ -3,16 +3,13 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.IdentityModel.Tokens;
-using StudentManagementAPI.Exceptions;
-using TrainingCenter.BLL.DTOS.User;
-using TrainingCenter.BLL.Services.Interface;
-using TrainingCenter.DAL.Persistent;
-using TrainingCenter.DAL.Persistent.Models;
-namespace TrainingCenter.BLL.Services.Implementation
+using SecurityRefactoringEF.BLL.DTOS.User;
+using SecurityRefactoringEF.BLL.Services.Interface;
+using SecurityRefactoringEF.DAL.Persistent.Models;
+using SecurityRefactoringEF.Exceptions;
+namespace SecurityRefactoringEF.BLL.Services.Implementation
 {
     public class AuthenticationService(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IAuthenticationService
     {

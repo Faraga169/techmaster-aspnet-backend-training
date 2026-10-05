@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TrainingCenter.DAL.Persistent.Models;
-using TrainingCenter.DAL.presistent.Models;
+using SecurityRefactoringEF.DAL.Persistent.Models;
+using SecurityRefactoringEF.DAL.presistent.Models;
 
-namespace TrainingCenter.DAL.Persistent
+namespace SecurityRefactoringEF.DAL.Persistent
 {
     public class AppDbContext:IdentityDbContext<ApplicationUser>
     {

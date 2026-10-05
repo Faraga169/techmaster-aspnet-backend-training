@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TrainingCenter.BLL.Common;
-using TrainingCenter.BLL.DTOS.User;
-using TrainingCenter.BLL.Services.Interface;
+using SecurityRefactoringEF.BLL.Common;
+using SecurityRefactoringEF.BLL.DTOS.User;
+using SecurityRefactoringEF.BLL.Services.Interface;
 
-namespace TrainingCenter.Api.Controllers
+namespace SecurityRefactoringEF.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

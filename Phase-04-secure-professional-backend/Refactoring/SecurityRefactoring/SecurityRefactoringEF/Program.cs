@@ -1,13 +1,14 @@
 
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using StudentManagementAPI.Middleware;
-using TrainingCenter.DAL.Persistent;
-using TrainingCenter.DAL.Persistent.Models;
+using SecurityRefactoringEF.Middleware;
+using SecurityRefactoringEF.DAL.Persistent;
+using SecurityRefactoringEF.DAL.Persistent.Models;
 
 namespace SecurityRefactoringEF
 {
@@ -21,6 +22,8 @@ namespace SecurityRefactoringEF
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

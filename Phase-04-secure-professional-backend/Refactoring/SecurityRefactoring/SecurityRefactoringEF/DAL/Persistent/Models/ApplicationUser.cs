@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using TrainingCenter.DAL.presistent.Models;
+using SecurityRefactoringEF.DAL.presistent.Models;
 
-namespace TrainingCenter.DAL.Persistent.Models
+namespace SecurityRefactoringEF.DAL.Persistent.Models
 {
     public class ApplicationUser:IdentityUser
     {
